@@ -1,8 +1,0 @@
-{
-    "require": {
-        "scssphp/scssphp": "1.0.*",
-        "fortawesome/font-awesome": "5.*",
-        "twbs/bootstrap": "4.*.*",
-        "mobiledetect/mobiledetectlib": "^2.8"
-    }
-}
