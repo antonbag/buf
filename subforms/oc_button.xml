@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form>
+
+
+
+    <field name="buf_oc_button_style" 
+        type="list" default="3dx"
+        label="TPL_BUF_OC_BUTTON_STYLE"
+    >
+        <option value="3dx">3dx</option>
+        <option value="3dy">3dy</option>
+        <option value="3dxy">3dxy</option>
+        <option value="arrow">arrow</option>
+        <option value="arrowalt">arrowalt</option>
+        <option value="arrowturn">arrowturn</option>
+        <option value="boring">boring</option>
+        <option value="collapse">collapse</option>
+        <option value="elastic">elastic</option>
+        <option value="emphatic">emphatic</option>
+        <option value="minus">minus</option>
+        <option value="slider">slider</option>
+        <option value="spin">spin</option>
+        <option value="spring">spring</option>
+        <option value="stand">stand</option>
+        <option value="squeeze">squeeze</option>
+        <option value="vortex">vortex</option>
+    </field>
+
+    <field name="buf_oc_button_vpos" 
+        type="radio" default="top"
+        class="switcher switcher-primary btn-group" 
+        label="TPL_BUF_OC_BUTTON_VPOS"
+    >
+        <option value="top">TPL_BUF_OC_BUTTON_TOP</option>
+        <option value="middle">TPL_BUF_OC_BUTTON_MIDDLE</option>
+        <option value="bottom">TPL_BUF_OC_BUTTON_BOTTOM</option>
+
+    </field>
+
+    <field name="buf_oc_button_hpos" 
+        type="radio" default="left"
+        class="switcher switcher-primary btn-group" 
+        label="TPL_BUF_OC_BUTTON_HPOS"
+    >
+        <option value="left">TPL_BUF_OC_BUTTON_LEFT</option>
+        <option value="middle">TPL_BUF_OC_BUTTON_MIDDLE</option>
+        <option value="right">TPL_BUF_OC_BUTTON_RIGHT</option>
+
+    </field>
+
+
+    <field name="buf_oc_button_color" 
+        type="color" 
+        default="#000000" 
+        clas="input-small"
+        format="rgba"
+        label="TPL_BUF_OFFCANVAS_COLOR" 
+        description="TPL_BUF_OFFCANVAS_COLOR_DESC"
+    />
+
+    <field name="buf_oc_button_color_hover" 
+        type="color" 
+        default="#666666" 
+        format="rgba"
+        label="TPL_BUF_OFFCANVAS_COLOR_HOVER"
+        
+    />
+
+    <field name="buf_oc_button_color_active" 
+        type="color" 
+        default="#666666" 
+        format="rgba"
+        label="TPL_BUF_OFFCANVAS_COLOR_ACTIVE"
+    />
+
+    <field name="buf_oc_button_color_active" 
+        type="color" 
+        default="#666666" 
+        format="rgba"
+        label="TPL_BUF_OFFCANVAS_COLOR_ACTIVE"
+    />
+
+    <field name="buf_oc_button_reverse" 
+        type="radio" default="l"
+        class="switcher switcher-primary btn-group" 
+        label="TPL_BUF_OC_BUTTON_ACTIVE_DIR"
+    >
+        <option value="l">TPL_BUF_OC_BUTTON_ACTIVE_LEFT</option>
+        <option value="r">TPL_BUF_OC_BUTTON_ACTIVE_RIGHT</option>
+
+    </field>
+
+    <field name="buf_oc_button_editor"
+        type="textarea"
+        label="TPL_BUF_OC_BUTTON_EDITOR"
+        description="TPL_BUF_OC_BUTTON_EDITOR_DESC"
+        default=""
+        filter="raw"
+        mode="scss"
+    />
+
+
+</form>
+
+
+

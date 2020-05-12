@@ -1,0 +1,259 @@
+2.2.20
+offline page
+fix buf imgs path
+top bar hidden
+
+2.2.19
+top bar logo with index
+hidden oc (finally) in start
+
+2.2.17
+top bar
+offcanvas top bar
+
+2.2.16
+Buf bs accordeon leading
+
+2.2.15
+Buf bs accordeon
+
+2.2.14
+Fix jquery async with oc
+
+2.2.13
+search module layout
+
+2.2.12
+OC touch right support
+
+2.2.11
+OC touch support
+fix minor base creation bug
+
+2.2.10
+vanilla js started
+
+2.2.9
+fa pro fixed
+
+2.2.6
+remove comments
+
+2.2.6
+fa js path fix
+
+2.2.5
+offcanvas width
+
+2.2.4
+minor fix
+
+2.2.3
+New offcanvas system
+Custom oc button
+
+2.2.0
+Devel mode
+
+2.1.24
+Moved to composer
+
+2.1.23
+fix custom js check
+
+2.1.22
+check fa fonts (to prevent cache cleaner)
+
+
+2.1.21
+fix backend editor saving data in db
+
+2.1.20
+alias menu fix
+
+2.1.19
+jmobile class in body
+optimize gfonts loading
+custom unset files
+
+2.1.18
+offcanvas positions
+
+2.1.17
+fa5 v5.10.2
+include fa duotone
+update scssphp compiler to 1.0.3
+mix ajax params to get more consistency
+
+2.1.16
+fa5 svg+js fix
+
+
+2.1.14
+Per layout cache
+
+
+2.1.12
+Minor fixes here and there
+Update save in backend to be compatible with J3.9.x
+
+2.1.7
+Minor fixes
+Bitbucket goes public!
+
+2.1.6
+FA5 5.7.1
+Fix fa5 load in backend
+
+2.1.5
+Using J4 nameclasses
+Delete Font folder
+Remove files more efficient
+Backup layout
+index optimization
+close dev message
+fa and bs updated
+
+2.1.4
+Clean cache button
+
+2.1.3
+fix ajax compilation
+Save custom css with save joomla button
+
+2.1.1
+Split compilation for bs and fa
+compilation time and hour
+
+2.1.0
+Update for J3.9 and J4
+Fix base css loading in production
+
+2.0.139
+BS selector working with files
+
+2.0.138
+Optimize sass compiler without fa
+
+2.0.137
+working on J4
+
+2.0.136
+first aproximation to J4
+
+2.0.135
+fix path with Xampp in windows
+
+2.0.134
+backend style
+
+
+2.0.133
+fix fa5 pro and free load
+
+
+2.0.132
+Generate editor css
+Hide modules section
+
+2.0.131
+js recached
+
+2.0.129
+custom positions left-right
+update fontawesome 5 free
+fa selector improve in backend
+
+2.0.128
+better favicon creation
+load bs js from js
+
+2.0.127
+better integration (bye bye bufinit plugin)
+
+2.0.126
+custom content width
+
+2.0.125
+create layouts
+
+2.0.124
+offcanvas inprovement
+
+2.0.123
+fix offcanvas
+
+2.0.122
+dinamic bootstrap selector in backend
+
+2.0.121
+mix css
+
+2.0.120
+better debug system
+avoid base sass compiler
+
+2.0.119
+New logo (yeah!)
+better backend interface
+php layout editor 
+auto save on change button in editor
+better ajax compilation
+
+2.0.118
+cleaning
+
+2.0.117
+backend optimizations
+
+2.0.116
+recache function
+
+
+2.0.115
+starting real layouts
+
+2.0.114
+choose content fluid
+
+2.0.113
+bs4 pagination
+
+2.0.111
+left + right bootstrap
+
+
+2.0.110
+popper loaded in bs4
+
+2.0.109
+BS4 better selector
+update to BS 4.1
+Fix BS4 script
+Update to Jquery 3.3.1
+
+
+2.0.107
+asyn load fa js
+
+2.0.106
+possible use of FA5 pro
+
+2.0.103
+unset individual files
+
+2.0.100
+
+bootstrap 4
+fontawesome 5
+
+
+1.0.8
+BG image
+
+
+1.0.5
+Order from chaos
+
+1.0.4
+Google fonts async

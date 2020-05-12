@@ -1,0 +1,13 @@
+//TODO
+error page
+license
+force reload on dev
+joomla com_comtent position selector
+prevent blocking google analytics
+create component.php per layout behavior
+img path per layout
+Background gradient
+Custom bootstrap js files
+override favicon on update
+production in 1 hour (timedev)
+CSS editor en frontend

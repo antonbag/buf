@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form>
+
+    <field name="buf_topbar_on" 
+        type="radio" 
+        default="0" 
+        class="btn-group" 
+        label="TPL_BUF_TOPBAR_ON">
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+    </field>
+
+    <field name="buf_topbar_image_show" 
+        type="radio" 
+        default="0" 
+        class="btn-group" 
+        label="TPL_BUF_TOPBAR_IMAGE_SHOW" 
+        showon="buf_topbar_on:1"
+    >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+    </field>
+
+    <field name="buf_topbar_logo" label="TPL_BUF_TOPBAR_LOGO" description="TPL_BUF_TOPBAR_LOGO_DESC" type="media" directory="" default="templates/buf/images/buf_logos/logo_buf_64.webp" showon="buf_topbar_on:1"/>
+
+    <field name="buf_topbar_logo_fallback" label="TPL_BUF_TOPBAR_LOGO_FALLBACK" description="TPL_BUF_TOPBAR_LOGO_FALLBACK_DESC" default="templates/buf/images/buf_logos/logo_buf_64.png" type="media" directory="" showon="buf_topbar_on:1"/>
+
+    <field name="buf_topbar_logo_pos" 
+        type="radio" default="l"
+        class="switcher switcher-primary btn-group" 
+        label="TPL_BUF_TOPBAR_LOGO_POSITION" 
+        showon="buf_topbar_on:1"
+    >
+        <option value="l">TPL_BUF_OC_BUTTON_ACTIVE_LEFT</option>
+        <option value="c">TPL_BUF_OC_BUTTON_ACTIVE_CENTER</option>
+        <option value="r">TPL_BUF_OC_BUTTON_ACTIVE_RIGHT</option>
+    </field>
+ 
+    <field name="buf_topbar_height" 
+        type="number" 
+        default="54"
+        min="0" max="200" step="1"
+        label="TPL_BUF_TOPBAR_H" 
+        showon="buf_topbar_on:1"
+    />
+
+
+    <field name="buf_topbar_color" 
+        type="color" 
+        default="#ffffff" 
+        format="rgba"
+        label="BUF_COLOR" 
+        showon="buf_topbar_on:1"
+    />
+
+
+</form>
