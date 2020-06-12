@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 //JHtml::_('bootstrap.tooltip');
 
 ?>
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="breadcrumb-buf">
 <ol class="breadcrumb<?php echo $moduleclass_sfx; ?>">
 	<?php
 	if ($params->get('showHere', 1))

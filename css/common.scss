@@ -208,6 +208,33 @@ div.buf_bs_card {
 
 
 
+//BREADCRUMBS////////////
+/////////////////////////////////////
+/////////////////////////////////////
+/////////////////////////////////////
+/////////////////////////////////////
+/////////////////////////////////////
+
+.breadcrumbs{
+    nav.breadcrumb_buf{
+        .breadcrumb{
+            flex-wrap: nowrap;
+            overflow: auto;
+            padding: 0.5rem 1rem;
+            li.breadcrumb-item{
+              white-space: nowrap;
+              a, span{
+                white-space: nowrap;
+              }
+              &.active{
+                padding-right:15px;
+              }
+            }
+        } 
+    }
+}
+
+
 
 
 
