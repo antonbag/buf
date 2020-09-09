@@ -95,6 +95,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			</div>
 			
 
+
 	<?php endif; ?>
 
 
