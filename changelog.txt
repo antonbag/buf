@@ -1,3 +1,6 @@
+2.2.41
+custom component
+
 2.2.20
 offline page
 fix buf imgs path

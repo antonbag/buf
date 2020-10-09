@@ -7,19 +7,21 @@
 */  
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\Registry\Registry;
 
 class BUFfavicon
 {
 
   public static function create_favicons($templateid, $image){
-
-    $templateparams = json_decode(BUFfavicon::getCurrentParams($templateid)->params);
+    
+    //$templateparams = json_decode(BUFfavicon::getCurrentParams($templateid)->params);
+    $templateparams = new Registry(BUFfavicon::getCurrentParams($templateid)->params);
     $template_name = BUFfavicon::getCurrentParams($templateid)->template;
     
     $template_path = JPATH_SITE.'/templates/buf/';
     $image_path =  JPATH_SITE.'/'.$image;
-    $fav_path = JPATH_SITE.'/templates/buf/images/icons/';
+    $buf_layout = $templateparams->get('buf_layout','default');
+    $fav_path = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout.'/icons/';
     $uri = JUri::base();
 
     $error = '';
@@ -35,11 +37,11 @@ class BUFfavicon
 
     $android_json = BUFfavicon::_generateAndroidJson($template_name,$fav_path);
     
-    $ms_json = BUFfavicon::_generateMsXml($template_name,$fav_path,$templateparams->buf_mscolor);
+    $ms_json = BUFfavicon::_generateMsXml($template_name,$fav_path,$templateparams->get('buf_mscolor','#57616d'),$buf_layout);
 
     $ios = BUFfavicon::_generateIos($image_path, $fav_path);
 
-    $favicon_ico = BUFfavicon::_generateIco($image_path, $template_path);
+    $favicon_ico = BUFfavicon::_generateIco($image_path, $fav_path);
 
     return true;
   }
@@ -146,15 +148,15 @@ class BUFfavicon
     return true ;
   }
 
-  private static function _generateMsXml($template_name, $fav_path, $color){
+  private static function _generateMsXml($template_name, $fav_path, $color,$buf_layout){
 
     $xml = '<?xml version="1.0" encoding="utf-8"?>
           <browserconfig>
             <msapplication>
               <tile>
-                <square70x70logo src="templates/'.$template_name.'/images/icons/ms-icon-70x70.png"/>
-                <square150x150logo src="templates/'.$template_name.'/images/icons/ms-icon-150x150.png"/>
-                <square310x310logo src="templates/'.$template_name.'/images/icons/ms-icon-310x310.png"/>
+                <square70x70logo src="templates/'.$template_name.'/layouts/'.$buf_layout.'/icons/ms-icon-70x70.png"/>
+                <square150x150logo src="templates/'.$template_name.'/layouts/'.$buf_layout.'/icons/ms-icon-150x150.png"/>
+                <square310x310logo src="templates/'.$template_name.'/layouts/'.$buf_layout.'/icons/ms-icon-310x310.png"/>
                 <TileColor>'.$color.'</TileColor>
               </tile>
             </msapplication>
@@ -214,8 +216,8 @@ class BUFfavicon
 
       //ICO root
       $destination = $output.'favicon.ico';
-      $destination_icons = $output.'images/icons/favicon.ico';
-      $source = $output.'images/icons/android-icon-192x192.png';
+      //$destination_icons = $output.'icons/favicon.ico';
+      $source = $output.'/android-icon-192x192.png';
 
       $sizes = array(
           array( 16, 16 ),
@@ -226,7 +228,7 @@ class BUFfavicon
       );
       $ico_lib = new PHP_ICO( $source, $sizes);
       $ico_lib->save_ico( $destination );
-      $ico_lib->save_ico( $destination_icons );
+      //$ico_lib->save_ico( $destination_icons );
 
       return true ;
     }

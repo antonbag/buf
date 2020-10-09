@@ -18,38 +18,45 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		<?php 
 			//avoid error on load
 			echo file_get_contents('cache/buf_'.$buf_layout.'/base.css');
-						//TEMPLATE BASE CSS
+			//TEMPLATE BASE CSS
 			$buf_debug += addDebug('BASE CSS', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
 		?>
 	</style>
+
+	<link rel="shortcut icon" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon.ico" />
 
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,shrink-to-fit=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-	<link rel="apple-touch-icon" sizes="57x57" href="<?php echo $tpath; ?>/images/icons/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="<?php echo $tpath; ?>/images/icons/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="<?php echo $tpath; ?>/images/icons/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo $tpath; ?>/images/icons/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo $tpath; ?>/images/icons/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="<?php echo $tpath; ?>/images/icons/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="<?php echo $tpath; ?>/images/icons/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="<?php echo $tpath; ?>/images/icons/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="<?php echo $tpath; ?>/images/icons/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="<?php echo $tpath; ?>/images/icons/android-icon-192x192.png">
+	<link rel="apple-touch-icon" sizes="57x57" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/apple-icon-180x180.png">
 
-	<link rel="icon" type="image/png" sizes="16x16" href="<?php echo $tpath; ?>/images/icons/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="<?php echo $tpath; ?>/images/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon-96x96.png">
 
-	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo $tpath; ?>/images/icons/favicon-96x96.png">
-
-
-	<link rel="manifest" href="<?php echo $tpath; ?>/images/icons/manifest.json">
+	<link rel="manifest" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/manifest.json">
 	
 	<meta name="msapplication-TileColor" content="<?php echo $templateparams->get('buf_mscolor','#57616d'); ?>">
 	<meta name="msapplication-TileImage" content="<?php echo $tpath; ?>/images/icons/ms-icon-144x144.png">
 	<meta name="theme-color" content="<?php echo $templateparams->get('buf_mscolor','#57616d'); ?>">
-	<meta name="msapplication-config" content="<?php echo $tpath; ?>/images/icons/browserconfig.xml" />
+	<meta name="msapplication-config" content="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/browserconfig.xml" />
+
+	<?php
+		if(file_exists(JPATH_ROOT . '/templates/buf/layouts/'.$buf_layout.'/icons/svgfavicon.svg')) {
+			echo '<link rel="mask-icon" href="'.$tpath . '/layouts/'.$buf_layout.'/icons/svgfavicon.svg" color="'.$templateparams->get('buf_mscolor','#57616d').'">';
+		}
+	?>
+
 
 	<meta http-equiv="Cache-control" content="public">
 
@@ -64,9 +71,6 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
   
 <body class="<?php echo $browserType.' '.(($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')).' '.$active->alias.' '.$pageclass.' '.$docalias.' '.$body_mobile; ?> buf_offcanvas_hidden" role="document">
 
-
-      
-    <jdoc:include type="modules" name="smart"/>
 
    
 	<!-- OFFCANVAS BUTTON-->

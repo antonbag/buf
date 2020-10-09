@@ -64,7 +64,7 @@ div.buf_topbar_logo{
 
     position:fixed;
     outline: none;
-    z-index: 9999999;
+    z-index: 5000;
 
     
     @extend %buf_oc_button_editor;
@@ -178,7 +178,7 @@ html.buff_canvas_on{
     display: block;
     //style 
     background: $buf_offcanvas_bg_color;
-    z-index: 999999;
+    z-index: 4999;
 
 	&.buff_off_animate{
 		transition:transform 0ms;

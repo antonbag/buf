@@ -240,10 +240,10 @@ jQuery(function($){
 
 
             //FAVICONS ICONS
-            var padre = $('#imageModal_jform_params_buf_favicon' ).parent();
+/*             var padre = $('#imageModal_jform_params_buf_favicon' ).parent();
             var hijo = $('.buffavicons_thumbs_wrapper' );
             hijo.appendTo( padre);
-
+ */
 
             //minilogo bar
             $('.buf_minilogo_bar').prependTo($('.form-inline-header'));
@@ -1028,7 +1028,7 @@ jQuery(function($){
                             setTimeout(function(){ 
                                 var d = new Date();
                                 //$( '.buffavicons_thumbs_wrapper' ).html('<div class="buffavicons_thumbs"><img src="../templates/buf/images/icons/favicon-96x96.png?'+d.getTime()+'" title="96x96"/></div><div class="buffavicons_thumbs"><img src="../templates/buf/images/icons/favicon-16x16.png?'+d.getTime()+'"/></div>');
-                                $( '.buffavicons_thumbs_wrapper' ).html('<div class="buffavicons_thumbs"><img src="../templates/buf/images/icons/favicon-96x96.png?'+d.getTime()+'" title="96x96"/></div><div class="buffavicons_thumbs"><img src="../templates/buf/images/icons/apple-icon-57x57.png?'+d.getTime()+'" title="57x57"/></div><div class="buffavicons_thumbs"><img src="../templates/buf/images/icons/favicon-16x16.png?'+d.getTime()+'" title="16x16"/></div>');
+                                $( '.buffavicons_thumbs_wrapper' ).html('<div class="buffavicons_thumbs buffavicons_thumbs_svg"><div class="buffavicons_thumbs_svg_img"><img src="../templates/buf/images/icons/svgfavicon.svg" width="64"/></div></div><div class="buffavicons_thumbs"><img src="../templates/buf/layouts/'+buf_layout+'/icons/favicon-96x96.png?'+d.getTime()+'" title="96x96"/></div><div class="buffavicons_thumbs"><img src="../templates/buf/layouts/'+buf_layout+'/icons/apple-icon-57x57.png?'+d.getTime()+'" title="57x57"/></div><div class="buffavicons_thumbs"><img src="../templates/buf/layouts/'+buf_layout+'/icons/favicon-16x16.png?'+d.getTime()+'" title="16x16"/></div>');
 
                             }, 1000);
 
@@ -1047,6 +1047,58 @@ jQuery(function($){
         }
 
 
+
+
+		/////////////////
+		/////////////////
+		/////////////////
+		//GET ROUTE FROM FILE /////////
+		/////////////////
+		function getRouteAjax(type){
+		/*
+			var data =  new FormData();
+			if(type == 'kml') data.append( 'uploadkml', jQuery('#jform_com_fields__".$field->name."__jt_cf_routemap_uploadkml')[0].files[0]);
+			if(type == 'gpx') data.append( 'uploadgpx', jQuery('#jform_com_fields__".$field->name."__jt_cf_routemap_uploadgpx')[0].files[0]);
+
+			var id = ".$id.";
+
+			
+
+			data.append( 'token', '".JSession::getFormToken()."');
+		
+			var getUrl = 'index.php?option=com_ajax&group=fields&plugin=jt_cf_routemap&format=json&task=parsefile&id='+id+'&raw=true&filetype='+type;
+		
+			var jqxhr = jQuery.ajax({
+		
+				type: 'POST',
+				url: getUrl,
+				cache: false,
+				dataType: 'json',
+				data:data,
+				processData: false,
+				contentType: false,
+				jsonp: false
+		
+			}).done(function(e) {
+				//mapbutton();
+				
+				//id file in input field
+				jQuery('#jform_com_fields__".$field->name."__routedata_original').val(e.data);
+
+				var s_level = jQuery('#jform_com_fields__".$field->name."__jtroute_simplified').val();
+
+				getSimplifiedAjax(s_level);
+				//puntos_edited_to_map(e.data);
+		
+		  })
+		  .fail(function(e) {
+		
+			console.log('ERROR');
+			console.log(e);
+		
+		  });
+		*/
+		}
 
 
 /***********************************************************************************/
@@ -1102,4 +1154,7 @@ jQuery(function($){
     });
 
 });
+
+
+
 

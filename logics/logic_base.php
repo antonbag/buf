@@ -74,6 +74,7 @@ $edit = ($jinput->getValue('layout') == 'edit') ? true : false;
 $edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
 
 
+
 //PATHS
 ///////////////////////
 $tpath = $this->baseurl.'/templates/'.$this->template;

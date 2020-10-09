@@ -1,31 +1,6 @@
-<?php defined( '_JEXEC' ) or die; 
+
+<?Php
 use Joomla\CMS\Factory;
-include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
-// variables
-$doc = JFactory::getDocument(); 
-$tpath = $this->baseurl.'/templates/'.$this->template;
-
-// generator tag
-$this->setGenerator(null);
-
-
-
-
-//LAYOUT COMPONENT
-if(file_exists($tpath_abs.'/layouts/'.$buf_layout.'/component.php')){
-    //var_dump($tpath_abs.'/layouts/'.$buf_layout);
-    
-    include_once JPATH_THEMES.'/'.$this->template.'/layouts/'.$buf_layout.'/component.php';
-    
-    return;
-}
-
-
-
- 
-
-
-
 //load sheets and scripts
 $doc->addStyleSheet($tpath.'/css/print.css?v=1'); 
 

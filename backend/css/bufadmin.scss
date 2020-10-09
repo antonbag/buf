@@ -14,18 +14,21 @@ div.buf_template_data{
 
 //BACKEND STYLE
 #content{
-	.btn{
-		    background-color: #fafafa;
-		    transition:box-shadow 300ms;
-		        padding: 2px 8px;
-		    &:not(.active){
-			    &:hover{
-			    	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.18);
-			    	background-color:#fff;
-			    }
-		    }
+	
 
+	label.btn{
+		//background-color: #fafafa;
+		transition:box-shadow 300ms;
+		padding: 2px 8px;
+		&:not(.active){
+			&:hover{
+				box-shadow:0px 0px 5px rgba(0, 0, 0, 0.18);
+				background-color:#fff;
+			}
+		}
 	}
+
+
 	.btn-danger{
 		border-color:#bd362f;
 		background-color: rgba(189, 54, 47, 0.25);
@@ -37,6 +40,11 @@ div.buf_template_data{
 		background-color: rgba(70, 165, 70, 0.25);
 		color:#2f6f2f;
 		//font-weight: bold;
+	}
+	.btn_svg_destroy{
+		margin:0 0 10px 10px;
+		padding: 2px 8px;
+
 	}
 }
 
