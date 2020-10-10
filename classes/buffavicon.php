@@ -8,6 +8,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\Folder;
 
 class BUFfavicon
 {
@@ -22,6 +23,11 @@ class BUFfavicon
     $image_path =  JPATH_SITE.'/'.$image;
     $buf_layout = $templateparams->get('buf_layout','default');
     $fav_path = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout.'/icons/';
+
+    if(!Folder::exists($fav_path)){
+      Folder::create($fav_path);
+    }
+
     $uri = JUri::base();
 
     $error = '';
@@ -229,7 +235,9 @@ class BUFfavicon
       $ico_lib = new PHP_ICO( $source, $sizes);
       $ico_lib->save_ico( $destination );
       //$ico_lib->save_ico( $destination_icons );
-
+      //base
+      $ico_lib->save_ico(JPATH_SITE.'/templates/buf/');
+     
       return true ;
     }
 
