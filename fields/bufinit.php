@@ -91,7 +91,7 @@ class JFormFieldBufinit extends JFormField
 
 
         //check LIBS
-        if(is_dir( JPATH_LIBRARIES.'/jtfw4')){
+        if(is_dir( JPATH_LIBRARIES.'/jtfw')){
             $template_init .='<div><p></p><ul class="breadcrumb">';
             $scan = scandir(JPATH_LIBRARIES.'/jtfw');
             foreach($scan as $file) {
