@@ -1,5 +1,14 @@
 <?php defined( '_JEXEC' ) or die; 
 
+//2.1.0
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+use Joomla\Application\Web\WebClient;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\Registry\Registry;
+
 ///////////////////////
 //INIT DEBUG
 ///////////////////////
@@ -22,7 +31,7 @@ if(defined('PHP_VERSION')) {
 }
 
 // An old PHP versIon is installed.
-if(!version_compare($version, '5.6.0', '>=')){ echo JText::_('You are using an old PHP version. Please upgrade to a newer version');}
+if(!version_compare($version, '5.6.0', '>=')){ echo Text::_('You are using an old PHP version. Please upgrade to a newer version');}
 
 
 
@@ -36,10 +45,7 @@ if($devel_mode){
 }
 
 
-//2.1.0
-use Joomla\CMS\Factory;
-use Joomla\CMS\Environment\Browser;
-use Joomla\Application\Web\WebClient;
+
 
 $app  = Factory::getApplication();
 $doc = Factory::getDocument();
@@ -51,18 +57,20 @@ $jinput = $app->input;
 //APP PARAMS
 ///////////////////////
 $params = $app->getParams();
+
 $templateparams	= $app->getTemplate(true)->params;
 
 $pageclass = $params->get('pageclass_sfx','');
 
 $menu = $app->getMenu();
-$active = (object) array('alias' => 'noactivefound');
 
+$active = (object) array('alias' => 'noactivefound');
 if($app->getMenu()->getActive()){
 	$active = $app->getMenu()->getActive();
 }
+$menutype = $menu->getActive()->menutype;
 
-$docalias = JFilterOutput::stringURLSafe($doc->title);
+$docalias = OutputFilter::stringUrlSafe($doc->title);
 
 
 //LAYOUTS
@@ -83,6 +91,7 @@ $layoutpath = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout;
 $cachepath = JPATH_CACHE.'/buf_'.$buf_layout.'/';
 $cache_tpath = $this->baseurl.'/cache/buf_'.$buf_layout.'/';
 $libspath = JPATH_SITE.'/templates/buf/libs';
+$jtfw_libspath = JPATH_LIBRARIES.'/jtfw';
 
 
 
@@ -109,26 +118,40 @@ $detection = $templateparams->get('buf_offcanvas_detection', 'media');
 
 if($detection == 'device' || $detection == 'mix'){
 
+	$detected_file = false;
+
 	if(!class_exists('Mobile_Detect')){
-		require_once dirname(__FILE__) . '/../libs/mobiledetectlib/Mobile_Detect.php';
+		if(file_exists(JPATH_LIBRARIES.'/jtfw/mobiledetectlib/Mobile_Detect.php')){
+			require_once JPATH_LIBRARIES.'/jtfw/mobiledetectlib/Mobile_Detect.php';
+			$detected_file = true;
+		}
+	}else{
+		$detected_file = true;
 	}
 
-	$tablet = $templateparams->get('buf_tablet_as_mobile', 1);
-	$detect = new Mobile_Detect;
-	if ( $detect->isMobile() ) {
-		if($detect->isTablet()){
-			if($tablet == 0){
-				$jmobile = false;
+
+
+	if($detected_file){
+		$tablet = $templateparams->get('buf_tablet_as_mobile', 1);
+		$detect = new Mobile_Detect;
+		if ( $detect->isMobile() ) {
+			if($detect->isTablet()){ 
+				if($tablet == 0){
+					$jmobile = false;
+				}else{
+					$jmobile = true;
+				}
 			}else{
 				$jmobile = true;
 			}
 		}else{
-			$jmobile = true;
+			$jmobile = false;
 		}
+		$ismobile = $jmobile;
 	}else{
-		$jmobile = false;
+		$app->enqueueMessage('Class mobile_detect not found. Possible solution: install JT framework libraries.', 'warning');
 	}
-	$ismobile = $jmobile;
+
 }
 
 
@@ -137,7 +160,7 @@ $body_mobile = ($ismobile ? 'device_mobile':'device_not_mobile');
 $body_mobile .= ' detecion_mode_'.$detection;
 
 $buf_debug_param = $templateparams->get('buf_debug', 0);
-$buf_anal_url = JURI::base().'templates/buf/js/analytics/buf_anal.js';
+$buf_anal_url = Uri::base().'templates/buf/js/analytics/buf_anal.js';
 
 
 
@@ -168,7 +191,8 @@ if($templateparams->get('buf_offcanvas',0) == 1){
 
 //TOPBAR
 ///////////////////////
-$buf_topbar = new JRegistry; 
+$buf_topbar = new Registry; 
+
 $buf_topbar->loadString(json_encode($templateparams->get('buf_topbar'))); 
 
 $buf_topbar_on = $buf_topbar->get('buf_topbar_on',0);
@@ -217,7 +241,7 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 
 //TOPBAR IN OFFCANVAS
 ///////////////////////
-$buf_topbar_oc = new JRegistry; 
+$buf_topbar_oc = new Registry; 
 $buf_topbar_oc->loadString(json_encode($templateparams->get('buf_topbar_oc'))); 
 
 $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on',0);
@@ -259,7 +283,7 @@ if($buf_topbar_oc->get('buf_topbar_image_show','0')){
 //OFFCANVAS BUTTON
 ///////////////////////
 
-$oc_button = new JRegistry; 
+$oc_button = new Registry; 
 $oc_button->loadString(json_encode($templateparams->get('buf_oc_button'))); 
 
 $buf_oc_button_style = $oc_button->get('buf_oc_button_style','3dx');
@@ -317,7 +341,7 @@ $buf_bootstrap = $templateparams->get('buf_bootstrap',2);
 
 
 //BS LEFT + RIGHT CALCULATIONS
-$bs_grid = new JRegistry; 
+$bs_grid = new Registry; 
 $bs_grid->loadString(json_encode($templateparams->get('buf_bs_grid'))); 
 
 $bs_left_pos = $bs_grid->get('buf_bs_left_pos','buf_left');

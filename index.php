@@ -69,7 +69,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 </head>
 
   
-<body class="<?php echo $browserType.' '.(($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')).' '.$active->alias.' '.$pageclass.' '.$docalias.' '.$body_mobile; ?> buf_offcanvas_hidden" role="document">
+<body class="<?php echo $browserType.' '.(($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')).' '.$active->alias.' '.$pageclass.' '.$docalias.' '.$body_mobile.' menutype_'.$menutype; ?> buf_offcanvas_hidden" role="document">
 
 
    

@@ -384,7 +384,7 @@ class BUFsass
       //require_once self::$lesspath.'/scssphpAnton/loadphpscss.php';
 
       //new 2.2.0
-      require_once JPATH_SITE.'/templates/buf/libs/scssphp/scss.inc.php';
+      require_once JPATH_LIBRARIES.'/jtfw/scssphp/scss.inc.php';
       require_once JPATH_SITE.'/templates/buf/classes/loadphpscss.php';
 
 

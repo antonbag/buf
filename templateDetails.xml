@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="template" client="site" method="upgrade">
-	
-	<name>BUF</name>
-	<creationDate>10-oct-2020</creationDate>
+	<name>JT | BUF</name>
+	<creationDate>26-may-2021</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.2.44</version>
+	<version>2.2.49</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data">
-		<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
-		<small class="buf_version badge badge-success">2.2.44</small>
-		<small>Bootstrap 4.4.1</small> | 
-		<small>FA5 5.13.0</small> | 
-		<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
+            <h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
+            <small class="buf_version badge badge-success">2.2.49</small>
+            <small>Bootstrap 4.5.1</small> | 
+            <small>FA5 5.13.0</small> | 
+            <small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
 		</div>
 	]]></description>
 	<files>
@@ -1082,6 +1081,17 @@
 					class="btn-group" 
 					label="TPL_BUF_ANALYTICS_CODE" 
 					description="TPL_BUF_ANALYTICS_CODE_DESC"/>
+                
+                <field name="buf_analytics_storage" 
+					type="radio" 
+					default="0" 
+					class="btn-group" 
+					label="TPL_BUF_ANALYTICS_STORAGE" 
+					description="TPL_BUF_ANALYTICS_STORAGE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+                
 
 			</fieldset>
 		</fields>

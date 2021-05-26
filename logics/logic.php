@@ -1,5 +1,7 @@
 <?php defined( '_JEXEC' ) or die;
 
+
+
 $buf_debug += addDebug('COMPONENTS | loaded', 'joomla fab', 'INIT logic stuff', $startmicro, 'table-success', 'logic.php');
 
 // variables (defined in login_base)
@@ -27,14 +29,17 @@ $doc->setMetadata('x-ua-compatible','IE=edge,chrome=1');
 $buf_jquery = $templateparams->get('buf_jquery',2);
 if($buf_jquery==2 || $edit){
 	JHtml::_('jquery.framework');
+	
 }elseif($buf_jquery==1){
 
 	$defer = check_defer_v4($templateparams->get('buf_jquery_defer','0'));
 
 	//v4
-	$doc->addScript($tpath.'/js/jquery/jquery-3.4.1.min.js',array(), $defer);
+	//$doc->addScript($tpath.'/js/jquery/jquery-3.6.0.min.js',array(), $defer);
+	//load from JTFW
+	$doc->addScript($jtfw_libspath.'/jquery/jquery.min.js',array(), $defer);
 
-	$buf_debug += addDebug('JQUERY custom', 'code', '<strong>jquery-3.4.1.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+	$buf_debug += addDebug('JQUERY custom', 'code', '<strong>jquery.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 }
 
 

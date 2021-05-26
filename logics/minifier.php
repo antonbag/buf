@@ -1,4 +1,5 @@
 <?php
+
 // Based on <https://github.com/mecha-cms/extend.minify>
 define('MINIFY_STRING', '"(?:[^"\\\]|\\\.)*"|\'(?:[^\'\\\]|\\\.)*\'');
 define('MINIFY_COMMENT_CSS', '/\*[\s\S]*?\*/');

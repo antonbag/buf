@@ -11,9 +11,9 @@ defined ('_JEXEC') or die ('resticted aceess');
 
 jimport('joomla.form.formfield');
 
-class JFormFieldBufinit extends JFormField
+class JFormFieldBuflibexists extends JFormField
 {
-    protected $type = 'bufinit';
+    protected $type = 'buflibexists';
 
     protected function getInput() {
 
@@ -71,7 +71,6 @@ class JFormFieldBufinit extends JFormField
 
         //CHECK FILES
 
-        //check bufajax
         if(is_dir( JPATH_SITE.'/plugins/ajax/bufajax')){
            
           //plugin exists
@@ -89,40 +88,13 @@ class JFormFieldBufinit extends JFormField
           $template_init .= '<a href="https://jtotal.org/joomla/templates/buf-template" target="_blank" class="btn btn-default">Download buf ajax plugin</a> </span>';
         }
 
-
-        //check LIBS
-        if(is_dir( JPATH_LIBRARIES.'/jtfw4')){
-            $template_init .='<div><p></p><ul class="breadcrumb">';
-            $scan = scandir(JPATH_LIBRARIES.'/jtfw');
-            foreach($scan as $file) {
-               if (is_dir(JPATH_LIBRARIES.'/jtfw/'.$file) && $file != '.' && $file != '..') {
-                  $template_init .= '<li><span class="label">'.$file.'</span><span class="divider">  </span></li>';
-                  //$template_init .= '<span class="label"> '.$file.' </span><span class="divider">/</span>';
-               }
-            }
-
-            $template_init .='</ul></div>';
-        
-        }else{
-          $template_init .='<div><p></p>';
-          $template_init .= '<span class="alert alert-error buf_ajax_not_installed"><i class="fas fa-exclamation-triangle"></i> Libraries not installed. ';
-          //$template_init .= '<span class="badge badge-danger">PLUGIN NOT INSTALLED</span>';
-          $template_init .= '<a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download JT libraries</a> </span>';
-
-          $template_init .='</div>';
-        }
-
-
-
-
         //check plugins   
         return $template_init;
     }
 
     public function getLabel(){
 
-      $content = '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf ajax plugin:<p>';
-      $content .= '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> JT Libraries:<p>';
+      $content = '<img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf ajax plugin:';
 
       return $content;
     }

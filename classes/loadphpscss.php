@@ -16,7 +16,6 @@ use ScssPhp\ScssPhp\Compiler;
 try {
     $scss = new Compiler();
  
-
 } catch (\Exception $e) {
     echo '';
     syslog(LOG_ERR, 'scssphp: Unable to compile content');

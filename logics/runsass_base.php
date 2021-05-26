@@ -1,5 +1,7 @@
 <?php defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Uri\Uri;
+
 // begin function compress
 function compress($buffer) 
 {
@@ -22,7 +24,7 @@ if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 	if($buf_edit_base==1) $buf_debug += addDebug('BASE css | check', 'cubes', 'EDIT BASE MODE', $startmicro, 'table-default', 'runsass_base.php');
 
 	
-	$uri = JUri::base();
+	$uri = Uri::base();
 	$lesspath = JPATH_BASE.'/templates/'.$this->template. '/css';
 
 	$sass_files = array();
@@ -47,7 +49,7 @@ if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 	//require_once $lesspath.'/scssphpAnton/loadphpscss_base.php';
 
 	//new 2.2.0
-	require_once JPATH_BASE.'/templates/'.$this->template.'/libs/scssphp/scss.inc.php';
+	require_once JPATH_LIBRARIES.'/jtfw/scssphp/scss.inc.php';
 	require_once JPATH_BASE.'/templates/'.$this->template.'/classes/loadphpscss_base.php';
 
 
