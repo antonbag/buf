@@ -1,5 +1,6 @@
 <?php defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Uri\Uri;
 
 
 $buf_debug += addDebug('COMPONENTS | loaded', 'joomla fab', 'INIT logic stuff', $startmicro, 'table-success', 'logic.php');
@@ -37,7 +38,7 @@ if($buf_jquery==2 || $edit){
 	//v4
 	//$doc->addScript($tpath.'/js/jquery/jquery-3.6.0.min.js',array(), $defer);
 	//load from JTFW
-	$doc->addScript($jtfw_libspath.'/jquery/jquery.min.js',array(), $defer);
+	$doc->addScript(Uri::base().'libraries/jtlibs/jquery/jquery.min.js',array(), $defer);
 
 	$buf_debug += addDebug('JQUERY custom', 'code', '<strong>jquery.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 }
@@ -535,7 +536,7 @@ if($buf_debug_param){
 /***************************************/
 
 if($templateparams->get('runless', 1) != 2){
-	$uri = JUri::getInstance(); 
+	$uri = Uri::getInstance(); 
 	$uri_base = $uri->toString().'&edit_base=true';
 
 	echo '<div class="buf_dev_mode">
