@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>26-may-2021</creationDate>
+	<creationDate>31-may-2021</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.2.51</version>
+	<version>2.2.52</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data">
             <h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
-            <small class="buf_version badge badge-success">2.2.51</small>
+            <small class="buf_version badge badge-success">2.2.52</small>
             <small>Bootstrap 4.5.1</small> | 
             <small>FA5 5.13.0</small> | 
             <small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>

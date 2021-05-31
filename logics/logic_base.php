@@ -91,7 +91,7 @@ $layoutpath = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout;
 $cachepath = JPATH_CACHE.'/buf_'.$buf_layout.'/';
 $cache_tpath = $this->baseurl.'/cache/buf_'.$buf_layout.'/';
 $libspath = JPATH_SITE.'/templates/buf/libs';
-$jtfw_libspath = JPATH_LIBRARIES.'/jtfw';
+$jtfw_libspath = JPATH_LIBRARIES.'/jtlibs';
 
 
 
@@ -121,8 +121,8 @@ if($detection == 'device' || $detection == 'mix'){
 	$detected_file = false;
 
 	if(!class_exists('Mobile_Detect')){
-		if(file_exists(JPATH_LIBRARIES.'/jtfw/mobiledetectlib/Mobile_Detect.php')){
-			require_once JPATH_LIBRARIES.'/jtfw/mobiledetectlib/Mobile_Detect.php';
+		if(file_exists(JPATH_LIBRARIES.'/jtlibs/mobiledetectlib/Mobile_Detect.php')){
+			require_once JPATH_LIBRARIES.'/jtlibs/mobiledetectlib/Mobile_Detect.php';
 			$detected_file = true;
 		}
 	}else{

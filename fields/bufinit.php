@@ -91,11 +91,11 @@ class JFormFieldBufinit extends JFormField
 
 
         //check LIBS
-        if(is_dir( JPATH_LIBRARIES.'/jtfw')){
+        if(is_dir( JPATH_LIBRARIES.'/jtlibs')){
             $template_init .='<div><p></p><ul class="breadcrumb">';
-            $scan = scandir(JPATH_LIBRARIES.'/jtfw');
+            $scan = scandir(JPATH_LIBRARIES.'/jtlibs');
             foreach($scan as $file) {
-               if (is_dir(JPATH_LIBRARIES.'/jtfw/'.$file) && $file != '.' && $file != '..') {
+               if (is_dir(JPATH_LIBRARIES.'/jtlibs/'.$file) && $file != '.' && $file != '..') {
                   $template_init .= '<li><span class="label">'.$file.'</span><span class="divider">  </span></li>';
                   //$template_init .= '<span class="label"> '.$file.' </span><span class="divider">/</span>';
                }

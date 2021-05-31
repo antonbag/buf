@@ -49,7 +49,7 @@ if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 	//require_once $lesspath.'/scssphpAnton/loadphpscss_base.php';
 
 	//new 2.2.0
-	require_once JPATH_LIBRARIES.'/jtfw/scssphp/scss.inc.php';
+	require_once JPATH_LIBRARIES.'/jtlibs/scssphp/scss.inc.php';
 	require_once JPATH_BASE.'/templates/'.$this->template.'/classes/loadphpscss_base.php';
 
 
