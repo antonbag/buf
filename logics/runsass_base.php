@@ -1,6 +1,8 @@
 <?php defined( '_JEXEC' ) or die;
 
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 // begin function compress
 function compress($buffer) 
@@ -12,6 +14,18 @@ function compress($buffer)
 }
 
 
+///////////////////
+//  CHECK FW //
+///////////////////
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
+{
+	require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
+}else{
+	$app = Factory::getApplication();
+	$app->enqueueMessage(Text::_('JT_TOTALMENU_ERROR'), 'error');
+	$app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+	return;
+}
 
 
 if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
@@ -47,10 +61,12 @@ if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 	//new
 	//require_once JPATH_BASE.'/templates/'.$this->template.'/classes/autoload.php';
 	//require_once $lesspath.'/scssphpAnton/loadphpscss_base.php';
+	
 
 	//new 2.2.0
-	require_once JPATH_LIBRARIES.'/jtlibs/scssphp/scss.inc.php';
+	//require_once JPATH_LIBRARIES.'/jtlibs/scssphp/scss.inc.php';
 	require_once JPATH_BASE.'/templates/'.$this->template.'/classes/loadphpscss_base.php';
+
 
 
 

@@ -1,23 +1,18 @@
 <?php
-/**
- * SCSSPHP
- *
- * @copyright 2012-2020 Leaf Corcoran
- *
- * @license http://opensource.org/licenses/MIT MIT
- *
- * @link http://leafo.github.io/scssphp
- */
 
-//namespace Leafo\ScssPhp;
-use ScssPhp\ScssPhp\Compiler;
 
+use JTFramework\JTscssphp;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 try {
-    $scss = new Compiler();
-    
-    $scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');
+
+    $scss = JTscssphp::getScssphp();
+    if(!$scss) return;
+
+
     $scss->setImportPaths($tpath_abs.'/css');
+
 
     //COMMON BASE   
     $base_common_imports = '';
@@ -28,22 +23,19 @@ try {
     $base_common = $scss->compile($base_common_imports);
 
 
-    
     //LAYOUT BASE    
     $scss->setImportPaths($layoutpath.'/scss');
-     
+
     $base_imports = '';
    
     //$bs4_imports = '@import "'.$layoutpath.'/scss/base.scss";';
     $base_imports .= '@import "base.scss";';
     $buf_debug += addDebug('BASE SASS | ', 'cubes', $layoutpath .'/scss/base.scss', $startmicro, 'table-default', 'loadphpcss_base.php');
    
+  
 
-    
-
-
-    //$scss->setFormatter('scss_formatter_compressed');
     $cssOut = $scss->compile($base_imports);
+
 
     //Check cache directory is created
     if (!file_exists($cachepath)) {

@@ -8,6 +8,10 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
+
 
 class BUFsass
 {
@@ -52,13 +56,13 @@ class BUFsass
   
   public static function runsass($templateid='', $params='', $template_name='', $startmicro='', $bs_or_fa=''){
 
-    $uri = JUri::base();
+    $uri = Uri::base();
    
     self::$img_path = $uri.'templates/buf/images/';
 
     self::$startmicro = $startmicro;
 
-    $session = JFactory::getSession();
+    $session = Factory::getSession();
     
     //TEMPLATE PARAMS IF AJAX
     if($templateid){
@@ -91,7 +95,7 @@ class BUFsass
 
     //PARAMS
     $sass_editor = $templateparams->get('create_editor',0);
-    $sass_compresion = $templateparams->get('buf_sass_compression', 'Nested');
+    $sass_compresion = $templateparams->get('buf_sass_compression', 'EXPANDED');
 
     $buf_fa = $templateparams->get('buf_fa', 1);
     $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
@@ -392,9 +396,16 @@ class BUFsass
       //$scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');
       /*$scss->setImportPaths(self::$lesspath.'/bootstrap4/');*/
 
-      $sass_comp_path = 'ScssPhp\ScssPhp\Formatter\\'.$sass_compresion;
-
-      $scss->setFormatter($sass_comp_path);
+      //deprecated
+      //$sass_comp_path = 'ScssPhp\ScssPhp\Formatter\\'.$sass_compresion;
+     //$scss->setFormatter($sass_comp_path);
+     
+      //2.2.60
+      if($sass_compresion == 'EXPANDED'){
+        $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
+      }else{
+        $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
+      }
 
 
 
