@@ -1,8 +1,8 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2017 dibuxo
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 
@@ -47,7 +47,8 @@ class JFormFieldBufinit extends JFormField
         if($jversion <= "3"){
           /******* JOOMLA 3 ******/
           $doc->addStyleSheet($buf_path.'/css/bufadmin.css');
-          $doc->addScript('https://use.fontawesome.com/releases/v5.7.1/js/all.js', array(), array("defer"=>"defer","integrity"=>'sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7', "crossorigin"=>'anonymous'));
+          //$doc->addScript('https://use.fontawesome.com/releases/v5.7.1/js/all.js', array(), array("defer"=>"defer","integrity"=>'sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7', "crossorigin"=>'anonymous'));
+          $doc->addScript('https://use.fontawesome.com/releases/v5.15.3/js/all.js', array(), array("defer"=>"defer","crossorigin"=>'anonymous'));
           $doc->addScriptDeclaration("var jversion = '3';");
 
         }else{

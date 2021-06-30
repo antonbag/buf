@@ -1111,38 +1111,66 @@ jQuery(function($){
         /**************************************/
         /**************************************/
         function  buf_check_bs_selector_click(){
-            $('#jform_params_buf_bs4_selector_chzn ul.chzn-results').click(function(){
-                buf_check_bs_selector($('#jform_params_buf_bs4_selector_chzn a.chzn-single span').html());
-                
+            $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
+                buf_check_bs_selector($('#jform_params__buf_bs_v4__buf_bs_selector_chzn a.chzn-single span').html(),4);
+            });
+            $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
+                buf_check_bs_selector($('#jform_params__buf_bs_v5__buf_bs_selector_chzn a.chzn-single span').html(),5);
             });
         }
-        function  buf_check_bs_selector(selected){
-            console.log(selected);
-            var listado = $('#jform_params_buf_bs4files');
-            
-            var minimum = ['functions','variables','mixins', 'reboot', 'grid'];
-            var recommended = ['functions','variables','mixins', 'reboot', 'images', 'grid', 'tables', 'forms', 'buttons', 'transitions', 'dropdown', 'button-group', 'input-group', 'nav', 'navbar', 'card', 'pagination', 'media', 'list-group', 'close', 'utilities'];
-           
-            if(selected=='None'){
 
-                 $('#jform_params_buf_bs4files option').removeAttr('selected').trigger("liszt:updated");
+
+        function  buf_check_bs_selector(selected, version){
+            console.log(selected);
+            var files = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files'):  $('#jform_params__buf_bs_v4__buf_bs_files');
+            var files_option = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files option'):  $('#jform_params__buf_bs_v4__buf_bs_files option');
+            
+            if(version == 4){
+                var minimum = ['functions','variables','mixins', 'reboot', 'grid'];
+                var recommended = ['functions','variables','mixins', 'reboot', 'images', 'grid', 'tables', 'forms', 'buttons', 'transitions', 'dropdown', 'button-group', 'input-group', 'nav', 'navbar', 'card', 'pagination', 'media', 'list-group', 'close', 'utilities'];
+            }
+            
+            if(version == 5){
+                var minimum = ['functions','variables','mixins', 'utilities', 'grid'];
+                var recommended = [
+                    'functions','variables','mixins', 'utilities', 'grid', 
+                    'root', 'reboot', 'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
+                    'dropdown', 'button-group', 'nav', 'navbar', 
+                    'card', 'pagination', 'media', 'list-group', 'close'];
+            }
+  
+
+
+            if(selected=='None'){
+               
+                files_option.removeAttr('selected').trigger("liszt:updated");
 
             }else if(selected == 'Minimum'){
-                $('#jform_params_buf_bs4files option').removeAttr('selected').trigger("liszt:updated");
+                
+                files_option.removeAttr('selected').trigger("liszt:updated");
                 $.each( minimum, function( key, value ) {
-                    $('#jform_params_buf_bs4files option[value="'+value+'"]').attr('selected', 'selected');
+                    if(version == 5) $('#jform_params__buf_bs_v5__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
+                    if(version == 4) $('#jform_params__buf_bs_v4__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
                 });
-                $('#jform_params_buf_bs4files').trigger("liszt:updated");
+                files.trigger("liszt:updated");
+
 
             }else if(selected == 'Recommended'){
-                $('#jform_params_buf_bs4files option').removeAttr('selected').trigger("liszt:updated");
+                
+                files_option.removeAttr('selected').trigger("liszt:updated");
                 $.each( recommended, function( key, value ) {
-                    $('#jform_params_buf_bs4files option[value="'+value+'"]').attr('selected', 'selected').trigger("liszt:updated");
+                    if(version == 5) $('#jform_params__buf_bs_v5__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
+                    if(version == 4) $('#jform_params__buf_bs_v4__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
                 });
-                $('#jform_params_buf_bs4files').trigger("liszt:updated");
+                files.trigger("liszt:updated");
+ 
             }else if(selected == 'All'){
+               
+               files_option.attr('selected', 'selected').trigger("liszt:updated");
 
-                $('#jform_params_buf_bs4files option').attr('selected', 'selected').trigger("liszt:updated");
+                
+            }else if(selected == 'Custom'){
+                files.removeAttr('disabled', 'disabled').trigger("liszt:updated");
             }
         }
 

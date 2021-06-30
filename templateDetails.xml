@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>29-jun-2021</creationDate>
+	<creationDate>30-jun-2021</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.2.87</version>
+	<version>2.2.88</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data">
             <h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
-            <small class="buf_version badge badge-success">2.2.87</small>
+            <small class="buf_version badge badge-success">2.2.88</small>
             <small>Bootstrap 5.0.2</small> | 
             <small>FA5 5.13.0</small> | 
             <small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
@@ -458,116 +458,49 @@
 
 
 
-			<fieldset name="bs4custom">
-
-				<field name="buf_bs_exists" type="bufbsexists" file="bs"/>
+			<fieldset name="bootstrapCustom">
 
 				<field name="buf_bs_on" 
 					type="radio" 
-					default="1" 
+					default="4" 
 					class="switcher switcher-success btn-group" 
 					label="TPL_BUF_BS_ON">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+					<option value="0">
+					 JNO </option>
+					<option value="4"><![CDATA[ 
+							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap4_logo32.png" style="height:16px;"/>
+							<span> Boostrap 4</span>
+					]]></option>
+					<option value="5"><![CDATA[ 
+							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap5_logo32.png" style="height:16px;"/>
+							<span> Boostrap 5</span>
+					]]></option>
 				</field>
 
-				<field name="buf_bootstrap" 
-					type="radio" 
-					default="1" 
-					class="btn-group" 
-					label="TPL_BUF_LOAD_BOOSTRAP" 
-					description="TPL_BUF_LOAD_BOOSTRAP_DESC">
-					<option value="0">None</option>
-					<option value="1">Custom</option>
-					<option value="2">Joomla</option>
-				</field>
+				<field name="buf_bs_exists" type="bufbsexists" file="bs"/>
 
-				<field name="buf_bs4_selector"
-					type="list" 
-					default="2" 
-					class="btn-group" 
-					label="TPL_BUF_BS_SELECTOR" 
-					description="TPL_BUF_BS_SELECTOR_DESC">
-					<option value="0">None</option>
-					<option value="1">TPL_BUF_BS_MINIMUM</option>
-					<option value="2">TPL_BUF_BS_RECOMMENDED</option>
-					<option value="3">TPL_BUF_BS_ALL</option>
-					<option value="4">TPL_BUF_BS_CUSTOM</option>
-				</field>
 
-				<field name="buf_bs4files" 
-					type="groupedlist" 
-					default='["functions","variables","mixins","grid","media","utilities","reboot","images","tables","buttons","button-group","card","dropdown","forms","input-group","list-group","nav","navbar","pagination","transitions","close","breadcrumb"]'
-					multiple="true" 
-					label="TPL_BUF_BOOTSTRAP4_FILES" 
-					description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
-				  
-				  	<!--<option value="minimum">Minimum</option>
-				  	<option value="recommended">Recomended</option>-->
 
-					<group label="Core variables and mixins">
-						<option value="functions">functions</option>
-						<option value="variables">variables</option>
-						<option value="mixins">mixins</option>
-						<option value="root">root</option>
-					</group>
+				<!--BOOOOOOOOOOOOOOOOOO 4 SUBFORM-->
 
-					<group label="Layout">
-						<option value="grid">grid</option>
-						<option value="media">media</option>
-						<option value="utilities">utilities</option>
-						<option value="print">print</option>
-					</group>
+				<field name="buf_bs_v4" type="subform"
+				    formsource="templates/buf/subforms/bs_v4.xml"
+				    label="TPL_BUF_BS_VERSION4"
+					showon="buf_bs_on:4"
+				/>
 
-					<group label="Content">
-						<option value="reboot">reboot</option>
-						<option value="type">type</option>
-						<option value="code">code</option>
-						<option value="images">images</option>
-						<option value="tables">tables</option>
-					</group>
 
-					<group label="Components">
-						<option value="alert">alert</option>
-						<option value="badge">badge</option>
-						<option value="breadcrumb">breadcrumb</option>
-						<option value="buttons">buttons</option>
-						<option value="button-group">button-group</option>
-						<option value="card">card</option>
-						<option value="carousel">carousel</option>
-						<option value="dropdown">dropdown</option>
-						<option value="forms">forms</option>
-						<option value="input-group">input-group</option>
-						<option value="custom-forms">custom-forms</option>
-						<option value="jumbotron">jumbotron</option>
-						<option value="list-group">list-group</option>
-						<option value="modal">modal</option>
-						<option value="nav">nav</option>
-						<option value="navbar">navbar</option>
-						<!--<option value="overflow">overflow</option>-->
-						<option value="pagination">pagination</option>
-						<option value="popover">popover</option>
-						<option value="progress">progress</option>
-						<option value="spinners">spinners</option>
-						<option value="toasts">toasts</option>
-						<option value="tooltip">tooltip</option>
-						<option value="transitions">transitions</option>
-						<option value="close">close</option>
-					</group>
+				<!--BOOOOOOOOOOOOOOOOOO 5 SUBFORM-->
 
-				</field>
+				<field name="buf_bs_v5" type="subform"
+				    formsource="templates/buf/subforms/bs_v5.xml"
+				    label="TPL_BUF_BS_VERSION5"
+					showon="buf_bs_on:5"
+				/>
 
-				<field name="buf_bs_defer" 
-					type="radio" 
-					default="1" 
-					class="btn-group" 
-					label="TPL_BUF_LOAD_BS_DEFER" 
-					description="TPL_BUF_LOAD_BS_DEFER_DESC">
-					<option value="0">None</option>
-					<option value="1">TPL_BUF_DEFER</option>
-					<option value="2">TPL_BUF_ASYNC</option>
-					<!--<option value="3">TPL_BUF_BOTH</option>-->
-				</field>
+
+
+
 				
 				<field type="spacer" name="buf_style_container_hr" hr="false"  class="text"
 					label="TPL_BUF_STYLE_CONTAINER_HR"/>
@@ -628,7 +561,6 @@
 				    formsource="templates/buf/subforms/bs_grid.xml"
 				    label="TPL_BUF_BS4_LAYOUT_LEFT_RIGHT"
 				/>
-
 
 
 				<!--BS STYLES-->
@@ -766,7 +698,9 @@
 					repeat="true"
 					default="" 
 					label="TPL_BUF_LOAD_GOOGLE_FONTS_NAMES" 
-					description="TPL_BUF_LOAD_GOOGLE_FONTS_NAMES_DESC"/>
+					description="TPL_BUF_LOAD_GOOGLE_FONTS_NAMES_DESC"
+					showon="buf_googlefonts:1"
+					/>
 
 
 			</fieldset>
@@ -1076,20 +1010,26 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+
+
 				<field name="buf_analytics_code" 
 					type="text" 
 					default="UA-XXXXX-Y" 
 					class="btn-group" 
 					label="TPL_BUF_ANALYTICS_CODE" 
-					description="TPL_BUF_ANALYTICS_CODE_DESC"/>
+					description="TPL_BUF_ANALYTICS_CODE_DESC"
+					showon="buf_analytics:1"
+				/>
                 
                 <field name="buf_analytics_storage" 
 					type="radio" 
 					default="0" 
 					class="btn-group" 
 					label="TPL_BUF_ANALYTICS_STORAGE" 
-					description="TPL_BUF_ANALYTICS_STORAGE_DESC">
-					<option value="0">JNO</option>
+					description="TPL_BUF_ANALYTICS_STORAGE_DESC"
+					showon="buf_analytics:1"
+					>
+					<option value="0">BUF_NO_RECOM</option>
 					<option value="1">JYES</option>
 				</field>
                 

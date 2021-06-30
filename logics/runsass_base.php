@@ -44,15 +44,23 @@ if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 	$sass_files = array();
 
 	//MINIMUM BOOTSTRAP
-	//$bsfiles = array('functions','variables','mixins','reboot','grid');
+
+
+
+	/*
+	// Disabled in <v2 class="2.2 85
 	if($buf_bs_on){
-		$bsfiles = array('grid');
-		foreach ($bsfiles as $key => $value) {
-			//$sass_files += array($lesspath . '/bootstrap4/_'.$value.'.scss' => $uri);
-			$buf_debug += addDebug('BS4 BASE | '.$value, 'cubes', '/bootstrap4/_'.$value.'.scss', $startmicro, 'table-default', 'runsass_base.php');
+
+		if($buf_bs_on == '4'){
+
+			$bsfiles = array('grid');
+			foreach ($bsfiles as $key => $value) {
+				//$sass_files += array($lesspath . '/bootstrap4/_'.$value.'.scss' => $uri);
+				$buf_debug += addDebug('BS4 BASE | '.$value, 'cubes', '/bootstrap4/_'.$value.'.scss', $startmicro, 'table-default', 'runsass_base.php');
+			}
 		}
 	}
-
+	*/
 
 	//precomposer
 	//require_once $lesspath.'/scssphp/scss.inc.php';

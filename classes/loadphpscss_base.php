@@ -10,9 +10,7 @@ try {
     $scss = JTscssphp::getScssphp();
     if(!$scss) return;
 
-
     $scss->setImportPaths($tpath_abs.'/css');
-
 
     //COMMON BASE   
     $base_common_imports = '';
@@ -21,7 +19,6 @@ try {
     $base_common_imports .= '@import "base_common.scss";';
 
     $base_common = $scss->compile($base_common_imports);
-
 
     //LAYOUT BASE    
     $scss->setImportPaths($layoutpath.'/scss');

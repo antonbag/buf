@@ -18,6 +18,10 @@ $buf_debug = array();
 $buf_debug += addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
 
 
+$debug_develmode_bs = true;
+
+
+
 ///////////////////////
 //CHECK PHP VERSION
 ///////////////////////
@@ -43,8 +47,6 @@ $devel_mode = file_exists (JPATH_SITE.'/templates/buf/composer.json');
 if($devel_mode){
 	include_once JPATH_THEMES.'/'.$this->template.'/buf_devel.php';
 }
-
-
 
 
 $app  = Factory::getApplication();
@@ -335,8 +337,7 @@ $buf_bg_img = $templateparams->get('buf_bg_img',false);
 /**********************/
 //BOOSTRAP
 /**********************/
-$buf_bs_on = $templateparams->get('buf_bs_on',1);
-$buf_bootstrap = $templateparams->get('buf_bootstrap',2);
+$buf_bs_on = $templateparams->get('buf_bs_on',4);
 
 
 

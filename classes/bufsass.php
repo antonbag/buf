@@ -1,8 +1,8 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2017 dibuxo
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 // no direct access
@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\Folder;
 
 
 class BUFsass
@@ -52,16 +53,15 @@ class BUFsass
   public static $buf_topbar_oc_height;
   public static $buf_topbar_oc_color;
 
+  public static $buf_bs_on = 4;
 
+  public static $debug_develmode_bs = false;
   
   public static function runsass($templateid='', $params='', $template_name='', $startmicro='', $bs_or_fa=''){
 
     $uri = Uri::base();
-   
     self::$img_path = $uri.'templates/buf/images/';
-
     self::$startmicro = $startmicro;
-
     $session = Factory::getSession();
     
     //TEMPLATE PARAMS IF AJAX
@@ -71,11 +71,10 @@ class BUFsass
       self::$isajax = true;
 
       //AJAX
-
       //$templateparams = json_decode(BUFsass::getCurrentParams($templateid)->params);
       $template_name = BUFsass::getCurrentParams($templateid)->template;
 
-      $templateparams = new JRegistry(BUFsass::getCurrentParams($templateid)->params);
+      $templateparams = new Registry(BUFsass::getCurrentParams($templateid)->params);
 
 
       self::$buf_debug += self::addDebug('SASS | common', 'cubes', 'common.scss', $startmicro);
@@ -87,7 +86,9 @@ class BUFsass
 
     }else{
       //NON-AJAX
-      $templateparams = $params;
+      //$templateparams = $params;
+      $templateparams = new Registry($params);
+
       $template_name = $template_name;
 
       $process = $templateparams->get('runless', 0);
@@ -109,27 +110,43 @@ class BUFsass
 
     $buf_fa5_fa4fallback = $templateparams->get('buf_fa4fallback', 0);
 
-    $buf_bs_on = $templateparams->get('buf_bs_on',1);
-    $buf_bs_selector = $templateparams->get('buf_bs4_selector', '2');
-    $buf_bs = $templateparams->get('buf_bs4files', '');
+    self::$buf_bs_on = $templateparams->get('buf_bs_on',4);
+    $buf_bs_on = $templateparams->get('buf_bs_on',4);
 
 
+		$bs_4 = new Registry; 
+		$bs_4->loadString(json_encode($templateparams->get('buf_bs_v4'))); 
 
-    $bs_styles = new JRegistry; 
+
+		$bs_5 = new Registry; 
+		$bs_5->loadString(json_encode($templateparams->get('buf_bs_v5'))); 
+    $buf_bs5_files  = $bs_5->get('buf_bs_files', '');
+
+  
+    $buf_bs = $templateparams->get('buf_bs_files', '');
+    $buf_bs = $bs_4->get('buf_bs_files', '');
+
+  
+  
+
+    $bs_styles = new Registry; 
     $bs_styles->loadString(json_encode($templateparams->get('buf_bs_styles'))); 
 
-    $bs4_custom = array(
-      'bs4_custom_body_bg'    => $bs_styles->get('bs4_custom_body_bg', ''),
-      'bs4_custom_body_color' => $bs_styles->get('bs4_custom_body_color', ''),
-      'bs4_custom_primary'    => $bs_styles->get('bs4_custom_primary', ''),
-      'bs4_custom_secondary'  => $bs_styles->get('bs4_custom_secondary', ''),
-      'bs4_custom_success'    => $bs_styles->get('bs4_custom_success', ''),
-      'bs4_custom_info'       => $bs_styles->get('bs4_custom_info', ''),
-      'bs4_custom_warning'    => $bs_styles->get('bs4_custom_warning', ''),
-      'bs4_custom_danger'     => $bs_styles->get('bs4_custom_danger', ''),
-      'bs4_custom_light'      => $bs_styles->get('bs4_custom_light', ''),
-      'bs4_custom_dark'       => $bs_styles->get('bs4_custom_dark', '')
+    //bs4 and bs5
+    $bs_custom_colors = array(
+      'bs_custom_body_bg'    => $bs_styles->get('bs_custom_body_bg', ''),
+      'bs_custom_body_color' => $bs_styles->get('bs_custom_body_color', ''),
+      'bs_custom_primary'    => $bs_styles->get('bs_custom_primary', ''),
+      'bs_custom_secondary'  => $bs_styles->get('bs_custom_secondary', ''),
+      'bs_custom_success'    => $bs_styles->get('bs_custom_success', ''),
+      'bs_custom_info'       => $bs_styles->get('bs_custom_info', ''),
+      'bs_custom_warning'    => $bs_styles->get('bs_custom_warning', ''),
+      'bs_custom_danger'     => $bs_styles->get('bs_custom_danger', ''),
+      'bs_custom_light'      => $bs_styles->get('bs_custom_light', ''),
+      'bs_custom_dark'       => $bs_styles->get('bs_custom_dark', '')
     );
+
+
 
 
     //SET CONTAINER PARAMS
@@ -152,7 +169,7 @@ class BUFsass
     self::$buf_offcanvas_speed = $templateparams->get('buf_offcanvas_speed','300');
 
 
-    $oc_button = new JRegistry; 
+    $oc_button = new Registry; 
     $oc_button->loadString(json_encode($templateparams->get('buf_oc_button'))); 
 
     self::$buf_oc_button_style        = $oc_button->get('buf_oc_button_style','3dx');
@@ -164,14 +181,14 @@ class BUFsass
 
 
 
-    $buf_topbar = new JRegistry; 
+    $buf_topbar = new Registry; 
     $buf_topbar->loadString(json_encode($templateparams->get('buf_topbar'))); 
 
     self::$buf_topbar_height =  $buf_topbar->get('buf_topbar_height','54');
     self::$buf_topbar_color =  $buf_topbar->get('buf_topbar_color','#fff'); 
 
 
-    $buf_topbar_oc = new JRegistry; 
+    $buf_topbar_oc = new Registry; 
     $buf_topbar_oc->loadString(json_encode($templateparams->get('buf_topbar_oc'))); 
 
     self::$buf_topbar_oc_height =  $buf_topbar_oc->get('buf_topbar_height','54');
@@ -194,35 +211,66 @@ class BUFsass
 
 
 
+
+
     /**********************************/
     /*******   BS & FA FILES     ******/
     /**********************************/
 
-
     //AJAX fa
     //if($bs_or_fa != 'fa'){
-      if ($process == 0 || $buf_bs_css_exists == false){
+    if ($process == 0 || $buf_bs_css_exists == false || self::$debug_develmode_bs){
 
-        if($buf_bs_on){
-           if($buf_bs_selector != 0){
+      if($buf_bs_on){
+
+
+        //BS4
+        if($buf_bs_on == 4){
+
+            if($bs_4->get('buf_bs_selector','recommended') != 'none'){
+
+                //BOOSTRAP
+                $bs4files = $bs_4->get('buf_bs_files', '');
+
+                foreach ($bs4files as $key => $value) {
+                
+                  $sass_bs_files += array(self::$libspath . '/bootstrap4/scss/_'.$value.'.scss' => $uri);
+                  self::$buf_debug += self::addDebug('BS4 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
+                }
+            }else{
+                self::$buf_debug += self::addDebug('BS4 | Selector', 'cubes','bs selector none', $startmicro);
+            }
+        }else{
+            self::$buf_debug += self::addDebug('BS4 | OFF', 'cubes','bs selector none', $startmicro);
+        }
+        
+
+
+        //BS5
+        if($buf_bs_on == 5){
+
+          if($bs_5->get('buf_bs_selector','recommended') != 'none'){
 
               //BOOSTRAP
-              $bsfiles = BUFsass::buf_bs_files($buf_bs_selector, $buf_bs);
-              
-              foreach ($bsfiles as $key => $value) {
-                $sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
-                self::$buf_debug += self::addDebug('BS4 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
-              }
-           }else{
-              self::$buf_debug += self::addDebug('BS4 | Selector', 'cubes','bs selector none', $startmicro);
-           }
-        }else{
-          self::$buf_debug += self::addDebug('BS4 | OFF', 'cubes','bs selector none', $startmicro);
-        }
-      }
+              //select correnct order and files
+              $bs5files = $bs_5->get('buf_bs_files', '');
 
-    //}
-    
+              foreach ($bs5files as $key => $value) {
+                
+                $sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
+                self::$buf_debug += self::addDebug('BS5 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
+              }
+          }else{
+              self::$buf_debug += self::addDebug('BS5 | Selector', 'cubes','bs selector none', $startmicro);
+          }
+        }
+
+      }
+      
+    }
+
+
+
 
 
     /**********************************/
@@ -373,40 +421,39 @@ class BUFsass
  
     
 
-      /**********************************/
-      /**********************************/
-      /*******   SASS COMPILER     ******/
-      /**********************************/
-      /**********************************/
+    /**********************************/
+    /**********************************/
+    /*******   SASS COMPILER     ******/
+    /**********************************/
+    /**********************************/
 
 
-      //precomposer
-      //require_once self::$lesspath.'/scssphp/scss.inc.php';
-      //require_once self::$lesspath.'/scssphp/src/Anton_ajax.php';
+    //precomposer
+    //require_once self::$lesspath.'/scssphp/scss.inc.php';
+    //require_once self::$lesspath.'/scssphp/src/Anton_ajax.php';
 
-      //require_once self::$vendorpath.'/autoload.php';
-      //require_once self::$lesspath.'/scssphpAnton/loadphpscss.php';
+    //require_once self::$vendorpath.'/autoload.php';
+    //require_once self::$lesspath.'/scssphpAnton/loadphpscss.php';
 
-      //new 2.2.0
-      require_once JPATH_LIBRARIES.'/jtlibs/scssphp/scss.inc.php';
-      require_once JPATH_SITE.'/templates/buf/classes/loadphpscss.php';
+    //new 2.2.0
+    require_once JPATH_LIBRARIES.'/jtlibs/scssphp/scss.inc.php';
+    require_once JPATH_SITE.'/templates/buf/classes/loadphpscss.php';
 
 
 
-      //$scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');
-      /*$scss->setImportPaths(self::$lesspath.'/bootstrap4/');*/
+    //$scss->setFormatter('ScssPhp\ScssPhp\Formatter\Compressed');
+    /*$scss->setImportPaths(self::$lesspath.'/bootstrap4/');*/
 
-      //deprecated
-      //$sass_comp_path = 'ScssPhp\ScssPhp\Formatter\\'.$sass_compresion;
-     //$scss->setFormatter($sass_comp_path);
-     
-      //2.2.60
-      if($sass_compresion == 'EXPANDED'){
-        $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
-      }else{
-        $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
-      }
-
+    //deprecated
+    //$sass_comp_path = 'ScssPhp\ScssPhp\Formatter\\'.$sass_compresion;
+    //$scss->setFormatter($sass_comp_path);
+    
+    //2.2.60
+    if($sass_compresion == 'EXPANDED'){
+      $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::EXPANDED);
+    }else{
+      $scss->setOutputStyle(\ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
+    }
 
 
       /*****************************************/
@@ -423,7 +470,7 @@ class BUFsass
 
           //Compile buf
           if(file_exists(self::$cachepath. '/buf_bs.css') != true){
-            self::buf_bs_scss($scss, $bs4_custom, $sass_bs_files,$process,$bs_or_fa);
+            self::buf_bs_scss($scss, $bs_custom_colors, $sass_bs_files,$process,$bs_or_fa);
           }
           //Compile fa
           if(file_exists(self::$cachepath. '/buf_fa.css') != true){
@@ -449,10 +496,10 @@ class BUFsass
 
       //NOMIX
       } else{
-
+          
           // BUF_BS.css 
-          if ($process == 0 || $buf_bs_css_exists == false || file_exists(self::$cachepath. '/buf_bs.css') == false){
-            self::buf_bs_scss($scss, $bs4_custom, $sass_bs_files,$process,'bs');
+          if ($process == 0 || $buf_bs_css_exists == false || file_exists(self::$cachepath. '/buf_bs.css') == false || self::$debug_develmode_bs){
+            self::buf_bs_scss($scss, $bs_custom_colors, $sass_bs_files,$process,'bs');
           }
 
           // BUF_FA.css 
@@ -463,7 +510,7 @@ class BUFsass
 
 
           //JOIN TO BUF
-          if ($process == 0 || file_exists(self::$cachepath. '/buf.css') == false){
+          if ($process == 0 || file_exists(self::$cachepath. '/buf.css') == false || self::$debug_develmode_bs){
 
               $buf_bs_css = file_get_contents(self::$cachepath. '/buf_bs.css');
               $buf_fa_css = file_get_contents(self::$cachepath. '/buf_fa.css');
@@ -471,6 +518,9 @@ class BUFsass
               $cssOut = $buf_bs_css.$buf_fa_css;
 
               file_put_contents(self::$cachepath . '/buf.css', $cssOut);
+
+              self::$buf_debug += self::addDebug('CSS JOINED', 'css3-alt fab', 'WRITTEN <small>'.self::$cachepath . '/buf.css</small>', self::$startmicro, 'table-info');
+
           }
 
 
@@ -507,8 +557,9 @@ class BUFsass
 
         //self::$buf_debug = array();
 
+        
         //Compile buf
-        self::buf_bs_scss($scss, $bs4_custom, $sass_bs_files,$process,$bs_or_fa);
+        self::buf_bs_scss($scss, $bs_custom_colors, $sass_bs_files,$process,$bs_or_fa);
 
         $session->set('buf_reload_bs_sass','0');
         return self::$buf_debug;
@@ -519,7 +570,7 @@ class BUFsass
         //self::$buf_debug = array();
 
         //Compile buf
-    
+        
         self::buf_fa_scss($scss, $sass_fa_files, $process, $bs_or_fa);
    
 
@@ -539,19 +590,48 @@ class BUFsass
   /***************************************/
   /*******    COMPILE BUF_BS.CSS       ******/
   /***************************************/
-  private static function buf_bs_scss($scss,$bs4_custom, $sass_bs_files, $process,$bs_or_fa=''){
+  private static function buf_bs_scss($scss,$bs_custom, $sass_bs_files, $process,$bs_or_fa=''){
 
         if($bs_or_fa == 'fa'){
           return;
         }
 
         $imports = '';
+       
 
-        $imports .= self::bs4_custom($bs4_custom);
+        if(self::$buf_bs_on == 4){
 
-        foreach ($sass_bs_files as $key => $value) {
-          $imports .= '@import "'.$key.'";';
+
+          $imports .= self::bs4_custom($bs_custom);
+
+
+          foreach ($sass_bs_files as $key => $value) {
+            $imports .= '@import "'.$key.'";';
+          }
+
         }
+
+
+        if(self::$buf_bs_on == 5){
+
+
+
+          
+
+
+          foreach ($sass_bs_files as $key => $value) {
+
+            $imports .= '@import "'.$key.'";';
+            //add the custom variables before functions
+            if($key == self::$libspath.'/bootstrap/scss/_functions.scss'){
+              $imports .= self::bs5_custom($bs_custom);
+            }
+          }
+         
+
+        }
+
+  
 
         //buf_bs_fluid_max
         $imports .= '@media (min-width: 1200px){
@@ -572,8 +652,8 @@ class BUFsass
         }';
 
 
-
         $cssOut = $scss->compile($imports);
+
 
         //Check cache directory is created
         if (!file_exists(self::$cachepath)) {
@@ -737,7 +817,7 @@ class BUFsass
 
 
 
-
+ 
 
 
   /***************************************/
@@ -787,7 +867,7 @@ class BUFsass
         mkdir(self::$cachepath, 0777, true);
     }
 
-    $session = JFactory::getSession();
+    $session = Factory::getSession();
 
     //RECACHE ACTIVATED
     if(self::$recache){
@@ -812,20 +892,16 @@ class BUFsass
 
 
 
-  private static function buf_bs_files($selector='2', $buf_bsfiles){
-      $bsfiles = array();
 
-      //SELECTED EN BACKEND
-      $bsfiles = $buf_bsfiles;
 
-      return $bsfiles;
-  }
+
+
 
 
   private static function getCurrentParams($id){
     //V3
 
-       $db = JFactory::getDBO();
+       $db = Factory::getDBO();
         $query = $db->getQuery(true);
         $query->select(array($db->quoteName('template'), $db->quoteName('params')))
         ->from($db->quoteName('#__template_styles'))
@@ -867,19 +943,19 @@ class BUFsass
   private static function bs4_custom($bs4_custom){
     $custom = '';
 
-    if($bs4_custom['bs4_custom_body_bg']) $custom .= '$body-bg: '.$bs4_custom['bs4_custom_body_bg'].';';
-    if($bs4_custom['bs4_custom_body_color']) $custom .= '$body-color: '.$bs4_custom['bs4_custom_body_color'].';';
+    if($bs4_custom['bs_custom_body_bg']) $custom .= '$body-bg: '.$bs4_custom['bs_custom_body_bg'].';';
+    if($bs4_custom['bs_custom_body_color']) $custom .= '$body-color: '.$bs4_custom['bs_custom_body_color'].';';
 
     $custom .= '$theme-colors: (';
 
-    if($bs4_custom['bs4_custom_primary']) $custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
-    if($bs4_custom['bs4_custom_secondary']) $custom .= '"secondary": '.$bs4_custom['bs4_custom_secondary'].',';
-    if($bs4_custom['bs4_custom_success']) $custom .= '"success": '.$bs4_custom['bs4_custom_success'].',';
-    if($bs4_custom['bs4_custom_info']) $custom .= '"info": '.$bs4_custom['bs4_custom_info'].',';
-    if($bs4_custom['bs4_custom_warning']) $custom .= '"warning": '.$bs4_custom['bs4_custom_warning'].',';
-    if($bs4_custom['bs4_custom_danger']) $custom .= '"danger": '.$bs4_custom['bs4_custom_danger'].',';
-    if($bs4_custom['bs4_custom_light']) $custom .= '"light": '.$bs4_custom['bs4_custom_light'].',';
-    if($bs4_custom['bs4_custom_dark']) $custom .= '"dark": '.$bs4_custom['bs4_custom_dark'].',';
+    if($bs4_custom['bs_custom_primary']) $custom .= '"primary": '.$bs4_custom['bs_custom_primary'].',';
+    if($bs4_custom['bs_custom_secondary']) $custom .= '"secondary": '.$bs4_custom['bs_custom_secondary'].',';
+    if($bs4_custom['bs_custom_success']) $custom .= '"success": '.$bs4_custom['bs_custom_success'].',';
+    if($bs4_custom['bs_custom_info']) $custom .= '"info": '.$bs4_custom['bs_custom_info'].',';
+    if($bs4_custom['bs_custom_warning']) $custom .= '"warning": '.$bs4_custom['bs_custom_warning'].',';
+    if($bs4_custom['bs_custom_danger']) $custom .= '"danger": '.$bs4_custom['bs_custom_danger'].',';
+    if($bs4_custom['bs_custom_light']) $custom .= '"light": '.$bs4_custom['bs_custom_light'].',';
+    if($bs4_custom['bs_custom_dark']) $custom .= '"dark": '.$bs4_custom['bs_custom_dark'].',';
 
      //$custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
 
@@ -888,20 +964,47 @@ class BUFsass
     return $custom;
   }
 
+  //BS5 CUSTOM COLORS
+    private static function bs5_custom($bs5_custom){
+
+
+      $custom = '';
+
+      if($bs5_custom['bs_custom_body_bg']) $custom .= '$body-bg: '.$bs5_custom['bs_custom_body_bg'].';';
+      if($bs5_custom['bs_custom_body_color']) $custom .= '$body-color: '.$bs5_custom['bs_custom_body_color'].';';
+  
+      $custom .= '
+      
+      $theme-colors: (';
+  
+      if($bs5_custom['bs_custom_primary']) $custom .= '"primary": '.$bs5_custom['bs_custom_primary'].',';
+      if($bs5_custom['bs_custom_secondary']) $custom .= '"secondary": '.$bs5_custom['bs_custom_secondary'].',';
+      if($bs5_custom['bs_custom_success']) $custom .= '"success": '.$bs5_custom['bs_custom_success'].',';
+      if($bs5_custom['bs_custom_info']) $custom .= '"info": '.$bs5_custom['bs_custom_info'].',';
+      if($bs5_custom['bs_custom_warning']) $custom .= '"warning": '.$bs5_custom['bs_custom_warning'].',';
+      if($bs5_custom['bs_custom_danger']) $custom .= '"danger": '.$bs5_custom['bs_custom_danger'].',';
+      if($bs5_custom['bs_custom_light']) $custom .= '"light": '.$bs5_custom['bs_custom_light'].',';
+      if($bs5_custom['bs_custom_dark']) $custom .= '"dark": '.$bs5_custom['bs_custom_dark'].',';
+  
+       //$custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
+  
+      $custom .= ');';
+      
+      return $custom;
+    }
+
 
   //FA COPY TO CACHE
   public static function buf_fa_copy_to_cache($fa_version = 'fontawesome5'){
 
     
-        //check fa5pro files
-                
-        if($fa_version == 'fontawesome5pro'){
-            $fa5pro_exists = file_exists (self::$libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true:false;
-            if(!$fa5pro_exists){
-                $fa_version = 'fontawesome5';
-            }
-        }
-        
+      //check fa5pro files
+      if($fa_version == 'fontawesome5pro'){
+          $fa5pro_exists = file_exists (self::$libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true:false;
+          if(!$fa5pro_exists){
+              $fa_version = 'fontawesome5';
+          }
+      }
     
       if (!file_exists(self::$cachepath.'/'.$fa_version.'/webfonts/fa-regular-400.woff2')){
 
@@ -918,10 +1021,8 @@ class BUFsass
         if (count(glob("$dir/*")) === 0) {
           jimport('joomla.filesystem.folder');
           jimport('joomla.filesystem.file');
-          
-          
          
-          JFolder::copy(self::$libspath . '/font-awesome/'.$fa_version.'/webfonts', self::$cachepath.'/'.$fa_version.'/webfonts');
+          Folder::copy(self::$libspath . '/font-awesome/'.$fa_version.'/webfonts', self::$cachepath.'/'.$fa_version.'/webfonts');
 
           self::$buf_debug += self::addDebug('FA5 | cache', 'font-awesome fab', $fa_version.' cache webfonts doesnt exist files <strong>CREATED</strong>', self::$startmicro);
         }

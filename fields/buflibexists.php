@@ -9,17 +9,18 @@
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-jimport('joomla.form.formfield');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 
-class JFormFieldBuflibexists extends JFormField
+class JFormFieldBuflibexists extends FormField
 {
     protected $type = 'buflibexists';
 
     protected function getInput() {
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $buf_path = JURI::root(true).'/templates/buf/backend';
-        $doc = JFactory::getDocument();
+        $doc = Factory::getDocument();
         $doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
 
         $tpath_real = realpath(JPATH_SITE.'/templates/');
@@ -100,7 +101,7 @@ class JFormFieldBuflibexists extends JFormField
     }
 
     private function getVersion() {
-      $db = JFactory::getDBO();
+      $db = Factory::getDBO();
       $query = $db->getQuery(true);
 
       $element = 'bufajax';

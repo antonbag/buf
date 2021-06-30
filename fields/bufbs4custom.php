@@ -1,8 +1,8 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2017 dibuxo
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 

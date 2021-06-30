@@ -1,7 +1,6 @@
 var buf_params;
 var buf_vars = Array();
 var buf_oc;
-
 var buf_params = JSON.parse(php_buf_params).params;
 
 
@@ -42,6 +41,8 @@ function buf_js_init(){
 		//offcanvas_v1();
 		
 		//loadBufoc();
+
+
 
 		if(bs_load == 'true'){
 			loadBS();
@@ -124,11 +125,20 @@ function loadBS(){
 		        async: bs_load_async
 		    });
 		}
+	
 
-	jQuery.loadScript(buf_path+'/js/bs4/bootstrap.bundle.min.js', function(){
+		if(bs_version == 4){
+			jQuery.loadScript(buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js', function(){
+				if(buf_params.debug == 1) console.log('BS4 loaded from js. Async: '+bs_load_async);
+			 });
+		}
 
-	   		if(buf_params.debug == 1) console.log('BS4 loaded from js. Async: '+bs_load_async);
-	});
+		if(bs_version == 5){
+			jQuery.loadScript(buf_path+'/libs/bootstrap/dist/js/bootstrap.bundle.min.js', function(){
+				if(buf_params.debug == 1) console.log('BS5 loaded from js. Async: '+bs_load_async);
+			 });
+		}
+
 }
 
 /*

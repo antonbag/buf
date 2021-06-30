@@ -9,15 +9,21 @@
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-jimport('joomla.form.formfield');
+//J3.8
+//jimport('joomla.form.formfield');
+//class JFormFieldBufReloadSass extends JFormField
 
-class JFormFieldBufReloadSass extends JFormField
+//J3.9
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+class JFormFieldBufReloadSass extends FormField
 {
     protected	$type = 'bufreloadsass';
 
     protected function getInput() {
 
-      $session = JFactory::getSession();
+
+      $session = Factory::getSession();
       $reload_sass = $session->get('buf_reload_sass');
       $reload_bs_sass = $session->get('buf_reload_bs_sass');
       $reload_fa_sass = $session->get('buf_reload_fa_sass');
