@@ -30,7 +30,7 @@
 
 				<field name="buf_bs_selector"
 					type="list" 
-					default="2" 
+					default="recommended" 
 					class="btn-group" 
 					label="TPL_BUF_BS_SELECTOR" 
 					description="TPL_BUF_BS_SELECTOR_DESC">
@@ -43,7 +43,7 @@
 <!--function.scss siempre-->
 				<field name="buf_bs_files" 
 					type="groupedlist" 
-					default='["functions","variables","mixins","grid","utilities","reboot","images","tables","buttons","button-group","card","dropdown","forms","list-group","nav","navbar","pagination","transitions","close","breadcrumb"]'
+					default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions"]'
 					multiple="true" 
 					label="TPL_BUF_BOOTSTRAP4_FILES" 
 					description="TPL_BUF_BOOTSTRAP4_FILES_DESC"
