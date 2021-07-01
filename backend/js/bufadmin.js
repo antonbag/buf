@@ -1133,10 +1133,10 @@ jQuery(function($){
             if(version == 5){
                 var minimum = ['functions','variables','mixins', 'utilities', 'grid'];
                 var recommended = [
-                    'functions','variables','mixins', 'utilities', 'grid', 
-                    'root', 'reboot', 'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
+                    'functions','variables','mixins', 'root', 'reboot', 'utilities', 'grid', 
+                     'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
                     'dropdown', 'button-group', 'nav', 'navbar', 
-                    'card', 'pagination', 'media', 'list-group', 'close'];
+                    'card', 'pagination', 'list-group', 'close'];
             }
   
 

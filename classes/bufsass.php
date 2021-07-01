@@ -55,8 +55,21 @@ class BUFsass
 
   public static $buf_bs_on = 4;
 
+  public static $buf_bs_css_source = "cdn";
+
+
+
+  public static $bs5_all = ["functions","variables","mixins","utilities","root","reboot","type","images",
+  "containers","grid",  "tables",  "forms",  "buttons",  "transitions",  "dropdown",
+  "button-group",  "nav",  "navbar",  "card",  "accordion",  "breadcrumb",  "pagination",  "badge",
+  "alert",  "progress",  "list-group",  "close",  "toasts",  "modal",  "tooltip",  "popover",
+  "carousel",  "spinners",  "offcanvas",  "helpers"];
+
+  //just in devel
   public static $debug_develmode_bs = false;
-  
+
+
+
   public static function runsass($templateid='', $params='', $template_name='', $startmicro='', $bs_or_fa=''){
 
     $uri = Uri::base();
@@ -121,6 +134,8 @@ class BUFsass
 		$bs_5 = new Registry; 
 		$bs_5->loadString(json_encode($templateparams->get('buf_bs_v5'))); 
     $buf_bs5_files  = $bs_5->get('buf_bs_files', '');
+
+    self::$buf_bs_css_source = $bs_5->get('buf_bootstrap_css', 'cdn');
 
   
     $buf_bs = $templateparams->get('buf_bs_files', '');
@@ -240,29 +255,33 @@ class BUFsass
             }else{
                 self::$buf_debug += self::addDebug('BS4 | Selector', 'cubes','bs selector none', $startmicro);
             }
-        }else{
-            self::$buf_debug += self::addDebug('BS4 | OFF', 'cubes','bs selector none', $startmicro);
         }
         
 
 
         //BS5
-        if($buf_bs_on == 5){
-
+        if($buf_bs_on == 5 && self::$buf_bs_css_source == 'custom'){
+         
           if($bs_5->get('buf_bs_selector','recommended') != 'none'){
 
               //BOOSTRAP
               //select correnct order and files
               $bs5files = $bs_5->get('buf_bs_files', '');
 
-              foreach ($bs5files as $key => $value) {
+              //aproximacion diferente: 
+              //recorro el array de todos archivos y veo si coincide. Así preservo el orden.
+              foreach (self::$bs5_all as $key => $value) {
                 
-                $sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
-                self::$buf_debug += self::addDebug('BS5 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
+                if(in_array($value, $bs5files)){
+                  //$sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
+                  self::$buf_debug += self::addDebug('BS5 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
+                }   
+                
+                $sass_bs_files += array(self::$libspath . '/bootstrap/scss/bootstrap-utilities.scss' => $uri);
+                
               }
-          }else{
-              self::$buf_debug += self::addDebug('BS5 | Selector', 'cubes','bs selector none', $startmicro);
           }
+
         }
 
       }
@@ -601,9 +620,7 @@ class BUFsass
 
         if(self::$buf_bs_on == 4){
 
-
           $imports .= self::bs4_custom($bs_custom);
-
 
           foreach ($sass_bs_files as $key => $value) {
             $imports .= '@import "'.$key.'";';
@@ -614,21 +631,25 @@ class BUFsass
 
         if(self::$buf_bs_on == 5){
 
+          if(self::$buf_bs_css_source == "custom"){
 
+            foreach ($sass_bs_files as $key => $value) {
 
-          
+              $imports .= '/*'.$key.'";*/';
+              $imports .= '@import "'.$key.'";';
+              
+              //add the custom variables before functions
+              if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){
+                $imports .= self::bs5_custom($bs_custom);
+              }
+            } 
 
-
-          foreach ($sass_bs_files as $key => $value) {
-
-            $imports .= '@import "'.$key.'";';
-            //add the custom variables before functions
-            if($key == self::$libspath.'/bootstrap/scss/_functions.scss'){
-              $imports .= self::bs5_custom($bs_custom);
-            }
+          }else{
+            self::$buf_debug += self::addDebug('BS CSS SOURCE', 'css3-alt fab', 'NOT CUSTOM <small>'.self::$buf_bs_css_source, self::$startmicro, 'table-info');
           }
-         
 
+
+         
         }
 
   
@@ -967,28 +988,8 @@ class BUFsass
   //BS5 CUSTOM COLORS
     private static function bs5_custom($bs5_custom){
 
-
-      $custom = '';
-
-      if($bs5_custom['bs_custom_body_bg']) $custom .= '$body-bg: '.$bs5_custom['bs_custom_body_bg'].';';
-      if($bs5_custom['bs_custom_body_color']) $custom .= '$body-color: '.$bs5_custom['bs_custom_body_color'].';';
-  
-      $custom .= '
-      
-      $theme-colors: (';
-  
-      if($bs5_custom['bs_custom_primary']) $custom .= '"primary": '.$bs5_custom['bs_custom_primary'].',';
-      if($bs5_custom['bs_custom_secondary']) $custom .= '"secondary": '.$bs5_custom['bs_custom_secondary'].',';
-      if($bs5_custom['bs_custom_success']) $custom .= '"success": '.$bs5_custom['bs_custom_success'].',';
-      if($bs5_custom['bs_custom_info']) $custom .= '"info": '.$bs5_custom['bs_custom_info'].',';
-      if($bs5_custom['bs_custom_warning']) $custom .= '"warning": '.$bs5_custom['bs_custom_warning'].',';
-      if($bs5_custom['bs_custom_danger']) $custom .= '"danger": '.$bs5_custom['bs_custom_danger'].',';
-      if($bs5_custom['bs_custom_light']) $custom .= '"light": '.$bs5_custom['bs_custom_light'].',';
-      if($bs5_custom['bs_custom_dark']) $custom .= '"dark": '.$bs5_custom['bs_custom_dark'].',';
-  
-       //$custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
-  
-      $custom .= ');';
+      //llamo a bs4 porque es igual
+      $custom = self::bs4_custom($bs5_custom);
       
       return $custom;
     }

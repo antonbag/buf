@@ -66,13 +66,18 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<script type="text/javascript" src="<?php echo $tpath; ?>/js/respond.min.js"></script>
 	<![endif]-->
 
+
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+	<!-- <link href="templates/buf/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet"> -->
+
+
 </head>
 
+
+
+<body class="<?php echo implode(" ", $bodyclass); ?> buf_offcanvas_hidden" role="document">
+
   
-<body class="<?php echo $browserType.' '.(($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')).' '.$active->alias.' '.$pageclass.' '.$docalias.' '.$body_mobile.' menutype_'.$menutype; ?> buf_offcanvas_hidden" role="document">
-
-
-   
 	<!-- OFFCANVAS BUTTON-->
 	<?php if ($buf_offcanvas) : ?>
 			
@@ -121,7 +126,6 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				?>
 
 		        <div class="offcanvas-inner <?php echo 'buf_topbar_oc_'.$buf_topbar_oc_on;?>">
-
 
 		            <jdoc:include type="modules" name="offcanvas"/>
 
@@ -192,7 +196,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	
 		<div class="buf_credits">
 			<div class="buf_credit_logo">
-				<a href="https://jtotal.org/buf-template" target="_blank" rel="nofollow">
+				<a href="https://jtotal.org/buf-template" target="_blank" rel="nofollow" rel="noopener">
 					<picture class="img-responsive">
 						<source type="image" srcset="templates/buf/images/buf_logos/buf_logo_footer.svg">
 						<img class="img-responsive" src="templates/buf/images/buf_logos/buf_logo_footer.png" alt="buf template">
@@ -200,7 +204,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				</a>
 			</div>
 			<div class="buf_credit_text">
-				<p> for Joomla by <a href="https://jtotal.org/buf-template" target="_blank" rel="nofollow">jtotal</a></p>
+				<p> for Joomla by <a href="https://jtotal.org/buf-template" target="_blank" rel="nofollow" rel="noopener">jtotal</a></p>
 				<p> © jtotal <?php echo date("Y"); ?></p>
 			</div>
 		</div>

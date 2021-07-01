@@ -3,6 +3,7 @@
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $buf_debug += addDebug('COMPONENTS | loaded', 'joomla fab', 'INIT logic stuff', $startmicro, 'table-success', 'logic.php');
 
@@ -29,7 +30,7 @@ $doc->setMetadata('x-ua-compatible','IE=edge,chrome=1');
 /***************************/
 $buf_jquery = $templateparams->get('buf_jquery',2);
 if($buf_jquery==2 || $edit){
-	JHtml::_('jquery.framework');
+	HTMLHelper::_('jquery.framework');
 	
 }elseif($buf_jquery==1){
 
@@ -67,8 +68,9 @@ if($buf_bs_on){
 		$bs4_js = $bs_4->get("buf_bootstrap_js",'custom');
 
 		if($bs4_js=='joomla' || $edit){
+			
+			HTMLHelper::_('bootstrap.framework');
 
-			JHtml::_('bootstrap.framework');
 			$buf_debug += addDebug('BOOSTRAP 4', 'code', '<small>JHtml::_(\'bootstrap.framework\')</small>', $startmicro, 'table-info', 'logic.php');
 
 		}elseif($bs4_js=='custom'){
@@ -97,10 +99,13 @@ if($buf_bs_on){
 				$doc->addScript($tpath.'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js',array(), $defer);
 			}
 
-			JHtml::_('bootstrap.framework', false);
+			HTMLHelper::_('bootstrap.framework', false);
 			$buf_debug += addDebug('BOOSTRAP 4 custom', 'code', '<strong>/libs/bootstrap4/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}	
 	}
+
+
+
 
 	/***************************/
 	//BS5
@@ -113,11 +118,20 @@ if($buf_bs_on){
 
 		$bs5_js = $bs_5->get("buf_bootstrap_js",'custom');
 
+		//Joomla bootstrap 3 JS.. I dont know if this is a good idea
 		if($bs5_js=='joomla' || $edit){
 
-			JHtml::_('bootstrap.framework');
+			HTMLHelper::_('bootstrap.framework');
 			$buf_debug += addDebug('BOOSTRAP 5', 'code', '<small>JHtml::_(\'bootstrap.framework\')</small>', $startmicro, 'table-info', 'logic.php');
+		
+		}elseif($bs5_js=='cdn'){
+			$doc->addScript(
+				'//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js',
+				array(), 
+				array('integrity'=>'sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM', 'crossorigin'=>'anonymous')
+			);
 
+			$buf_debug += addDebug('BOOSTRAP 5 custom', 'code', '<strong>cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}elseif($bs5_js=='custom'){
 
 			if($templateparams->get('buf_unset','') != ''){
@@ -143,9 +157,25 @@ if($buf_bs_on){
 				$doc->addScript($tpath.'/libs/bootstrap/dist/js/bootstrap.bundle.min.js',array(), $defer);
 			}
 
-			JHtml::_('bootstrap.framework', false);
+			HTMLHelper::_('bootstrap.framework', false);
 			$buf_debug += addDebug('BOOSTRAP 5 custom', 'code', '<strong>/libs/bootstrap/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}	
+
+		/***************************/
+		/*******  BS5 CDN LOADING  **********/
+		/***************************/
+
+		if($bs_5->get("buf_bootstrap_css",'cdn')){
+			$doc->addStyleSheet(
+				'//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css',
+				array(), 
+				array('integrity'=>'sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC', 
+				'rel'=>'stylesheet',
+				'crossorigin'=>'anonymous')
+			);
+
+		}
+
 	}
 
 
@@ -170,7 +200,6 @@ $buf_fa_defer = $templateparams->get('buf_fa_defer', 0);
 /***************************/
 /***************************/
 $defer = check_defer_v4($templateparams->get('buf_js_defer',1));
-
 
 
 if($buf_debug_param){
@@ -310,15 +339,6 @@ if($templateparams->get('buf_custom_unset','')){
 /***************************/
 
 
-
-//init as true
-//por defecto compruebo
-
-
-
-
-
-
 //CHECK FA FONTs IN CACHE
 /*css+fonts*/
 
@@ -341,10 +361,7 @@ if($buf_fa_selector && $buf_fa5_tech == 2){
 		}
 
 		if(!$buf_fa_webfont_exists) $buf_fa_run_webfont = true;
-
 	}
-
-
 
 }
 
@@ -373,19 +390,28 @@ if(
 
 	$buf_debug += addDebug('COMPILER', 'cog', 'ALL', $startmicro,'table-primary','logic.php');
 
+
+}
+
+
+if ($templateparams->get('runless', 0) != 2 || !$buf_check_files){
+	//include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass.php';
+	include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+	
+	//CLASS BUFSASS
+	$buffles = new BUFsass();
+
+	$runless = $buffles::runsass('', $templateparams, 'buf', $startmicro);
+
+	$buf_debug += $runless;
+
 	//CHECK IF webfont CACHE EXISTS
 	if($buf_fa_run_webfont){
-		include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass.php';
-		$buffles = new BUFsass();
 		$buffles::buf_fa_copy_to_cache($fa_path);
 		$buf_debug += addDebug('FA cache', 'cog', 'COPY WEBFONTS TO CACHE', $startmicro,'table-primary','logic.php');
 	}
 }
 
-
-if ($templateparams->get('runless', 0) != 2 || !$buf_check_files){
-	include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass.php';
-}
 
 
 

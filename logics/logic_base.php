@@ -18,7 +18,7 @@ $buf_debug = array();
 $buf_debug += addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
 
 
-$debug_develmode_bs = true;
+
 
 
 
@@ -59,11 +59,7 @@ $jinput = $app->input;
 //APP PARAMS
 ///////////////////////
 $params = $app->getParams();
-
 $templateparams	= $app->getTemplate(true)->params;
-
-$pageclass = $params->get('pageclass_sfx','');
-
 $menu = $app->getMenu();
 
 $active = (object) array('alias' => 'noactivefound');
@@ -73,6 +69,10 @@ if($app->getMenu()->getActive()){
 $menutype = $menu->getActive()->menutype;
 
 $docalias = OutputFilter::stringUrlSafe($doc->title);
+$pageclass = $params->get('pageclass_sfx','');
+
+$bs_version = $templateparams->get("buf_bs_on", 4);
+
 
 
 //LAYOUTS
@@ -502,6 +502,20 @@ $params_to_js = json_encode(array('params'=>$js_params));
 
 
 
+/***************************************/
+//PARAMS TO JS
+/***************************************/
+
+$bodyclass=[];
+$bodyclass[]= $browserType;
+$bodyclass[]= ($menu->getActive() == $menu->getDefault()) ? 'front' : 'site';
+$bodyclass[]= $active->alias;
+$bodyclass[]= $pageclass;
+$bodyclass[]= 'alias_'.$docalias;
+$bodyclass[]= $docalias;
+$bodyclass[]= $body_mobile;
+$bodyclass[]= 'menutype_'.$menutype;
+$bodyclass[]= 'bs_version_'.$bs_version;
 
 
 

@@ -11,8 +11,9 @@ defined ('_JEXEC') or die ('resticted aceess');
 
 //jimport('joomla.form.formfield');
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
-class JFormFieldBufclearcache extends JFormField
+class JFormFieldBufclearcache extends FormField
 {
     protected	$type = 'clearcache';
 
@@ -22,7 +23,7 @@ class JFormFieldBufclearcache extends JFormField
         <span class="buf_clearcache_icon"><i class="fas fa-trash-alt"></i></span>
         <span class="buf_clear_cache_status"></span>
         <span class="buf_clearcache_text">
-        '.JText::_( 'TPL_BUF_CLEAR_CACHE' ).'</span>
+        '.Text::_( 'TPL_BUF_CLEAR_CACHE' ).'</span>
         
       </button></div>';
 

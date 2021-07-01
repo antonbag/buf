@@ -9,9 +9,12 @@
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-jimport('joomla.form.formfield');
+//jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
-class JFormFieldBufbs4custom extends JFormField
+
+class JFormFieldBufbs4custom extends FormField
 {
     protected	$type = 'bufbs4custom';
 
@@ -25,7 +28,7 @@ class JFormFieldBufbs4custom extends JFormField
         $bs4_custom_button .= '<a class="btn btn-default">';
         $bs4_custom_button .= '<i class="fa fa-play"></i> ';
         $bs4_custom_button .= '<i class="fa fa-cog fa-spin buf_hide"></i> ';
-        $bs4_custom_button .= JText::_('TPL_BUF_BS4_CUSTOM_PROCESS');
+        $bs4_custom_button .= Text::_('TPL_BUF_BS4_CUSTOM_PROCESS');
         $bs4_custom_button .= '</a></div>';
 
       return $bs4_custom_button;

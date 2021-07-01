@@ -9,17 +9,21 @@
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-jimport('joomla.form.formfield');
+//jimport('joomla.form.formfield');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
-class JFormFieldBufEditorButtons extends JFormField
+class JFormFieldBufEditorButtons extends FormField
 {
     protected	$type = 'bufeditorbuttons';
 
     protected function getInput() {
 
-        $app = JFactory::getApplication();
-        $buf_plg_url = JURI::root(true).'/plugins/system/bufinit';
-        $doc = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $buf_plg_url = URI::root(true).'/plugins/system/bufinit';
+        $doc = Factory::getDocument();
         //$doc->addScriptDeclaration("var pluginVersion = '{$this->getVersion()}';");
 
         $tpath = JPATH_SITE.'/templates/';
@@ -39,7 +43,7 @@ class JFormFieldBufEditorButtons extends JFormField
          $toolbar .= '<div class="btn-group">
             <a class="btn btn-default buf_scss_save">
                 <span class="buf_tb_icon"><i class="fas fa-sync fa-spin"></i></span>
-                <i class="fas fa-save"></i> '.JText::_( 'JAPPLY' ).'
+                <i class="fas fa-save"></i> '.Text::_( 'JAPPLY' ).'
             </a></div>';
 
         $toolbar .= '<div class="buf_toolbar_msg">

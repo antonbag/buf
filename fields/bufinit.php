@@ -9,17 +9,23 @@
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
-jimport('joomla.form.formfield');
+//jimport('joomla.form.formfield');
 
-class JFormFieldBufinit extends JFormField
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
+use Joomla\CMS\Plugin\PluginHelper;
+
+class JFormFieldBufinit extends FormField
 {
     protected $type = 'bufinit';
 
     protected function getInput() {
 
-        $app = JFactory::getApplication();
-        $buf_path = JURI::root(true).'/templates/buf/backend';
-        $doc = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $buf_path = URI::root(true).'/templates/buf/backend';
+        $doc = Factory::getDocument();
         $doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
 
         $tpath_real = realpath(JPATH_SITE.'/templates/');
@@ -40,7 +46,9 @@ class JFormFieldBufinit extends JFormField
         
         //fa 5
 
-        $jversion_api = new JVersion();
+        $jversion_api = new Version();
+
+
         //$jversion = preg_replace('#^([0-9\.]+)(|.*)$#', '$1', $jversion_api->getShortVersion());
         $jversion = substr($jversion_api->getShortVersion(), 0, 1);
 
@@ -76,7 +84,7 @@ class JFormFieldBufinit extends JFormField
         if(is_dir( JPATH_SITE.'/plugins/ajax/bufajax')){
            
           //plugin exists
-          if(JPluginHelper::isEnabled('ajax', 'bufajax')){
+          if(PluginHelper::isEnabled('ajax', 'bufajax')){
             $template_init .= '<span class="badge badge-success">'.$this->getVersion().'</span>';
           }else{
             $template_init .= '<span class="alert alert-warning buf_ajax_not_enabled"><i class="fas fa-exclamation-triangle"></i> PLUGIN NOT ENABLED. Buf ajax plugin is present but not enabled. ';
@@ -129,7 +137,7 @@ class JFormFieldBufinit extends JFormField
     }
 
     private function getVersion() {
-      $db = JFactory::getDBO();
+      $db = Factory::getDBO();
       $query = $db->getQuery(true);
 
       $element = 'bufajax';

@@ -32,33 +32,32 @@ p {
 
 //BOOTSTRAP ////////////////////////////
 //////////////////////////////////////
-.container {
+.bs_version_4{
+  .container {
     width: 100%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-}
+  }
 
-.container-fluid {
+  .container-fluid {
     width: 100%;
-}
+  }
 
-.row {
+  .row {
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
+  } 
 }
+
 
 .img-fluid {
     max-width: 100%;
     height: auto;
 }
-
-
-
-
 
 
 
@@ -87,6 +86,7 @@ div.bg{
     	width: 100%;
 	}
 }
+
 
 
 @media (min-width: 768px){

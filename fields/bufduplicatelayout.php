@@ -15,6 +15,7 @@ defined ('_JEXEC') or die ('resticted aceess');
 //v4
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 
 class JFormFieldBufDuplicateLayout extends FormField
 {
@@ -42,15 +43,15 @@ class JFormFieldBufDuplicateLayout extends FormField
                 $toolbar .= '<div class="buf_duplicate_layout">';
                
 
-                    $toolbar .= '<a class="btn btn-default buf_duplicate_layout_a"><i class="fas fa-plus-circle"></i> '. JText::_( 'TPL_BUF_LAYOUT_NEW' ).'</a>';
+                    $toolbar .= '<a class="btn btn-default buf_duplicate_layout_a"><i class="fas fa-plus-circle"></i> '. Text::_( 'TPL_BUF_LAYOUT_NEW' ).'</a>';
 
 
                     $toolbar .= '<div class="buf_layout_new_name_wrapper buf_hidden input-prepend input-append">
 
                             <input type="text" name="buf_layout_new_name" id="buf_layout_name" value="" placeholder="layout name" class="input hasTooltip" data-original-title="" title="">
 
-                            <a class="btn btn-default buf_btn_create_layout" title="Create layout" href="#"><i class="fa fa-clone"></i> '. JText::_( 'TPL_BUF_LAYOUT_CLONE' ).'</a>
-                            <a class="btn btn-default buf_btn_cancel_layout" title="Cancel layout" href="#"><i class="fa fa-times"></i> '. JText::_( 'JCANCEL' ).'</a>
+                            <a class="btn btn-default buf_btn_create_layout" title="Create layout" href="#"><i class="fa fa-clone"></i> '. Text::_( 'TPL_BUF_LAYOUT_CLONE' ).'</a>
+                            <a class="btn btn-default buf_btn_cancel_layout" title="Cancel layout" href="#"><i class="fa fa-times"></i> '. Text::_( 'JCANCEL' ).'</a>
                     </div>';
 
                     $toolbar .= '<span class="buf_duplicate_layout_msg"></span>';   
@@ -60,7 +61,7 @@ class JFormFieldBufDuplicateLayout extends FormField
                 //ZIP
                 $toolbar .= '<div class="buf_zip_layout">';
 
-                    $toolbar .= '<a class="btn btn-default buf_zip_layout_a"><i class="fas fa-file-archive"></i> '. JText::_( 'TPL_BUF_LAYOUT_ZIP' ).'</a>';
+                    $toolbar .= '<a class="btn btn-default buf_zip_layout_a"><i class="fas fa-file-archive"></i> '. Text::_( 'TPL_BUF_LAYOUT_ZIP' ).'</a>';
 
                 $toolbar .= '</div>';
 
@@ -79,7 +80,7 @@ class JFormFieldBufDuplicateLayout extends FormField
     }
 
     public function getLabel(){
-     return JText::_( 'TPL_BUF_LAYOUT_TOOLS');
+        return Text::_( 'TPL_BUF_LAYOUT_TOOLS');
     }
 
 
