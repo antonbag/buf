@@ -9,6 +9,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 
+
 ///////////////////////
 //INIT DEBUG
 ///////////////////////
@@ -16,9 +17,6 @@ use Joomla\Registry\Registry;
 $startmicro = microtime(TRUE);
 $buf_debug = array();
 $buf_debug += addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
-
-
-
 
 
 
@@ -66,7 +64,8 @@ $active = (object) array('alias' => 'noactivefound');
 if($app->getMenu()->getActive()){
 	$active = $app->getMenu()->getActive();
 }
-$menutype = $menu->getActive()->menutype;
+
+$menutype = ($menu->getActive() != null) ? $menu->getActive()->menutype: '';
 
 $docalias = OutputFilter::stringUrlSafe($doc->title);
 $pageclass = $params->get('pageclass_sfx','');
