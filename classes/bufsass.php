@@ -22,6 +22,7 @@ class BUFsass
   //public static $vendorpath = JPATH_SITE.'/templates/buf/vendor';
   public static $libspath = JPATH_SITE.'/templates/buf/libs';
   public static $img_path;
+  public static $layout_img_path;
   public static $buf_layout;
   public static $recache;
   public static $isajax = false;
@@ -72,8 +73,11 @@ class BUFsass
 
   public static function runsass($templateid='', $params='', $template_name='', $startmicro='', $bs_or_fa=''){
 
-    $uri = Uri::base();
-    self::$img_path = $uri.'templates/buf/images/';
+    $uri = Uri::root();
+
+
+
+
     self::$startmicro = $startmicro;
     $session = Factory::getSession();
     
@@ -107,6 +111,11 @@ class BUFsass
       $process = $templateparams->get('runless', 0);
     }
 
+
+    self::$buf_layout = $templateparams->get('buf_layout','default');
+    self::$img_path = $uri.'templates/buf/images/';
+    self::$layout_img_path = $uri.'templates/buf/'.self::$buf_layout.'images/';
+
     //PARAMS
     $sass_editor = $templateparams->get('create_editor',0);
     $sass_compresion = $templateparams->get('buf_sass_compression', 'EXPANDED');
@@ -133,16 +142,9 @@ class BUFsass
 
 		$bs_5 = new Registry; 
 		$bs_5->loadString(json_encode($templateparams->get('buf_bs_v5'))); 
-    $buf_bs5_files  = $bs_5->get('buf_bs_files', '');
+
 
     self::$buf_bs_css_source = $bs_5->get('buf_bootstrap_css', 'cdn');
-
-  
-    $buf_bs = $templateparams->get('buf_bs_files', '');
-    $buf_bs = $bs_4->get('buf_bs_files', '');
-
-  
-  
 
     $bs_styles = new Registry; 
     $bs_styles->loadString(json_encode($templateparams->get('buf_bs_styles'))); 
@@ -168,7 +170,7 @@ class BUFsass
     self::buf_get_container($templateparams->get('buf_bs_container_fluid_max','100%'), $templateparams->get('buf_bs_container_max','1140'),$templateparams->get('buf_bs_container_content_max','1140'));
 
 
-    self::$buf_layout = $templateparams->get('buf_layout','default');
+    
     self::$recache = $templateparams->get('force_recache','0');
 
     self::$cssmix = $templateparams->get('buf_scss_mix','0');
@@ -756,8 +758,10 @@ class BUFsass
 
         //VARIABLES GENERALES
         $imports_css .= '$img_path: "'.self::$img_path.'";';
+        $imports_css .= '$layout_img_path: "'.self::$layout_img_path.'";';
         $imports_css .= '$layout_path: "'.self::$layoutpath.'";';
 
+        
         //OFFCANVAS
         $imports_css .= self::getOffcanvasStyles();
 
@@ -766,8 +770,6 @@ class BUFsass
 
         //DEBUG
        //file_put_contents(self::$cachepath . '/'.self::$css_sha.'.scss', $imports_css);
-
-
 
         $cssOut = $scss->compile($imports_css);  
 

@@ -35,10 +35,6 @@ html {
     overflow-y: auto; // test
 }
 
-body {
-
-}
-
 
 figure.newsflash-image, div.newsflash{
     img{
@@ -77,9 +73,6 @@ div.pagination{
     p.counter{
         font-size:small;
         clear:both;
-    }
-    ul.pagination{
-
     }
 }
 
@@ -129,8 +122,6 @@ div.buf_credits{
 
 /* BUF ACCORDEON
 *********************************************/
-
-
 div.bufaccordion_wrapper{
         margin-bottom:15px;
         margin-top:15px;

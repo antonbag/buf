@@ -114,7 +114,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		
 			<?php $buf_debug += addDebug('offcanvas', 'bars', 'active and module present', $startmicro); ?>
 			
-			<div id="buf_offcanvas" class="offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
+			<div id="buf_offcanvas" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
 				
 				<?php if ($buf_topbar_oc_on){
 						echo  '<div id="buf_topbar_oc" class="'.$buf_topbar_oc_classes.'">';
@@ -218,7 +218,6 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			<img src="<?php echo $buf_bg_img ?>" alt="background-image"/>
 		</div>
 	<?php endif; ?>
-
 
 <?php
 

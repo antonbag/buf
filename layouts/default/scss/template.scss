@@ -9,7 +9,13 @@
 
 
 //IMAGES
-//background-image:url(#{$img_path}/yourimage.png);
+//background-image:url(#{$img_path}yourimage.png);
+//LAYOUT IMAGES
+//background-image:url(#{$layout_img_path}yourimage.png);
+
+//LAYOUT
+//background-image:url(#{$layout_path}yourfile.css);
+
 
 //VARIABLES
 $color: #57616d;
