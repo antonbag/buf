@@ -276,7 +276,7 @@ class BUFsass
                 
                 if(in_array($value, $bs5files)){
                   //$sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
-                  self::$buf_debug += self::addDebug('BS5 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
+                  self::$buf_debug += self::addDebug('BS5 | '.$value, 'bootstrap fab', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
                 }   
                 
                 $sass_bs_files += array(self::$libspath . '/bootstrap/scss/bootstrap-utilities.scss' => $uri);

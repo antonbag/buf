@@ -485,7 +485,7 @@ if($runless == '1' || $buf_edit_base == 1 || $base_css_exists==false || $edit_ba
 
 	//if($buf_bs_on){
 		include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass_base.php';
-		$buf_debug += addDebug('BS4 | scss', 'flag', 'Run runsass_base.php', $startmicro, 'table-default','logic_base.php');
+		$buf_debug += addDebug('BS | scss', 'flag', 'Run runsass_base.php', $startmicro, 'table-default','logic_base.php');
 	//}
 }
 

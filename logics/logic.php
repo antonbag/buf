@@ -249,8 +249,6 @@ if(!empty($buf_load_custom_js->buf_load_custom_js_script)){
 }
 
 
-
-
 /********************************************************************************************************/
 /*****  UNSET SCRIPTS ********/
 /********************************************************************************************************/
@@ -266,7 +264,7 @@ if($templateparams->get('buf_unset','') && $edit==false){
 		
 		unset($doc->_scripts[$this->baseurl .'/'.$unset]);
 		
-		$buf_debug += addDebug(' Unset_JS logic | '.$key, 'trash far', '<strong>Unset </strong> '.$unset, $startmicro, 'table-danger', 'logic.php');
+		$buf_debug += addDebug(' Unset_JS logic | '.$key, 'trash-alt fas', '<strong>Unset </strong> '.$unset, $startmicro, 'table-danger', 'logic.php');
 
 	}
 

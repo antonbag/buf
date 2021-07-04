@@ -112,7 +112,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<!-- OFFCANVAS -->
 	<?php if ($buf_offcanvas) : ?>
 		
-			<?php $buf_debug += addDebug('offcanvas', 'bars', 'active and module present', $startmicro); ?>
+			<?php $buf_debug += addDebug('offcanvas', 'bars', 'active', $startmicro, 'table-success', 'index.php');?>
 			
 			<div id="buf_offcanvas" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
 				

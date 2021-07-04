@@ -134,7 +134,7 @@
 
 @each $color, $value in $table-variants {
 
-  //@include table-variant($color, $value);
+  @include table-variant($color, $value);
   
 }
 
