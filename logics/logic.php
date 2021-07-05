@@ -165,7 +165,8 @@ if($buf_bs_on){
 		/*******  BS5 CDN LOADING  **********/
 		/***************************/
 
-		if($bs_5->get("buf_bootstrap_css",'cdn')){
+		if($bs_5->get("buf_bootstrap_css",'cdn')=='cdn'){
+
 			$doc->addStyleSheet(
 				'//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css',
 				array(), 

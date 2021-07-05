@@ -199,7 +199,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				<a href="https://jtotal.org/buf-template" target="_blank" rel="nofollow" rel="noopener">
 					<picture class="img-responsive">
 						<source type="image" srcset="templates/buf/images/buf_logos/buf_logo_footer.svg">
-						<img class="img-responsive" src="templates/buf/images/buf_logos/buf_logo_footer.png" alt="buf template">
+						<img class="img-responsive" src="templates/buf/images/buf_logos/buf_logo_footer.png" width="32" height="33" alt="buf template">
 					</picture>
 				</a>
 			</div>
@@ -230,7 +230,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		}
 	}else{
 
-		echo '<div class="buf_dev_mode" style="position:fixed; bottom:0px; left:0px;z-index:100;    width: 100%;padding: 4px 10px; display: flex;align-items: center;
+		echo '<div class="buf_dev_mode" style="position:fixed; bottom:0px; left:0px;z-index:100; width: 100%;padding: 4px 10px; display: flex;align-items: center;
     				justify-content: space-between;">
     				<a></a>
 				  	<a class="buf_dev_mode_edit_base" href="index.php"><i class="fas fa-box-open"></i> Exit base mode</a>

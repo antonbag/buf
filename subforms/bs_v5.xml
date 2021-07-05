@@ -88,11 +88,11 @@
 			<option value="offcanvas">offcanvas</option>
 
 
-
 		</group>
 
 		<group label="Helpers">
 			<option value="helpers">helpers</option>
+			<option value="api">api</option>
 		</group>
 
 	</field>

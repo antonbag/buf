@@ -1136,7 +1136,7 @@ jQuery(function($){
                     'functions','variables','mixins', 'root', 'reboot', 'utilities', 'grid', 
                      'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
                     'dropdown', 'button-group', 'nav', 'navbar', 
-                    'card', 'pagination', 'list-group', 'close'];
+                    'card', 'pagination', 'list-group', 'close', 'api'];
             }
   
 

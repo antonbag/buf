@@ -64,7 +64,7 @@ class BUFsass
   "containers","grid",  "tables",  "forms",  "buttons",  "transitions",  "dropdown",
   "button-group",  "nav",  "navbar",  "card",  "accordion",  "breadcrumb",  "pagination",  "badge",
   "alert",  "progress",  "list-group",  "close",  "toasts",  "modal",  "tooltip",  "popover",
-  "carousel",  "spinners",  "offcanvas",  "helpers"];
+  "carousel",  "spinners",  "offcanvas",  "helpers", "api"];
 
   //just in devel
   public static $debug_develmode_bs = false;
@@ -250,7 +250,6 @@ class BUFsass
                 $bs4files = $bs_4->get('buf_bs_files', '');
 
                 foreach ($bs4files as $key => $value) {
-                
                   $sass_bs_files += array(self::$libspath . '/bootstrap4/scss/_'.$value.'.scss' => $uri);
                   self::$buf_debug += self::addDebug('BS4 | '.$value, 'cubes', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
                 }
@@ -268,20 +267,26 @@ class BUFsass
 
               //BOOSTRAP
               //select correnct order and files
-              $bs5files = $bs_5->get('buf_bs_files', '');
+              $bs5files = $bs_5->get('buf_bs_files', array());
 
               //aproximacion diferente: 
               //recorro el array de todos archivos y veo si coincide. Así preservo el orden.
               foreach (self::$bs5_all as $key => $value) {
                 
                 if(in_array($value, $bs5files)){
-                  //$sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
+
+                  //special api case
+                  if($value == 'api'){
+                    $sass_bs_files += array(self::$libspath . '/bootstrap/scss/utilities/_'.$value.'.scss' => $uri);
+                  }else{
+                    $sass_bs_files += array(self::$libspath . '/bootstrap/scss/_'.$value.'.scss' => $uri);
+                  }
+                  
                   self::$buf_debug += self::addDebug('BS5 | '.$value, 'bootstrap fab', '/bootstrap/scss/_'.$value.'.scss', $startmicro, 'table-secondary');
                 }   
-                
-                $sass_bs_files += array(self::$libspath . '/bootstrap/scss/bootstrap-utilities.scss' => $uri);
-                
               }
+
+              //$sass_bs_files += array(self::$libspath . '/bootstrap/scss/utilities/_api.scss' => $uri);
           }
 
         }
@@ -637,10 +642,16 @@ class BUFsass
 
             foreach ($sass_bs_files as $key => $value) {
 
-              $imports .= '/*'.$key.'";*/';
+
+
+
+
+              $imports .= '
+              /*'.$key.'*/
+              ';
               $imports .= '@import "'.$key.'";';
               
-              //add the custom variables before functions
+              //add the custom variables before _mixins
               if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){
                 $imports .= self::bs5_custom($bs_custom);
               }
@@ -650,12 +661,10 @@ class BUFsass
             self::$buf_debug += self::addDebug('BS CSS SOURCE', 'css3-alt fab', 'NOT CUSTOM <small>'.self::$buf_bs_css_source, self::$startmicro, 'table-info');
           }
 
-
          
         }
 
   
-
         //buf_bs_fluid_max
         $imports .= '@media (min-width: 1200px){
           .container-fluid {
@@ -682,6 +691,8 @@ class BUFsass
         if (!file_exists(self::$cachepath)) {
             mkdir(self::$cachepath, 0777, true);
         }
+
+        file_put_contents(self::$cachepath . '/buf_bs.scss', $imports);
 
         file_put_contents(self::$cachepath . '/buf_bs.css', $cssOut);
         
