@@ -20,7 +20,7 @@ function buf_try(){
 	  setTimeout(function() { buf_try() }, 1000);
 	}
 }
-
+ 
 function buf_debug(msg){
 	if(buf_params.debug) console.log('BUF |-*-| '+msg);
 }

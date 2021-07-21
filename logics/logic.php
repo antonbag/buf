@@ -174,12 +174,8 @@ if($buf_bs_on){
 				'rel'=>'stylesheet',
 				'crossorigin'=>'anonymous')
 			);
-
 		}
-
 	}
-
-
 }
 
 
@@ -264,7 +260,6 @@ if($templateparams->get('buf_unset','') && $edit==false){
 	foreach ($templateparams->get('buf_unset','') as $key => $unset) {
 		
 		unset($doc->_scripts[$this->baseurl .'/'.$unset]);
-		
 		$buf_debug += addDebug(' Unset_JS logic | '.$key, 'trash-alt fas', '<strong>Unset </strong> '.$unset, $startmicro, 'table-danger', 'logic.php');
 
 	}
@@ -298,11 +293,8 @@ if($buf_remove_from_script != ''){
 
 
 
-
 /***************************/
 /*******  JS CUSTOM REMOVE ********/
-
-
 
 
 
@@ -310,7 +302,6 @@ if($templateparams->get('buf_custom_unset','')){
 	$buf_custom_unset = json_decode($templateparams->get('buf_custom_unset',''))->buf_custom_unset_script;
 
 	if($buf_custom_unset != ''){
-
 
 		foreach ($buf_custom_unset as $key => $defer_cus_js) {
 			

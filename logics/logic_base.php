@@ -8,7 +8,7 @@ use Joomla\Application\Web\WebClient;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Helper\ModuleHelper;
 
 ///////////////////////
 //INIT DEBUG
@@ -57,6 +57,8 @@ $jinput = $app->input;
 //APP PARAMS
 ///////////////////////
 $params = $app->getParams();
+
+
 $templateparams	= $app->getTemplate(true)->params;
 $menu = $app->getMenu();
 
@@ -326,8 +328,30 @@ $buf_offcanvas_position = $templateparams->get('buf_offcanvas_position','buf_off
 $buf_offcanvas_style = $templateparams->get('buf_offcanvas_style','buf_off_move');
 
 $buf_offcanvas_positions =  $templateparams->get('buf_offcanvas_positions','');
+$buf_offcanvas_modules = '';
 
-    
+/****************************************************/
+/******** CUSTOM MODULES IN CANVAS  *****************/
+if($buf_offcanvas_positions !=''){
+
+	$buf_offcanvas_modules .= '<div class="offcanvas_module_in">';
+
+		//$buf_offcanvas_positions = 'menu_portada';
+		$buf_offcanvas_positions_array = explode(',',$buf_offcanvas_positions);
+							
+		foreach ($buf_offcanvas_positions_array as $b_off) {
+			$modules = ModuleHelper::getModules($b_off);
+			
+			foreach ($modules as $module) {
+				$buf_offcanvas_modules .=  ModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
+			}
+		}
+	$buf_offcanvas_modules .=  '</div>';
+}
+
+
+
+
 
 //IMAGE
 $buf_bg_img = $templateparams->get('buf_bg_img',false);

@@ -133,24 +133,8 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 
 						/****************************************************/
 						/******** CUSTOM MODULES IN CANVAS  *****************/
-						if($buf_offcanvas_positions !=''){
-
-							echo '<div class="offcanvas_module_in">';
-
-								//$buf_offcanvas_positions = 'menu_portada';
-								$buf_offcanvas_positions_array = explode(',',$buf_offcanvas_positions);
-													
-								jimport('joomla.application.module.helper');
-
-								foreach ($buf_offcanvas_positions_array as $b_off) {
-									$modules = JModuleHelper::getModules($b_off);
-									
-									foreach ($modules as $module) {
-										echo JModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
-									}
-								}
-							echo '</div>';
-						}
+						//from logic_base;
+						echo $buf_offcanvas_modules;
 						
 						/***************************************/
 						/*****************  DEBUG in CANVAS  *****************/

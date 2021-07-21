@@ -59,12 +59,11 @@ class BUFsass
   public static $buf_bs_css_source = "cdn";
 
 
-
   public static $bs5_all = ["functions","variables","mixins","utilities","root","reboot","type","images",
   "containers","grid",  "tables",  "forms",  "buttons",  "transitions",  "dropdown",
   "button-group",  "nav",  "navbar",  "card",  "accordion",  "breadcrumb",  "pagination",  "badge",
   "alert",  "progress",  "list-group",  "close",  "toasts",  "modal",  "tooltip",  "popover",
-  "carousel",  "spinners",  "offcanvas",  "helpers", "api"];
+  "carousel",  "spinners",  "offcanvas", "helpers", "api"];
 
   //just in devel
   public static $debug_develmode_bs = false;
@@ -162,9 +161,6 @@ class BUFsass
       'bs_custom_light'      => $bs_styles->get('bs_custom_light', ''),
       'bs_custom_dark'       => $bs_styles->get('bs_custom_dark', '')
     );
-
-
-
 
     //SET CONTAINER PARAMS
     self::buf_get_container($templateparams->get('buf_bs_container_fluid_max','100%'), $templateparams->get('buf_bs_container_max','1140'),$templateparams->get('buf_bs_container_content_max','1140'));
@@ -683,6 +679,7 @@ class BUFsass
           }
         }';
 
+   
 
         $cssOut = $scss->compile($imports);
 
@@ -982,18 +979,31 @@ class BUFsass
 
     $custom .= '$theme-colors: (';
 
-    if($bs4_custom['bs_custom_primary']) $custom .= '"primary": '.$bs4_custom['bs_custom_primary'].',';
-    if($bs4_custom['bs_custom_secondary']) $custom .= '"secondary": '.$bs4_custom['bs_custom_secondary'].',';
-    if($bs4_custom['bs_custom_success']) $custom .= '"success": '.$bs4_custom['bs_custom_success'].',';
-    if($bs4_custom['bs_custom_info']) $custom .= '"info": '.$bs4_custom['bs_custom_info'].',';
-    if($bs4_custom['bs_custom_warning']) $custom .= '"warning": '.$bs4_custom['bs_custom_warning'].',';
-    if($bs4_custom['bs_custom_danger']) $custom .= '"danger": '.$bs4_custom['bs_custom_danger'].',';
-    if($bs4_custom['bs_custom_light']) $custom .= '"light": '.$bs4_custom['bs_custom_light'].',';
-    if($bs4_custom['bs_custom_dark']) $custom .= '"dark": '.$bs4_custom['bs_custom_dark'].',';
+    //if($bs4_custom['bs_custom_primary']) $custom .= '"primary": '.$bs4_custom['bs_custom_primary'].',';
+    //if($bs4_custom['bs_custom_secondary']) $custom .= '"secondary": '.$bs4_custom['bs_custom_secondary'].',';
+    //if($bs4_custom['bs_custom_success']) $custom .= '"success": '.$bs4_custom['bs_custom_success'].',';
+    //if($bs4_custom['bs_custom_info']) $custom .= '"info": '.$bs4_custom['bs_custom_info'].',';
+    //if($bs4_custom['bs_custom_warning']) $custom .= '"warning": '.$bs4_custom['bs_custom_warning'].',';
+    //if($bs4_custom['bs_custom_danger']) $custom .= '"danger": '.$bs4_custom['bs_custom_danger'].',';
+    //if($bs4_custom['bs_custom_light']) $custom .= '"light": '.$bs4_custom['bs_custom_light'].',';
+    //if($bs4_custom['bs_custom_dark']) $custom .= '"dark": '.$bs4_custom['bs_custom_dark'].',';
 
-     //$custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
+    $custom .= ($bs4_custom['bs_custom_primary']) ? '"primary": '.$bs4_custom['bs_custom_primary'].',' : '"primary": $primary,';
+    $custom .= ($bs4_custom['bs_custom_secondary']) ? '"secondary": '.$bs4_custom['bs_custom_secondary'].',' : '"secondary": $secondary,';
+    $custom .= ($bs4_custom['bs_custom_success']) ? '"success": '.$bs4_custom['bs_custom_success'].',' : '"success": $success,';
+    $custom .= ($bs4_custom['bs_custom_info']) ? '"info": '.$bs4_custom['bs_custom_info'].',' : '"info": $info,';
+    $custom .= ($bs4_custom['bs_custom_warning']) ? '"warning": '.$bs4_custom['bs_custom_warning'].',' : '"warning": $warning,';
+    $custom .= ($bs4_custom['bs_custom_danger']) ? '"danger": '.$bs4_custom['bs_custom_danger'].',' : '"danger": $danger,';
+    $custom .= ($bs4_custom['bs_custom_light']) ? '"light": '.$bs4_custom['bs_custom_light'].',' : '"light": $light,';
+    $custom .= ($bs4_custom['bs_custom_dark']) ? '"dark": '.$bs4_custom['bs_custom_dark'].',' : '"dark": $dark,';
+
+
+    //$custom .= '"primary": '.$bs4_custom['bs4_custom_primary'].',';
 
     $custom .= ');';
+
+
+
 
     return $custom;
   }

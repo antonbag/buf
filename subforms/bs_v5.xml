@@ -38,7 +38,10 @@
 		<option value="custom">TPL_BUF_BS_CUSTOM</option>
 	</field>
 	<!--function.scss siempre-->
-	<field name="buf_bs_files" type="groupedlist" showon="buf_bootstrap_css:custom" default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions"]' multiple="true" label="TPL_BUF_BOOTSTRAP4_FILES" description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
+	<field name="buf_bs_files" 
+		type="groupedlist" 
+		showon="buf_bootstrap_css:custom" 
+		default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions", "helpers", "api"]' multiple="true" label="TPL_BUF_BOOTSTRAP4_FILES" description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
 
 		<!--<option value="minimum">Minimum</option>
 				  	<option value="recommended">Recomended</option>-->
