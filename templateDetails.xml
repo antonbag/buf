@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>21-jul-2021</creationDate>
+	<creationDate>06-sep-2021</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.5</version>
+	<version>2.3.6</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data">
             <h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
-            <small class="buf_version badge badge-success">2.3.5</small>
+            <small class="buf_version badge badge-success">2.3.6</small>
             <small>Bootstrap 5.0.2</small> | 
             <small>FA5 5.13.0</small> | 
             <small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
@@ -1011,6 +1011,17 @@
 					<option value="1">JYES</option>
 				</field>
 
+				<field name="buf_analytics_version" 
+					type="radio"
+					default="3"
+					class="btn-group" 
+					label="TPL_BUF_ANALYTICS_VERSION" 
+					description="TPL_BUF_ANALYTICS_VERSION_DESC"
+					showon="buf_analytics:1"
+				>	
+					<option value="3">v3</option>
+					<option value="4"> v4</option>
+				</field>
 
 				<field name="buf_analytics_code" 
 					type="text" 
@@ -1018,21 +1029,30 @@
 					class="btn-group" 
 					label="TPL_BUF_ANALYTICS_CODE" 
 					description="TPL_BUF_ANALYTICS_CODE_DESC"
-					showon="buf_analytics:1"
+					showon="buf_analytics:1[AND]buf_analytics_version:3"
 				/>
-                
+
+				<field name="buf_analytics_propertyid" 
+					type="text" 
+					default="XXXXXXXXX" 
+					class="btn-group" 
+					label="TPL_BUF_ANALYTICS_PROPERTY_ID" 
+					description="TPL_BUF_ANALYTICS_PROPERTY_ID_DESC"
+					showon="buf_analytics:1[AND]buf_analytics_version:4"
+				/>
+<!--                 
                 <field name="buf_analytics_storage" 
 					type="radio" 
 					default="0" 
 					class="btn-group" 
 					label="TPL_BUF_ANALYTICS_STORAGE" 
 					description="TPL_BUF_ANALYTICS_STORAGE_DESC"
-					showon="buf_analytics:1"
+					showon="buf_analytics:1[AND]buf_analytics_version:3"
 					>
 					<option value="0">BUF_NO_RECOM</option>
 					<option value="1">JYES</option>
 				</field>
-                
+                 -->
 
 			</fieldset>
 		</fields>
