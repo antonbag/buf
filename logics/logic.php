@@ -588,21 +588,46 @@ if($templateparams->get('buf_analytics', 0)){
 		
 		//$doc->addScript('templates/buf/js/analytics/buf_gtag.js?id='.$a_code, false, true);
 
-		//$doc->addScript('templates/buf/js/analytics/gtag.js?id='.$a_code, array(), array('async'=>'async'));
-		$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, array(), array('async'=>'async'));
+		
+		//$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, array(), array('async'=>'async'));
 
 
+		$s = JFactory::getSession();
 
-		$doc->addScriptDeclaration("
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			gtag('config', '".$a_code."');
-		");
+
+		if($buf_analytics_storage){
+			$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, array(), array('async'=>'async'));
+
+			$doc->addScriptDeclaration("
+
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+				ga('create', '".$a_code."', 'auto');
+				ga('send', 'pageview');
+			");
+		}else{
+			$doc->addScript('templates/buf/js/analytics/buf_gtag.js?id='.$a_code, array(), array('async'=>'async'));
+			$doc->addScriptDeclaration("
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+				ga('create', '".$a_code."', {'storage': 'none', 'clientId': '".$s->getId()."'});
+				ga('send', 'pageview');
+			");
+		}
+
+
 	
-
-
-
+/*
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', '".$a_code."');
+*/
 
 /*
 

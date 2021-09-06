@@ -6,11 +6,11 @@
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.6</version>
+	<version>2.3.7</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data">
             <h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png"/></h1>
-            <small class="buf_version badge badge-success">2.3.6</small>
+            <small class="buf_version badge badge-success">2.3.7</small>
             <small>Bootstrap 5.0.2</small> | 
             <small>FA5 5.13.0</small> | 
             <small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
@@ -1040,7 +1040,7 @@
 					description="TPL_BUF_ANALYTICS_PROPERTY_ID_DESC"
 					showon="buf_analytics:1[AND]buf_analytics_version:4"
 				/>
-<!--                 
+                 
                 <field name="buf_analytics_storage" 
 					type="radio" 
 					default="0" 
@@ -1049,12 +1049,12 @@
 					description="TPL_BUF_ANALYTICS_STORAGE_DESC"
 					showon="buf_analytics:1[AND]buf_analytics_version:3"
 					>
-					<option value="0">BUF_NO_RECOM</option>
-					<option value="1">JYES</option>
+					<option value="0">JSession</option>
+					<option value="1">BUF_AUTO</option>
 				</field>
-                 -->
-
-			</fieldset>
+                
+				 
+				 </fieldset>
 		</fields>
 	</config>
 	<!--<updateservers>
