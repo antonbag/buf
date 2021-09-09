@@ -620,27 +620,27 @@ class BUFsass
 
         $imports = '';
        
-
         if(self::$buf_bs_on == 4){
 
-          $imports .= self::bs4_custom($bs_custom);
-
+          //recorro los archivos de bs
           foreach ($sass_bs_files as $key => $value) {
+            
             $imports .= '@import "'.$key.'";';
-          }
 
+            //add the custom variables before _mixins
+            if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){
+              $imports .= self::bs4_custom($bs_custom);
+            }
+          }
         }
 
 
         if(self::$buf_bs_on == 5){
 
           if(self::$buf_bs_css_source == "custom"){
-
+            
+            //recorro los archivos de bs5
             foreach ($sass_bs_files as $key => $value) {
-
-
-
-
 
               $imports .= '
               /*'.$key.'*/
