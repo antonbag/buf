@@ -5,7 +5,8 @@
     <field name="buf_topbar_on" 
         type="radio" 
         default="0" 
-        class="btn-group" 
+        class="btn-group"
+        layout="joomla.form.field.radio.switcher"
         label="TPL_BUF_TOPBAR_ON">
         <option value="0">JNO</option>
         <option value="1">JYES</option>
@@ -17,18 +18,34 @@
         class="btn-group" 
         label="TPL_BUF_TOPBAR_IMAGE_SHOW" 
         showon="buf_topbar_on:1"
+        layout="joomla.form.field.radio.switcher"
     >
         <option value="0">JNO</option>
         <option value="1">JYES</option>
     </field>
 
-    <field name="buf_topbar_logo" label="TPL_BUF_TOPBAR_LOGO" description="TPL_BUF_TOPBAR_LOGO_DESC" type="media" directory="" default="templates/buf/images/buf_logos/logo_buf_64.webp" showon="buf_topbar_on:1"/>
+    <field name="buf_topbar_logo" 
+        label="TPL_BUF_TOPBAR_LOGO" 
+        description="TPL_BUF_TOPBAR_LOGO_DESC" 
+        type="media" 
+        directory="" 
+        default="templates/buf/images/buf_logos/logo_buf_64.webp" 
+        showon="buf_topbar_on:1"
+    />
 
-    <field name="buf_topbar_logo_fallback" label="TPL_BUF_TOPBAR_LOGO_FALLBACK" description="TPL_BUF_TOPBAR_LOGO_FALLBACK_DESC" default="templates/buf/images/buf_logos/logo_buf_64.png" type="media" directory="" showon="buf_topbar_on:1"/>
+    <field 
+        name="buf_topbar_logo_fallback" 
+        label="TPL_BUF_TOPBAR_LOGO_FALLBACK" 
+        description="TPL_BUF_TOPBAR_LOGO_FALLBACK_DESC" 
+        default="templates/buf/images/buf_logos/logo_buf_64.png" 
+        type="media" 
+        directory="" 
+        showon="buf_topbar_on:1"
+    />
 
     <field name="buf_topbar_logo_pos" 
         type="radio" default="l"
-        class="switcher switcher-primary btn-group" 
+        class="btn-group" 
         label="TPL_BUF_TOPBAR_LOGO_POSITION" 
         showon="buf_topbar_on:1"
     >
@@ -43,6 +60,7 @@
         min="0" max="200" step="1"
         label="TPL_BUF_TOPBAR_H" 
         showon="buf_topbar_on:1"
+        filter="integer"
     />
 
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form>
+    
+				<field name="buf_analytics" 
+					type="radio" 
+					default="0" 
+					class="btn-group"
+					layout="joomla.form.field.radio.switcher"
+					label="JT_ACTIVE">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="buf_analytics_version" 
+					type="radio"
+					default="3"
+					class="btn-group" 
+					label="TPL_BUF_ANALYTICS_VERSION" 
+					description="TPL_BUF_ANALYTICS_VERSION_DESC"
+					showon="buf_analytics:1"
+				>	
+					<option value="3">v3</option>
+					<option value="4"> v4</option>
+				</field>
+
+				<field name="buf_analytics_code" 
+					type="text" 
+					default="UA-XXXXX-Y" 
+					class="" 
+					label="TPL_BUF_ANALYTICS_CODE" 
+					description="TPL_BUF_ANALYTICS_CODE_DESC"
+					showon="buf_analytics:1[AND]buf_analytics_version:3"
+				/>
+                				<!-- anal v4-->
+				<field name="buf_analytics_measurementid" 
+					type="text" 
+					default="G-XXXXXXXXXX" 
+					class="btn-group" 
+					label="TPL_BUF_ANALYTICS_PROPERTY_ID" 
+					description="TPL_BUF_ANALYTICS_PROPERTY_ID_DESC"
+					showon="buf_analytics:1[AND]buf_analytics_version:4"
+				/>
+
+                <field name="buf_analytics_storage" 
+					type="radio" 
+					default="0" 
+					class="btn-group" 
+					layout="joomla.form.field.radio.switcher"
+					label="TPL_BUF_ANALYTICS_STORAGE" 
+					description="TPL_BUF_ANALYTICS_STORAGE_DESC"
+					showon="buf_analytics:1"
+					>
+					<option value="0">BUF_ANAL_COOKIE_DENIED</option>
+					<option value="1">BUF_ANAL_COOKIE_GRANTED</option>
+				</field>
+
+                <field name="buf_analytics_cookie_consent" 
+					type="text" 
+					default="reDimCookieHint" 
+					label="TPL_BUF_ANALYTICS_COOKIE_CONSENT" 
+					description="TPL_BUF_ANALYTICS_COOKIE_CONSENT_DESC"
+					showon="buf_analytics:1[AND]buf_analytics_storage:0"
+				/>
+
+
+</form>

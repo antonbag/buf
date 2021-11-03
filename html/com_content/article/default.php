@@ -7,7 +7,34 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use BUF\BufHelper;
+
 defined('_JEXEC') or die;
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
+{
+    require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
+}else{
+    $app = Factory::getApplication();
+    $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+} 
+
+include_once JPATH_SITE.'/templates/buf/classes/bufhelper.php';
+
+
+
+
+
+$jversion = BufHelper::getJVersion();
+
+
+
+if($jversion == '4'){
+
+	include_once('default_v4.php');
+
+	return;
+}
+
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
@@ -40,54 +67,6 @@ JHtml::_('behavior.caption');
 
 <div class="item-page<?php echo $this->pageclass_sfx; ?>" itemscope itemtype="https://schema.org/Article">
 	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? JFactory::getConfig()->get('language') : $this->item->language; ?>" />
-	
-
-<?php //MULTICATS ANTON ?>
-<?php /*if ($params->get('show_parent_category') && !empty($this->item->parent_slug)) : ?>
-	<dd class="parent-category-name">
-		<?php $title = $this->escape($this->item->parent_title);
-		$url = '<a href="'.JRoute::_(ContentHelperRoute::getCategoryRoute($this->item->parent_slug)).'">'.$title.'</a>';?>
-		<?php if ($params->get('link_parent_category') && !empty($this->item->parent_slug)) : ?>
-			<?php echo JText::sprintf('COM_CONTENT_PARENT', $url); ?>
-		<?php else : ?>
-			<?php echo JText::sprintf('COM_CONTENT_PARENT', $title); ?>
-		<?php endif; ?>
-	</dd>
-<?php endif; ?>
-<?php if ($params->get('show_category')) : ?>
-	<dd class="category-name">
-<?php
-//Mcats
-$language = JFactory::getLanguage();
-$language_tag = $language->getTag(); // loads the current language-tag
-$language->load('com_multicats', JPATH_SITE, $language_tag, true);
-
-echo JText::_('JCATEGORY').": ";
-$db = JFactory::getDbo();
-//get article's all categories - item->catid was cut to current category, so we need to re-read them again
-  $query = "SELECT catid FROM #__content WHERE id = ".$this->item->id;
-  $db->setQuery($query);
-  $catid = $db->loadObject();
-$catarray = explode(',',$catid->catid);
-//$catarray = explode(',',$this->item->catid);
-foreach($catarray as $key => $cat){
-  $query = "SELECT id, title FROM #__categories WHERE id = ".$cat;
-  $db->setQuery($query);
-  $category = $db->loadObject();
-  
-  $title = $this->escape($category->title);
-  $url = '<a href="' . JRoute::_(ContentHelperRoute::getCategoryRoute($category->id)) . '">' . $title . '</a>'; ?>
-  <?php if ($params->get('link_category')) : ?>
-      <?php echo $url; ?>
-  <?php else : ?>
-      <?php echo $title; ?>
-  <?php endif;
-  if(count($catarray) > $key + 1) { echo ","; } else { echo ""; }
-  //End Mcats
-}?> 
-	</dd>
-<?php endif; */?>
-
 
 
 

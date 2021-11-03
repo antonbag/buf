@@ -1,5 +1,6 @@
 <?php defined( '_JEXEC' ) or die;
 
+use BUF\BufHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -31,11 +32,11 @@ if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
 if($base_css_exists == false || $runless == '1' || $buf_edit_base == '1'){
 
 
-	if(!$base_css_exists) $buf_debug += addDebug('BASE css | check', 'cubes', 'base css doesn\'t exist... creating it.', $startmicro, 'table-warning', 'runsass_base.php');
+	if(!$base_css_exists) $buf_debug += BUFHelper::addDebug('BASE css | check', 'cubes', 'base css doesn\'t exist... creating it.', $startmicro, 'table-warning', 'runsass_base.php');
 
 	//if($runless==0) $buf_debug += addDebug('BASE css | check', 'cubes', 'DEV MODE', $startmicro, 'table-default', 'runsass_base.php');
 
-	if($buf_edit_base==1) $buf_debug += addDebug('BASE css | check', 'cubes', 'EDIT BASE MODE', $startmicro, 'table-default', 'runsass_base.php');
+	if($buf_edit_base==1) $buf_debug += BUFHelper::addDebug('BASE css | check', 'cubes', 'EDIT BASE MODE', $startmicro, 'table-default', 'runsass_base.php');
 
 	
 	$uri = Uri::base();

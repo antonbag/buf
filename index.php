@@ -1,27 +1,51 @@
 <!DOCTYPE html>
-<?php defined( '_JEXEC' ) or die; 
+<?php
+
+use BUF\BufHelper;
+
+defined( '_JEXEC' ) or die; 
 include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
+
 ?>
 
 <html lang="<?php echo $this->language; ?>">
 <head>
 
-<?php 
-	echo '<script type="text/javascript">';
-		echo 'var php_buf_params = \''.$params_to_js.'\';';
-	echo '</script>';
-?>
-
-	<jdoc:include type="head" />
+	<?php 
+		echo '<script type="text/javascript">';
+			echo 'var php_buf_params = \''.$params_to_js.'\';';
+		echo '</script>';
+	?>
 
 	<style id="buf_style_base">
 		<?php 
-			//avoid error on load
 			echo file_get_contents('cache/buf_'.$buf_layout.'/base.css');
 			//TEMPLATE BASE CSS
-			$buf_debug += addDebug('BASE CSS', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
+			$buf_debug +=  BUFHelper::addDebug('BASE CSS', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
 		?>
 	</style>
+
+
+	<?php if($jversion=='3'): ?>
+		<jdoc:include type="head" />
+
+	<?php endif;?>
+
+	<?php if($jversion=='4'): ?>
+		<jdoc:include type="metas" />
+		<jdoc:include type="styles" />
+		<jdoc:include type="scripts" />
+	<?php endif;?>
+	
+
+
+
+
+	<?php
+		//PRELOAD 
+		echo $head_preload;
+	?>
+
 
 	<link rel="shortcut icon" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon.ico" />
 
@@ -57,23 +81,12 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		}
 	?>
 
-
 	<meta http-equiv="Cache-control" content="public">
-
-	<!-- Le HTML5 shim and media query for IE8 support -->
-	<!--[if lt IE 9]>
-	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<script type="text/javascript" src="<?php echo $tpath; ?>/js/respond.min.js"></script>
-	<![endif]-->
-
-
-	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-	<!-- <link href="templates/buf/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet"> -->
 
 
 </head>
 
-
+<?php flush(); ?>
 
 <body class="<?php echo implode(" ", $bodyclass); ?> buf_offcanvas_hidden" role="document">
 
@@ -81,15 +94,17 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<!-- OFFCANVAS BUTTON-->
 	<?php if ($buf_offcanvas) : ?>
 			
-			<?php $buf_debug += addDebug('offcanvas_button', 'bars', 'active and module present', $startmicro, 'table-success', 'index.php');?>
 
-			<?php if ($buf_topbar_on){
-				echo  '<div id="buf_topbar" class="'.$buf_topbar_classes.'">';
-				echo $buf_topbar_logo;
-			}else{
-				echo  '<div id="buf_topbar" class="buf_topbar_off">';
-			}
-			?>
+
+			<?php $buf_debug += BUFHelper::addDebug('offcanvas_button', 'bars', 'active and module present', $startmicro, 'table-success', 'index.php');?>
+
+			<?php if ($buf_topbar_on) : ?>
+			<div id="buf_topbar" class="<?php echo $buf_topbar_classes;?>">
+				<?php echo $buf_topbar_logo;?>
+			<?php else : ?>
+			<div id="buf_topbar" class="buf_topbar_off">
+			<?php endif; ?>
+	
 			
 
 		        <button id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
@@ -98,8 +113,6 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				    <span class="hamburger-inner"></span>
 				  </span>
 				</button>
-
-
 			
 			</div>
 			
@@ -112,7 +125,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<!-- OFFCANVAS -->
 	<?php if ($buf_offcanvas) : ?>
 		
-			<?php $buf_debug += addDebug('offcanvas', 'bars', 'active', $startmicro, 'table-success', 'index.php');?>
+			<?php $buf_debug += BUFHelper::addDebug('offcanvas', 'bars', 'active', $startmicro, 'table-success', 'index.php');?>
 			
 			<div id="buf_offcanvas" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
 				
@@ -210,7 +223,11 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	
 	if(!$edit_base_input){
 		if(!$templateparams->get('buf_edit_base', 0)){
-		  include_once JPATH_THEMES.'/'.$this->template.'/logics/logic.php';
+			if(!$check_jtfw || $check_jtfw=='1.0.0' || !$check_jtlibs || $check_jtlibs=='1.0.0'){
+				
+			}else{
+				include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_j'.$jversion.'.php';
+			}
 		}
 	}else{
 
@@ -224,15 +241,12 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 
 ?>
 
-
-	<jdoc:include type="modules" name="debug" style="none" />
+	<jdoc:include type="modules" name="debug"/>
 </body>
 
 
 
 </html>
-
-
 
 
 

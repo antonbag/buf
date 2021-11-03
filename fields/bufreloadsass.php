@@ -1,17 +1,14 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2017 dibuxo
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 
-//no direct accees
-defined ('_JEXEC') or die ('resticted aceess');
+//no direct access
+defined('_JEXEC') or die;
 
-//J3.8
-//jimport('joomla.form.formfield');
-//class JFormFieldBufReloadSass extends JFormField
 
 //J3.9
 use Joomla\CMS\Factory;
@@ -22,8 +19,12 @@ class JFormFieldBufReloadSass extends FormField
 
     protected function getInput() {
 
+      /** @var CMSApplication $app */
+      $app = Factory::getApplication();
 
-      $session = Factory::getSession();
+      /** @var Session $session */
+      $session = $app->getSession();
+
       $reload_sass = $session->get('buf_reload_sass');
       $reload_bs_sass = $session->get('buf_reload_bs_sass');
       $reload_fa_sass = $session->get('buf_reload_fa_sass');

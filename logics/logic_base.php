@@ -1,40 +1,92 @@
 <?php defined( '_JEXEC' ) or die; 
 
 //2.1.0
+
+use BUF\BufHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\Application\Web\WebClient;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Image\Image;
+use JTFramework\JTfunc;
 
 ///////////////////////
 //INIT DEBUG
 ///////////////////////
 
+$app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
+$doc = $app->getDocument();
+$s = $app->getSession();
+$session = $s;
+$jinput = $app->input;
+
+
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
+{
+    require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
+}else{
+    $app = Factory::getApplication();
+    $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+} 
+
+include_once JPATH_SITE.'/templates/buf/classes/bufhelper.php';
+
 $startmicro = microtime(TRUE);
 $buf_debug = array();
-$buf_debug += addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
+$buf_debug += BufHelper::addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
+
+
+$jversion = BufHelper::getJVersion();
+$tmplComponent = ($jinput->get('tmpl','') == 'component') ? true : false;
+
+
+if($jversion == '4'){
+	$wa = $this->getWebAssetManager();
+	// Add Asset registry files
+	$wr = $this->getWebAssetManager()->getRegistry();
+}
+
 
 
 
 ///////////////////////
 //CHECK PHP VERSION
 ///////////////////////
-if(defined('PHP_VERSION')) {
-	$version = PHP_VERSION;
-} elseif(function_exists('phpversion')) {
-	$version = phpversion();
-} else {
-	## No version info. I'll lie and hope for the best.
-	$version = '5.6.0';
+if($jversion=='3'){
+	if(defined('PHP_VERSION')) {
+		$version = PHP_VERSION;
+	} elseif(function_exists('phpversion')) {
+		$version = phpversion();
+	} else {
+		## No version info. I'll lie and hope for the best.
+		$version = '5.6.0';
+	}
+	
+	// An old PHP versIon is installed.
+	if(!version_compare($version, '5.6.0', '>=')){ echo Text::_('You are using an old PHP version. Please upgrade to a newer version');}
+	
 }
 
-// An old PHP versIon is installed.
-if(!version_compare($version, '5.6.0', '>=')){ echo Text::_('You are using an old PHP version. Please upgrade to a newer version');}
-
+if($jversion=='4'){
+	if(defined('PHP_VERSION')) {
+		$version = PHP_VERSION;
+	} elseif(function_exists('phpversion')) {
+		$version = phpversion();
+	} else {
+		## No version info. I'll lie and hope for the best.
+		$version = '7.3.0';
+	}
+	
+	// An old PHP versIon is installed.
+	if(!version_compare($version, '7.3.0', '>=')){ echo Text::_('You are using an old PHP version. Please upgrade to a newer version');}
+	
+}
 
 
 //2.2.0
@@ -47,11 +99,31 @@ if($devel_mode){
 }
 
 
-$app  = Factory::getApplication();
-$doc = Factory::getDocument();
-$session = Factory::getSession();
-$jinput = $app->input;
 
+
+
+
+//* check JTFRAMEWORK
+$check_jtfw = BufHelper::getExtensionVersion('jtframework','');
+	if(!$check_jtfw || $check_jtfw=='1.0.0'){
+		$app->enqueueMessage('<strong>JT Framework required.</strong> 
+		Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a> 
+		or 
+		<a href="https://users.jtotal.org/SOFT/framework/JTframework/pkg_jtfw_current.zip" target="_blank" class="btn btn-default">Download</a> </span>', 'error');
+	;
+}
+
+//* check LIBS  
+$check_jtlibs = BufHelper::getExtensionVersion('jtlibs','');  
+   
+if(!$check_jtlibs || $check_jtlibs=='1.0.0'){
+	$app->enqueueMessage('
+	<strong>JT libs required.</strong> 
+	Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a> 
+	or 
+	<a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download</a> </span>
+	','error');
+}
 
 ///////////////////////
 //APP PARAMS
@@ -63,9 +135,11 @@ $templateparams	= $app->getTemplate(true)->params;
 $menu = $app->getMenu();
 
 $active = (object) array('alias' => 'noactivefound');
-if($app->getMenu()->getActive()){
-	$active = $app->getMenu()->getActive();
+if($menu->getActive()){
+	$active = $menu->getActive();
 }
+
+
 
 $menutype = ($menu->getActive() != null) ? $menu->getActive()->menutype: '';
 
@@ -91,10 +165,13 @@ $edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
 $tpath = $this->baseurl.'/templates/'.$this->template;
 $tpath_abs = JPATH_SITE.'/templates/buf';
 $layoutpath = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout;
-$cachepath = JPATH_CACHE.'/buf_'.$buf_layout.'/';
+$cachepath = JPATH_SITE.'/cache/buf_'.$buf_layout.'/';
+$cache_opath = 'cache/buf_'.$buf_layout.'/';
 $cache_tpath = $this->baseurl.'/cache/buf_'.$buf_layout.'/';
 $libspath = JPATH_SITE.'/templates/buf/libs';
 $jtfw_libspath = JPATH_LIBRARIES.'/jtlibs';
+$libs_media_tpath = $this->baseurl.'/media/jtlibs';
+$libs_media_opath = uri::base().'media/jtlibs';
 
 
 
@@ -122,7 +199,6 @@ $detection = $templateparams->get('buf_offcanvas_detection', 'media');
 if($detection == 'device' || $detection == 'mix'){
 
 	$detected_file = false;
-
 	if(!class_exists('Mobile_Detect')){
 		if(file_exists(JPATH_LIBRARIES.'/jtlibs/mobiledetectlib/Mobile_Detect.php')){
 			require_once JPATH_LIBRARIES.'/jtlibs/mobiledetectlib/Mobile_Detect.php';
@@ -131,7 +207,6 @@ if($detection == 'device' || $detection == 'mix'){
 	}else{
 		$detected_file = true;
 	}
-
 
 
 	if($detected_file){
@@ -152,7 +227,7 @@ if($detection == 'device' || $detection == 'mix'){
 		}
 		$ismobile = $jmobile;
 	}else{
-		$app->enqueueMessage('Class mobile_detect not found. Possible solution: install JT framework libraries.', 'warning');
+		$app->enqueueMessage('Class mobile_detect not found. Possible solution: install or update <a class="btn bg-light" href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip">JT framework libraries</a>.', 'warning');
 	}
 
 }
@@ -229,9 +304,20 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 				}
 				//fallback
 				if($buf_topbar_logo_fallback == '' && $buf_topbar_logo_img != ''){
-					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo"/>';
+					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo"
+					width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
+					height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'" 
+				/>';
 				}else if($buf_topbar_logo_fallback != ''){
-					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_fallback).'" src='.$buf_topbar_logo_fallback.' alt="logo"/>';
+
+					$buf_topbar_logo .= '<img 
+						class="img-fluid" 
+						type="'.mime_content_type($buf_topbar_logo_fallback).'" 
+						src='.$buf_topbar_logo_fallback.' 
+						alt="logo"
+						width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
+						height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'" 
+					/>';
 				}
 
 			$buf_topbar_logo .= '</picture>';
@@ -271,7 +357,10 @@ if($buf_topbar_oc->get('buf_topbar_image_show','0')){
 		$buf_topbar_oc_logo .= '<a href="index.php">';
 		$buf_topbar_oc_logo .= '<picture>';
 			if($buf_topbar_oc_logo_img != '') $buf_topbar_oc_logo .= '<source type="'.mime_content_type($buf_topbar_oc_logo_img).'" srcset="'.$buf_topbar_oc_logo_img.'">';
-			if($buf_topbar_oc_logo_fallback != '') $buf_topbar_oc_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_oc_logo_fallback).'" src='.$buf_topbar_oc_logo_fallback.' alt="logo"/>';
+			if($buf_topbar_oc_logo_fallback != '') $buf_topbar_oc_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_oc_logo_fallback).'" src='.$buf_topbar_oc_logo_fallback.' alt="logo" 
+			width="'.Image::getImageFileProperties($buf_topbar_oc_logo_fallback)->width.'" 
+			height="'.Image::getImageFileProperties($buf_topbar_oc_logo_fallback)->height.'" 
+			/>';
 		$buf_topbar_oc_logo .= '</picture>';
 			
 		$buf_topbar_oc_logo .= '</a>';
@@ -298,16 +387,19 @@ $buf_oc_button_hpos =  $oc_button->get('buf_oc_button_hpos','top');
 
 //JS VARIABLES
 //OLD
-
+/*
+$doc->addScriptDeclaration("var thisWayIsDeprecated;");
 $doc->addScriptDeclaration("var buf_anal_url = '{$buf_anal_url}';");
 $doc->addScriptDeclaration("var buf_path = '{$tpath}';");
 $doc->addScriptDeclaration("var buf_debug = '{$buf_debug_param}';");
 $doc->addScriptDeclaration("var buf_ismobile = '{$ismobile}';");
 $doc->addScriptDeclaration("var buf_layout = '{$buf_layout}';");
+*/
 
 $js_params = array();
 $js_params['buf_anal_url'] 		= $buf_anal_url;
 $js_params['buf_path'] 			= $tpath;
+$js_params['jtlibs_media'] 		= $libs_media_tpath;
 $js_params['debug'] 			= ($buf_debug_param == 1) ? true : false;
 $js_params['ismobile'] 			= $ismobile;
 $js_params['layout'] 			= $buf_layout;
@@ -452,48 +544,6 @@ $css_mix = $templateparams->get('buf_scss_mix', '0');
 
 
 
-/**********************/
-//FONTS
-/**********************/
-if($templateparams->get('buf_googlefonts', 1) && $templateparams->get('buf_googlefonts_name', '') != ''){
-	//$doc->addScript('https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',"text/javascript" , false, true);
-	$gfont = $templateparams->get('buf_googlefonts_name', '');
-
-	$gfont_array = explode('|',$gfont);
-
-	$gfont_families = '';
-
-	foreach ($gfont_array as $key => $value) {
-		if(!$key==0) $gfont_families.=",";
-		$gfont_families.="'".$value."'";
-		
-	}
-	//option FETCH AND ALTER
-		echo "<script>
-
-			const loadGFont = (url) => {
-			  // the 'fetch' equivalent has caching issues
-			  var xhr = new XMLHttpRequest();
-			  xhr.open('GET', url, true);
-			  xhr.onreadystatechange = () => {
-			    if (xhr.readyState == 4 && xhr.status == 200) {
-			      
-			      let css = xhr.responseText;
-
-			      const head = document.getElementsByTagName('head')[0];
-			      const style = document.createElement('style');
-			      style.appendChild(document.createTextNode(css));
-			      head.appendChild(style);
-			    }
-			  };
-			  xhr.send();
-			}
-
-			loadGFont('https://fonts.googleapis.com/css?family=".$gfont."&display=swap');
-
-		</script>";
-	//require 'fonts.php';
-}
 
 
 
@@ -506,11 +556,7 @@ $base_css_exists = file_exists ($cachepath . '/base.css');
 
 
 if($runless == '1' || $buf_edit_base == 1 || $base_css_exists==false || $edit_base_input){
-
-	//if($buf_bs_on){
-		include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass_base.php';
-		$buf_debug += addDebug('BS | scss', 'flag', 'Run runsass_base.php', $startmicro, 'table-default','logic_base.php');
-	//}
+	include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass_base.php';
 }
 
 
@@ -521,7 +567,7 @@ if($runless == '1' || $buf_edit_base == 1 || $base_css_exists==false || $edit_ba
 //PARAMS TO JS
 /***************************************/
 $params_to_js = json_encode(array('params'=>$js_params));
-//$doc->addScriptDeclaration("var php_buf_params = '{$params_to_js}';");
+$doc->addScriptDeclaration("var php_buf_params = '{$params_to_js}';");
 
 
 
@@ -542,17 +588,208 @@ $bodyclass[]= 'bs_version_'.$bs_version;
 
 
 
-/***************************************/
-/***************************************/
-/************ ESSENTIAL FUNCS **********/
-/***************************************/
-/***************************************/
-
-function addDebug($name='', $icon='', $value='', $startmicro=0, $tr_class='', $service=''){
-
-	$current_time = microtime(TRUE);
-	$totaltime = $current_time - $startmicro;
-
-	$mireturn = array($name => array('icon'=>$icon, 'value'=>$value, 'totaltime'=>$totaltime*10000, 'tr_class'=>$tr_class, 'service'=>$service));
-	return $mireturn;
+/***************************/
+/**********************/
+//FONTS
+/**********************/
+/***************************/
+if($templateparams->get('buf_googlefonts', 1) && $templateparams->get('buf_googlefonts_name', '') != ''){
+	include_once('googleFonts.php');
 }
+
+
+/***************************/
+/***************************/
+/*******  CSS  RECACHE  **********/
+/***************************/
+/***************************/
+if($templateparams->get('force_recache', 0)){
+	//true
+	$session = Factory::getSession();
+	$current_css = $session->get('buf_template_sha');
+	if($css_mix){
+		$css_path = $cache_opath.$current_css.'_mix.css';
+	}else{
+		$css_path = $cache_opath.$current_css.'.css';
+	}
+
+}else{
+	if($css_mix){
+		$css_path = $cache_opath.$buf_layout.'_template_mix.css';
+	}else{
+		$css_path = $cache_opath.$buf_layout.'_template.css';
+	}
+}
+
+/***************************/
+/*******  UNSET **********/
+/***************************/
+$unset_js = $templateparams->get('buf_unset','');
+
+
+
+
+/***************************/
+/*******  preload  **********/
+/***************************/
+
+//BUF CSS
+$preload_buf_css = $templateparams->get('buf_optimize_preload_buf','0');
+if($css_mix) $preload_buf_css = false;
+$buf_debug += BufHelper::addDebug('PRELOAD css BUF', 'code', '<strong>Preload</strong> <small>'.var_export($preload_buf_css, true).'</small>', $startmicro, 'table-info', 'logic_base.php');
+
+//OWN CSS
+$preload_own_css = $templateparams->get('buf_optimize_preload_own','0');
+$buf_debug += BufHelper::addDebug('PRELOAD CSS OWN', 'code', '<strong>Preload</strong> <small>'.var_export($preload_own_css, true).'</small>', $startmicro, 'table-info', 'logic_base.php');
+
+//JQUERY
+$preload_jquery_js = $templateparams->get('buf_optimize_preload_jquery','0');
+
+//LOGIC js
+$preload_logic_and_bufoc_js = $templateparams->get('buf_optimize_preload_logic_js','0');
+if($buf_debug_param){
+	$logic_path = $tpath.'/js/logic.js';
+}else{
+	$logic_path = $tpath.'/js/logic.min.js';
+}
+
+
+
+
+/***************************/
+/***************************/
+/*******  JS jQUERY **********/
+/***************************/
+/***************************/
+$buf_jquery = $templateparams->get('buf_jquery',2);
+$jquery_path='';
+
+if($jversion == '3'){
+	if($buf_jquery==2 || $edit){
+		
+		HTMLHelper::_('jquery.framework');
+		$jquery_path = 'media/jui/js/jquery.min.js?'.$doc->getMediaVersion();
+
+		//prevent error if joomla jquery is in unset
+		if(in_array('media/jui/js/jquery.min.js', $unset_js)){
+			$pos = array_search('media/jui/js/jquery.min.js', $unset_js);
+			unset($unset_js[$pos]);
+		}
+
+	}elseif($buf_jquery==1){
+		$defer =  BufHelper::check_defer_v4($templateparams->get('buf_jquery_defer','0'));
+		$doc->addScript(Uri::base().'media/jtlibs/jquery/jquery.min.js',array(), $defer);
+		$buf_debug += BufHelper::addDebug('JQUERY custom', 'code', '<strong>jquery.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic_base.php');
+		$jquery_path = Uri::base().'media/jtlibs/jquery/jquery.min.js';
+	}
+}
+
+
+if($jversion == '4'){
+	
+	if($buf_jquery==2 || $edit){
+
+		$wa->getAsset('script','jquery');
+		//defer
+		$defer =  BufHelper::check_defer_v4($templateparams->get('buf_jquery_defer','0'));
+		foreach ($defer as $key => $v) {
+			//rel="defer" or rel="async"
+			$wa->getAsset('script','jquery')->setAttribute('rel',$v);
+		}
+		
+		$wa->useScript('jquery');
+
+		$jquery_path = $wa->getAsset('script','jquery')->getUri().'?'.$wa->getAsset('script', 'jquery')->getVersion();
+		
+		$buf_debug += BufHelper::addDebug('JQUERY joomla', 'code', '<strong>jquery.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic_base.php');
+
+	}elseif($buf_jquery==1){
+
+		$defer =  BufHelper::check_defer_v4($templateparams->get('buf_jquery_defer','0'));
+		
+		$wr->addExtensionRegistryFile('jtlibs');
+		
+		$wa->getAsset('script', 'jtlibsJQuery');
+		
+		//defer
+		$defer =  BufHelper::check_defer_v4($templateparams->get('buf_jquery_defer','0'));
+		foreach ($defer as $key => $v) {
+			//rel="defer" or rel="async"
+			$wa->getAsset('script', 'jtlibsJQuery')->setAttribute('rel',$v);
+		}
+
+		//$wa->registerAndUseScript('jtlibsJQuery', Uri::base().'media/jtlibs/jquery/jquery.min.js');
+		
+		$jquery_path = $wa->getAsset('script', 'jtlibsJQuery')->getUri();
+		//$jquery_path = $libs_media_opath.'/jquery/jquery.min.js';
+
+		$buf_debug += BufHelper::addDebug('JQUERY custom', 'code', '<strong>jquery.min.js</strong> <small>'.$jquery_path.'</small>', $startmicro, 'table-info', 'logic_base.php');
+		
+	}
+
+	//online/j4final/media/jtlibs/jquery/jquery.min.js?351155d10134bd41e797d3381d29c420
+	//online/j4final/media/jtlibs/jquery/jquery.min.js?351155d10134bd41e797d3381d29c420?351155d10134bd41e797d3381d29c420
+	//online/j4final/media/jtlibs/jquery/jquery.min.js?351155d10134bd41e797d3381d29c420
+	//online/j4final/media/jtlibs/jquery/jquery.min.js?351155d10134bd41e797d3381d29c420
+}
+
+
+
+/***************************/
+/***************************/
+/*******  JS LOGIC **********/
+/***************************/
+/***************************/
+$defer = BufHelper::check_defer_v4($templateparams->get('buf_js_defer',1));
+
+if($jversion == '3'){
+	$doc->addScript($logic_path,array(), $defer);
+	$buf_debug += BufHelper::addDebug('logic.js', 'code', '<strong>logic.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+}
+
+
+if($jversion == '4'){
+	
+	$wa->getAsset('script', 'logic');
+	
+	foreach ($defer as $key => $v) {
+		//rel="defer" or rel="async"
+		$wa->getAsset('script', 'logic')->setAttribute('rel',$v);
+	}
+	$wa->getAsset('script', 'logic')->setAttribute('rel','');
+	//uses logic.min if exists
+	$logic_path = $tpath.'/js/logic.min.js';
+
+	$wa->useScript('logic');
+
+	$buf_debug += BufHelper::addDebug('logic.js', 'code', '<strong>'.$logic_path.'.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+	
+
+}
+
+
+
+/***************************/
+/*******  preload / 2 **********/
+/***************************/
+$head_preload = '';
+
+if($jversion=='3' || $jversion=='4'){
+	if($preload_buf_css)	$head_preload .= '<link rel="preload" href="'.$cache_opath.'buf.css?'.$doc->getMediaVersion().'" as="style">'; 
+	if($preload_own_css)	$head_preload .= '<link rel="preload" href="'.$css_path.'?'.$doc->getMediaVersion().'" as="style">'; 
+}
+
+
+
+// PRELOAD JQUERY JS
+if ((bool) $jquery_path && (bool)$preload_jquery_js) {
+	$head_preload .= '<link rel="preload" href="'.$jquery_path.'?'.$doc->getMediaVersion().'" as="script">'; 
+	$buf_debug += BufHelper::addDebug('PRELOAD JQuery js', 'code', '<strong>Preload</strong> <small>'.$preload_jquery_js.' | '.$jquery_path.'</small>', $startmicro, 'table-info', 'logic_base.php');
+}
+
+// PRELOAD LOGIC JS 
+if ((bool) $preload_logic_and_bufoc_js) $head_preload .= '<link rel="preload" href="'.$logic_path.'" as="script">';
+$buf_debug += BufHelper::addDebug('PRELOAD logic js', 'code', '<strong>Preload</strong> <small>'.$preload_logic_and_bufoc_js.'</small>', $startmicro, 'table-info', 'logic_base.php');
+
+
+

@@ -37,11 +37,14 @@
 		<option value="all">TPL_BUF_BS_ALL</option>
 		<option value="custom">TPL_BUF_BS_CUSTOM</option>
 	</field>
+
 	<!--function.scss siempre-->
 	<field name="buf_bs_files" 
 		type="groupedlist" 
 		showon="buf_bootstrap_css:custom" 
-		default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions", "helpers", "api"]' multiple="true" label="TPL_BUF_BOOTSTRAP4_FILES" description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
+		default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions", "helpers", "api"]' 
+		multiple="true" layout="joomla.form.field.groupedlist-fancy-select" 
+		label="TPL_BUF_BOOTSTRAP4_FILES" description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
 
 		<!--<option value="minimum">Minimum</option>
 				  	<option value="recommended">Recomended</option>-->

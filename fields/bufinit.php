@@ -6,16 +6,30 @@
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 
-//no direct accees
-defined ('_JEXEC') or die ('resticted aceess');
+//no direct access
+defined('_JEXEC') or die;
 
-//jimport('joomla.form.formfield');
 
+
+use BUF\BufHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Version;
 use Joomla\CMS\Plugin\PluginHelper;
+use JTFramework\Fa5;
+
+//LOAD JTFW
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
+{
+  require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
+
+}else{
+  $app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
+  $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+  return;
+}
+
 
 class JFormFieldBufinit extends FormField
 {
@@ -23,50 +37,49 @@ class JFormFieldBufinit extends FormField
 
     protected function getInput() {
 
+        include_once JPATH_SITE.'/templates/buf/classes/bufhelper.php';
+
+        $app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
+
+        $doc = $app->getDocument();
         $app = Factory::getApplication();
         $buf_path = URI::root(true).'/templates/buf/backend';
-        $doc = Factory::getDocument();
-        $doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
 
+        $scriptDeclaration = "var bufpluginbufajax = '{$this->getVersion()}';";
+        //$doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
+       
         $tpath_real = realpath(JPATH_SITE.'/templates/');
         $tpath= str_replace('\\', '\\\\', $tpath_real);
         $tpath .= '/';
-        $doc->addScriptDeclaration("var tpath = '{$tpath}';");
+
+        $scriptDeclaration .= "var tpath = '{$tpath}';";
+        //$doc->addScriptDeclaration("var tpath = '{$tpath}';");
         
+        $jversion = BufHelper::getJVersion();
 
         $params = $this->form->getValue('params');
         $layout = $params->buf_layout;
         if($layout == '') $layout = 'default';
        
-        $doc->addScriptDeclaration("var buf_layout = '{$layout}';");
+        $scriptDeclaration .= "var buf_layout = '{$layout}';";
         
-        
-        //fa 4
-        //$doc->addStyleSheet(JURI::root(true).'/templates/buf/css/font-awesome/font-awesome.min.css');
-        
-        //fa 5
 
-        $jversion_api = new Version();
-
-
-        //$jversion = preg_replace('#^([0-9\.]+)(|.*)$#', '$1', $jversion_api->getShortVersion());
-        $jversion = substr($jversion_api->getShortVersion(), 0, 1);
-
-        if($jversion <= "3"){
+        /******* JOOMLA 3 ******/
+        if($jversion == "3"){
           /******* JOOMLA 3 ******/
           $doc->addStyleSheet($buf_path.'/css/bufadmin.css');
-          //$doc->addScript('https://use.fontawesome.com/releases/v5.7.1/js/all.js', array(), array("defer"=>"defer","integrity"=>'sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7', "crossorigin"=>'anonymous'));
-          $doc->addScript('https://use.fontawesome.com/releases/v5.15.3/js/all.js', array(), array("defer"=>"defer","crossorigin"=>'anonymous'));
-          $doc->addScriptDeclaration("var jversion = '3';");
-
-        }else{
-          /******* JOOMLA 4 ******/
-          $doc->addStyleSheet($buf_path.'/css/bufadmin4.css');
-          $doc->addStyleSheet('//use.fontawesome.com/releases/v5.7.1/css/all.css', array(), array("integrity"=>'sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr', "crossorigin"=>'anonymous'));
-          $doc->addScriptDeclaration("var jversion = '4';");
+          Fa5::getFaCDN();
+          $scriptDeclaration .= "var jversion = '3';";
+        }
+         
+        /******* JOOMLA 4 ******/
+        if($jversion == "4"){
+          $wa = $doc->getWebAssetManager();
+          $wa->registerAndUseStyle('bufadmin4',$buf_path.'/css/bufadmin4.css');
+          $scriptDeclaration .= "var jversion = '4';";
         }
       
-               
+    
         $doc->addScript($buf_path.'/js/bufadmin.js', array(), array("sync"=>'sync'));
 
         $input = $app->input;
@@ -74,19 +87,81 @@ class JFormFieldBufinit extends FormField
 
 
         //init variables
-        $doc->addScriptDeclaration("var templateid = '{$template_id}';");
+        //$doc->addScriptDeclaration("var templateid = '{$template_id}';");
 
-        $template_init = '<img class="buf_minilogo_bar" src="../templates/buf/images/buf_logos/logo_buf_64.png"/>';
+        $scriptDeclaration .= "var templateid = '{$template_id}';";
 
+        //SCRIPT DECLARATIONS
+        if($jversion == "3"){
+          $doc->addScriptDeclaration($scriptDeclaration);
+        }
+
+        if($jversion == "4"){
+          $wa->addInlineScript($scriptDeclaration);
+        }
+
+
+
+        /**************** */
+        /****VERSION**** */
+        /**************** */
+        $ext_versions = '';
+
+        $ext_versions .= '<div >';
+          $ext_versions .= '<img class="buf_minilogo_bar" src="../templates/buf/images/buf_logos/logo_buf_64.png" width="32" height="32"/>';
+
+          $ext_versions .= '<ul class="breadcrumb">';
+
+          //* bufajax
+          if(PluginHelper::isEnabled('ajax', 'bufajax')){
+            $ext_versions .= '<li><strong>Buf ajax:</strong> <span class="badge badge-info bg-light text-dark">'.$this->getVersion().'</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }
+
+          //* JTFRAMEWORK
+          $check_jtfw = $this->getExtensionVersion('jtframework','');
+          if(!$check_jtfw){
+            $ext_versions .= '<li><strong>JT Framework:</strong> <span class="badge badge-important bg-light text-dark">Unknown</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }elseif($check_jtfw =='1.0.0'){
+            $ext_versions .= '<li><strong>JT Framework:</strong> <span class="badge badge-important bg-light text-dark">Update required</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }else{
+            $ext_versions .= '<li><strong>JT Framework:</strong> <span class="badge badge-info bg-light text-dark">'.$check_jtfw.'</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }
+
+          //* JT LIBS
+          $check_jtlibs = $this->getExtensionVersion('jtlibs','');
+          if(!$check_jtlibs){
+            $ext_versions .= '<li><strong>JT libs:</strong> <span class="badge badge-important bg-light text-dark">Unknown</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }elseif($check_jtlibs =='1.0.0'){
+            $ext_versions .= '<li><strong>JT libs:</strong> <span class="badge badge-info bg-light text-dark">update required</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }else{
+            $ext_versions .= '<li><strong>JT libs:</strong> <span class="badge badge-info bg-light text-dark">'.$check_jtlibs.'</span></li>';
+            $ext_versions .= '<li><span class="divider">/</span></li>';
+          }
+
+
+        $ext_versions .= '</ul>';
+        $ext_versions .= '</div>';
+
+
+
+
+        /**************** */
+        /****FILES CHECK**** */
+        /**************** */
+        $template_init = '<div>';
+         
         //CHECK FILES
-
         //check bufajax
         if(is_dir( JPATH_SITE.'/plugins/ajax/bufajax')){
-           
+          
           //plugin exists
-          if(PluginHelper::isEnabled('ajax', 'bufajax')){
-            $template_init .= '<span class="badge badge-success">'.$this->getVersion().'</span>';
-          }else{
+          if(!PluginHelper::isEnabled('ajax', 'bufajax')){
             $template_init .= '<span class="alert alert-warning buf_ajax_not_enabled"><i class="fas fa-exclamation-triangle"></i> PLUGIN NOT ENABLED. Buf ajax plugin is present but not enabled. ';
             //$template_init .= '<span class="badge badge-danger">PLUGIN NOT INSTALLED</span>';
             $template_init .= '<a href="index.php?option=com_plugins&view=plugins&filter[search]=buf" class="btn btn-default">Enable buf ajax plugin</a> </span>';
@@ -98,22 +173,48 @@ class JFormFieldBufinit extends FormField
           $template_init .= '<a href="https://jtotal.org/joomla/templates/buf-template" target="_blank" class="btn btn-default">Download buf ajax plugin</a> </span>';
         }
 
+  
+        //* check JTFRAMEWORK
+        if(!$check_jtfw || $check_jtfw=='1.0.0'){
+          $template_init .=' <div class="alert alert-warning" role="alert">
+          <strong>JT Framework required.</strong> Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a> or <a href="https://users.jtotal.org/SOFT/framework/JTframework/pkg_jtfw_current.zip" target="_blank" class="btn btn-default">Download</a> </span>
+          </div>';
+        }
+
 
         //check LIBS
         if(is_dir( JPATH_LIBRARIES.'/jtlibs')){
-            $template_init .='<div><p></p><ul class="breadcrumb">';
-            $scan = scandir(JPATH_LIBRARIES.'/jtlibs');
-            foreach($scan as $file) {
-               if (is_dir(JPATH_LIBRARIES.'/jtlibs/'.$file) && $file != '.' && $file != '..') {
-                  $template_init .= '<li><span class="label">'.$file.'</span><span class="divider">  </span></li>';
-                  //$template_init .= '<span class="label"> '.$file.' </span><span class="divider">/</span>';
-               }
-            }
+          
+/*             $ext_versions .= '<br><br><strong>Buf libs: </strong>';
+            $ext_versions .='<span class="badge badge-success bg-light text-dark"> '.$this->getExtensionVersion('jtlibs','').'</span>';
+ */
+            //check libs dummy
+            $template_init .='<div>';
+            
+              if(!$check_jtlibs || $check_jtlibs=='1.0.0'){
+                $template_init .=' <div class="alert alert-warning" role="alert">
+                <strong>JT libs required.</strong> 
+                Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a> 
+                or 
+                <a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download</a> </span>
+                </div>';
+              }
 
-            $template_init .='</ul></div>';
-        
+
+              $template_init .='<nav aria-label="breadcrumb"><ul class="breadcrumb">';
+              $scan = scandir(JPATH_LIBRARIES.'/jtlibs');
+              
+              foreach($scan as $file) {
+                if (is_dir(JPATH_LIBRARIES.'/jtlibs/'.$file) && $file != '.' && $file != '..') {
+                    $template_init .= '/ <li><span class="label badge bg-light text-dark" >'.$file.'</span><span class="divider">  </span></li>';
+                    //$template_init .= '<span class="label"> '.$file.' </span><span class="divider">/</span>';
+                }
+              }
+              $template_init .='</ul>';
+            $template_init .='</div>';
         }else{
-          $template_init .='<div><p></p>';
+
+          $template_init .='<div>';
           $template_init .= '<span class="alert alert-error buf_ajax_not_installed"><i class="fas fa-exclamation-triangle"></i> Libraries not installed. ';
           //$template_init .= '<span class="badge badge-danger">PLUGIN NOT INSTALLED</span>';
           $template_init .= '<a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download JT libraries</a> </span>';
@@ -121,45 +222,43 @@ class JFormFieldBufinit extends FormField
           $template_init .='</div>';
         }
 
+        $template_init .='</div>';
+        
 
 
 
+
+
+
+
+
+
+        $template_init = $ext_versions.$template_init;
         //check plugins   
         return $template_init;
     }
 
     public function getLabel(){
-
-      $content = '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf ajax plugin:<p>';
+      /*
+      $content = '
+        <p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf ajax plugin:<p>
+        ';
       $content .= '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> JT Libraries:<p>';
-
+      $content .= '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> JT Framework:<p>';
+      */
+      
+      $content = '
+      <p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf extensions:<p>
+      ';
       return $content;
     }
 
     private function getVersion() {
-      $db = Factory::getDBO();
+      $db = Factory::getDbo();
       $query = $db->getQuery(true);
 
       $element = 'bufajax';
           $folder = 'ajax';
-        
-        /*
-            switch ($plugin) {
-              case 'bufinit':
-                $element = 'bufinit';
-                $folder = 'system';
-                break;
-              case 'bufajax':
-                $element = 'bufajax';
-                $folder = 'ajax';
-                break;
-              default:
-                $element = 'bufajax';
-                $folder = 'ajax';
-                break;
-            }
-        */
-
       $query
           ->select(array('*'))
           ->from($db->quoteName('#__extensions'))
@@ -176,6 +275,35 @@ class JFormFieldBufinit extends FormField
       if (isset($manifest_cache->version)) {
         return $manifest_cache->version;
       }
+      return;
+    }
+
+    //get version of plugin
+    private function getExtensionVersion($element=false, $folder=false) {
+
+      if(!$element) return;
+
+      $db = Factory::getDbo();
+      $query = $db->getQuery(true);
+
+      $query
+          ->select(array('*'))
+          ->from($db->quoteName('#__extensions'))
+          ->where($db->quoteName('element').' = '.$db->quote($element));
+          if($folder) $query->where($db->quoteName('folder').' = '.$db->quote($folder));
+      $db->setQuery($query);
+      $result = $db->loadObject();
+
+     if(!$result) return false;
+
+      $manifest_cache = json_decode($result->manifest_cache);
+
+      //var_dump($result->enabled);
+      if (isset($manifest_cache->version)) {
+
+        return $manifest_cache->version;
+      }
+
       return;
     }
 

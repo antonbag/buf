@@ -29,7 +29,7 @@
 
     <field name="buf_oc_button_vpos" 
         type="radio" default="top"
-        class="switcher switcher-primary btn-group" 
+        class="btn-group" 
         label="TPL_BUF_OC_BUTTON_VPOS"
     >
         <option value="top">TPL_BUF_OC_BUTTON_TOP</option>
@@ -40,7 +40,7 @@
 
     <field name="buf_oc_button_hpos" 
         type="radio" default="left"
-        class="switcher switcher-primary btn-group" 
+        class="btn-group" 
         label="TPL_BUF_OC_BUTTON_HPOS"
     >
         <option value="left">TPL_BUF_OC_BUTTON_LEFT</option>
@@ -83,7 +83,7 @@
 
     <field name="buf_oc_button_reverse" 
         type="radio" default="l"
-        class="switcher switcher-primary btn-group" 
+        class="btn-group" 
         label="TPL_BUF_OC_BUTTON_ACTIVE_DIR"
     >
         <option value="l">TPL_BUF_OC_BUTTON_ACTIVE_LEFT</option>

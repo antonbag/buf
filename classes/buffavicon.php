@@ -5,10 +5,15 @@
 * @copyright Copyright (c) 2005 - 2017 dibuxo
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
+
+namespace BUF;
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Uri\Uri;
 
 class BUFfavicon
 {
@@ -27,8 +32,8 @@ class BUFfavicon
     if(!Folder::exists($fav_path)){
       Folder::create($fav_path);
     }
-
-    $uri = JUri::base();
+    
+    $uri = Uri::base();
 
     $error = '';
     
@@ -236,7 +241,7 @@ class BUFfavicon
       $ico_lib->save_ico( $destination );
       //$ico_lib->save_ico( $destination_icons );
       //base
-      $ico_lib->save_ico(JPATH_SITE.'/templates/buf/');
+      //$ico_lib->save_ico(JPATH_SITE.'/templates/buf/');
      
       return true ;
     }
@@ -244,14 +249,27 @@ class BUFfavicon
 
   //TODO create a general class
   private static function getCurrentParams($id){
-      $db = JFactory::getDBO();
+    /*
+      $db = Factory::getDBO();
       $sql = "SELECT template,params FROM `#__template_styles` WHERE `id` = $id";
       $db->setQuery($sql); 
       $db->query();
       $row = $db->loadObject();
       $json = $row;
-
       return $json;
+    */
+      $db = Factory::getDbo();
+      $query = $db->getQuery(true);
+
+      $query
+          ->select(array('template,params'))
+          ->from($db->quoteName('#__template_styles'))
+          ->where($db->quoteName('id').' = '.$db->quote($id));
+      $db->setQuery($query);
+      $result = $db->loadObject();
+
+
+     return $result;
   }
 
 

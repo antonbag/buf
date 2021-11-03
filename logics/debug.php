@@ -7,6 +7,8 @@ foreach ($buf_debug as $key => $value) {
 	if(!isset($anterior)) $anterior = 0.0;
 	$actual = $value['totaltime'] - $anterior;
 
+	$clase='';
+
 	if($bs_version == 4){
 		$clase = ($actual<=10) ? 'badge-success' : 'badge-warning';
 		if($actual>=1000) $clase = 'badge-danger';

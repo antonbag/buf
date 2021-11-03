@@ -1,6 +1,12 @@
 <?php
+/**
+* @package BUF Framework
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
+* @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
+*/
 
-
+use BUF\BufHelper;
 use JTFramework\JTscssphp;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -27,10 +33,8 @@ try {
    
     //$bs4_imports = '@import "'.$layoutpath.'/scss/base.scss";';
     $base_imports .= '@import "base.scss";';
-    $buf_debug += addDebug('BASE SASS | ', 'cubes', $layoutpath .'/scss/base.scss', $startmicro, 'table-default', 'loadphpcss_base.php');
+    $buf_debug += BUFHelper::addDebug('BASE SASS | ', 'sass fab', $layoutpath .'/scss/base.scss', $startmicro, 'table-default', 'loadphpcss_base.php');
    
-  
-
     $cssOut = $scss->compile($base_imports);
 
 
@@ -40,7 +44,8 @@ try {
     }
     file_put_contents($cachepath . '/base.css', $base_common.$cssOut);
 
-    //$cosa = $cssOut;
+    $buf_debug += BufHelper::addDebug('BASE css', 'css3-alt fab', 'css base compiled', $startmicro, 'table-default','logic_base.php');
+
 
 
 } catch (\Exception $e) {

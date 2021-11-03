@@ -1,8 +1,11 @@
 
 <?Php
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 //load sheets and scripts
-$doc->addStyleSheet($tpath.'/css/print.css?v=1'); 
+if(File::exists($cachepath.'print.css')) $doc->addStyleSheet($cache_tpath.'/css/print.css?v=1'); 
+
 
 ?><!doctype html>
 
@@ -28,7 +31,6 @@ $doc->addStyleSheet($tpath.'/css/print.css?v=1');
         </article>
     </div>
         
-        
 	<?php //if ($_GET['print'] == '1') echo '<script type="text/javascript">window.print();</script>'; ?>
 
 </body>
@@ -39,7 +41,11 @@ $doc->addStyleSheet($tpath.'/css/print.css?v=1');
 
 	//LOGIC
 	if(!$templateparams->get('buf_edit_base', 0)){
-	  include_once JPATH_THEMES.'/'.$this->template.'/logics/logic.php';
+		if(!$check_jtfw || $check_jtfw=='1.0.0' || !$check_jtlibs || $check_jtlibs=='1.0.0'){
+				
+		}else{
+			include_once JPATH_THEMES.'/'.$this->template.'/logics/logic.php';
+		}
 	}
 ?>
 

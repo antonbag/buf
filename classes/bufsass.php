@@ -74,9 +74,6 @@ class BUFsass
 
     $uri = Uri::root();
 
-
-
-
     self::$startmicro = $startmicro;
     $session = Factory::getSession();
     
@@ -104,9 +101,7 @@ class BUFsass
       //NON-AJAX
       //$templateparams = $params;
       $templateparams = new Registry($params);
-
       $template_name = $template_name;
-
       $process = $templateparams->get('runless', 0);
     }
 
@@ -522,6 +517,7 @@ class BUFsass
           // BUF_BS.css 
           if ($process == 0 || $buf_bs_css_exists == false || file_exists(self::$cachepath. '/buf_bs.css') == false || self::$debug_develmode_bs){
             self::buf_bs_scss($scss, $bs_custom_colors, $sass_bs_files,$process,'bs');
+
           }
 
           // BUF_FA.css 
@@ -625,12 +621,17 @@ class BUFsass
           //recorro los archivos de bs
           foreach ($sass_bs_files as $key => $value) {
             
-            $imports .= '@import "'.$key.'";';
+            $imports .= '@import "'.$key.'";
+';
 
             //add the custom variables before _mixins
-            if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){
+            if($key == self::$libspath.'/bootstrap4/scss/_mixins.scss'){
               $imports .= self::bs4_custom($bs_custom);
             }
+
+            //var_dump($imports);
+
+
           }
         }
 
@@ -642,10 +643,10 @@ class BUFsass
             //recorro los archivos de bs5
             foreach ($sass_bs_files as $key => $value) {
 
-              $imports .= '
-              /*'.$key.'*/
+              //$imports .= '/*'.$key.'*/';
+              
+              $imports .= '@import "'.$key.'";
               ';
-              $imports .= '@import "'.$key.'";';
               
               //add the custom variables before _mixins
               if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){

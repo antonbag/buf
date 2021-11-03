@@ -4,7 +4,7 @@
 
 <header class="header" role="banner">
 <div class="header-inner clearfix d-flex justify-content-center">
-	<a class="brand pull-left" href="index.php"> <img src="templates/buf/images/buf_logos/logo_buf_text_400.png" class="img-fluid" alt="buf template system"/></a>
+	<a class="brand pull-left" href="index.php"> <img width="400" height="207" src="templates/buf/images/buf_logos/logo_buf_text_400.png" class="img-fluid" alt="buf template system"/></a>
 	<div class="header-search pull-right">
 		<jdoc:include type="modules" name="bufsearch" style="none" />
 	</div>

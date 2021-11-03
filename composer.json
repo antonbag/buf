@@ -4,6 +4,6 @@
         "fortawesome/font-awesome": "5.*",
         "twbs/bootstrap": "5.*.*",
         "mobiledetect/mobiledetectlib": "^2.8",
-        "components/jquery": "3.5.*"
+        "components/jquery": "3.6.*"
     }
 }

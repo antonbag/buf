@@ -1,16 +1,19 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2017 dibuxo
+* @author jtotal https://jtotal.org
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
-*/  
+*/   
 
 //no direct accees
 defined ('_JEXEC') or die ('resticted aceess');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 
 class JFormFieldBuflibexists extends FormField
 {
@@ -19,7 +22,8 @@ class JFormFieldBuflibexists extends FormField
     protected function getInput() {
 
         $app = Factory::getApplication();
-        $buf_path = JURI::root(true).'/templates/buf/backend';
+
+        $buf_path = URI::root(true).'/templates/buf/backend';
         $doc = Factory::getDocument();
         $doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
 
@@ -38,23 +42,22 @@ class JFormFieldBuflibexists extends FormField
         
         //fa 4
         //$doc->addStyleSheet(JURI::root(true).'/templates/buf/css/font-awesome/font-awesome.min.css');
-        
         //fa 5
 
-        $jversion_api = new JVersion();
+        $jversion_api = new Version();
         //$jversion = preg_replace('#^([0-9\.]+)(|.*)$#', '$1', $jversion_api->getShortVersion());
         $jversion = substr($jversion_api->getShortVersion(), 0, 1);
 
         if($jversion <= "3"){
           /******* JOOMLA 3 ******/
           $doc->addStyleSheet($buf_path.'/css/bufadmin.css');
-          $doc->addScript('https://use.fontawesome.com/releases/v5.7.1/js/all.js', array(), array("defer"=>"defer","integrity"=>'sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7', "crossorigin"=>'anonymous'));
+          //$doc->addScript('https://use.fontawesome.com/releases/v5.7.1/js/all.js', array(), array("defer"=>"defer","integrity"=>'sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7', "crossorigin"=>'anonymous'));
           $doc->addScriptDeclaration("var jversion = '3';");
 
         }else{
           /******* JOOMLA 4 ******/
           $doc->addStyleSheet($buf_path.'/css/bufadmin4.css');
-          $doc->addStyleSheet('//use.fontawesome.com/releases/v5.7.1/css/all.css', array(), array("integrity"=>'sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr', "crossorigin"=>'anonymous'));
+          //$doc->addStyleSheet('//use.fontawesome.com/releases/v5.7.1/css/all.css', array(), array("integrity"=>'sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr', "crossorigin"=>'anonymous'));
           $doc->addScriptDeclaration("var jversion = '4';");
         }
       
@@ -75,7 +78,7 @@ class JFormFieldBuflibexists extends FormField
         if(is_dir( JPATH_SITE.'/plugins/ajax/bufajax')){
            
           //plugin exists
-          if(JPluginHelper::isEnabled('ajax', 'bufajax')){
+          if(PluginHelper::isEnabled('ajax', 'bufajax')){
             $template_init .= '<span class="badge badge-success">'.$this->getVersion().'</span>';
           }else{
             $template_init .= '<span class="alert alert-warning buf_ajax_not_enabled"><i class="fas fa-exclamation-triangle"></i> PLUGIN NOT ENABLED. Buf ajax plugin is present but not enabled. ';

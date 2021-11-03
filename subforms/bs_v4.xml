@@ -34,18 +34,19 @@
 					class="btn-group" 
 					label="TPL_BUF_BS_SELECTOR" 
 					description="TPL_BUF_BS_SELECTOR_DESC">
-					<option value="0">None</option>
-					<option value="1">TPL_BUF_BS_MINIMUM</option>
-					<option value="2">TPL_BUF_BS_RECOMMENDED</option>
-					<option value="3">TPL_BUF_BS_ALL</option>
-					<option value="4">TPL_BUF_BS_CUSTOM</option>
+						<option value="none">None</option>
+						<option value="minimum">TPL_BUF_BS_MINIMUM</option>
+						<option value="recommended">TPL_BUF_BS_RECOMMENDED</option>
+						<option value="all">TPL_BUF_BS_ALL</option>
+						<option value="custom">TPL_BUF_BS_CUSTOM</option>						
 				</field>
 
 				<field name="buf_bs_files" 
 					type="groupedlist" 
-					default='["functions","variables","mixins","grid","media","utilities","reboot","images","tables","buttons","button-group","card","dropdown","forms","input-group","list-group","nav","navbar","pagination","transitions","close","breadcrumb"]'
+					default='["functions","variables","mixins","root", "grid","media","utilities","reboot","images","tables","buttons","button-group","card","dropdown","forms","input-group","list-group","nav","navbar","pagination","transitions","close","breadcrumb"]'
 					multiple="true" 
 					label="TPL_BUF_BOOTSTRAP4_FILES" 
+					layout="joomla.form.field.groupedlist-fancy-select"
 					description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
 				  
 				  	<!--<option value="minimum">Minimum</option>
