@@ -1,3 +1,23 @@
+//J4
+Joomla = window.Joomla || {};
+(function(Joomla, document) {
+	'use strict';
+  document.addEventListener('DOMContentLoaded', function (event) {
+
+    [].slice.call(document.head.querySelectorAll('link[rel="lazy-stylesheet"]'))
+      .forEach(function($link){
+        $link.rel = "stylesheet";
+      });
+  });
+
+})(Joomla, document);
+
+
+
+
+
+
+
 var buf_params;
 var buf_vars = Array();
 var buf_oc;
@@ -115,7 +135,9 @@ function getBufParams(){
 /**************************/
 /**************************/
 
-
+/**
+ *  j4. Use JTfunc::getPromiseScript([]);
+ */
 function loadBS(){
 
 	jQuery.loadScript = function (url, callback) {
@@ -129,12 +151,13 @@ function loadBS(){
 	 
 		if(bs_version == 4){
 			jQuery.loadScript(buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js', function(){
-				if(buf_params.debug == 1) console.log('BS4 loaded from js. Async: '+bs_load_async);
+				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js Async: '+bs_load_async);
+			
 			 });
 		}
 
 		if(bs_version == 5){
-			jQuery.loadScript(buf_params.buf_path+'/libs/bootstrap/dist/js/bootstrap.bundle.min.js', function(){
+			jQuery.loadScript(buf_params.jtlibs_media+'/bootstrap/js/bootstrap.bundle.min.js', function(){
 				if(buf_params.debug == 1) console.log('BS5 loaded from js. Async: '+bs_load_async);
 			 });
 		}
@@ -214,99 +237,5 @@ function offcanvasClick(){
 
 
 
-
-
-
-
-
-
-//DRAGABLE
-//v1
-/*
-function offcanvas_drag(){
-
-	var text_enter=false;
-	var tamano_ventana = jQuery(document).width();
-	var pocentaje = 0;
-	var currentX = 0;
-
-	var touch_number = -25;
-	if(jQuery('#buf_offcanvas').hasClass('buf_off_pos_right')){
-		touch_number = -200;
-	}
-
-
-	jQuery(document).mouseup(function(e) {
-	    	
-	    	if(e.clientY <= 50) return;
-			if(jQuery('body').hasClass('offcanvas_show')) return;
-			if(text_enter==false) return;
-	    	
-	    	//OPEN RIGHT
-			if(jQuery('#buf_offcanvas').hasClass('buf_off_pos_right')){
-				
-				//console.log('e.clientX-currentX:'+(e.clientX-currentX));
-
-				if((e.clientX-currentX)<=touch_number){
-		    		//ABRIMOS
-		    		jQuery('.offcanvas-button').trigger('click');
-		    		jQuery('#buf_offcanvas').removeAttr( 'style' );
-		    		jQuery('#buf_offcanvas').removeClass('buff_off_animate');
-		    	}else{
-		    		//CERRAMOS
-		    		jQuery('#buf_offcanvas').removeAttr( 'style' );
-		    		jQuery('#buf_offcanvas').removeClass('buff_off_animate');
-		    	}
-			}else{
-				//OPEN LEFT
-				if((currentX-e.clientX)<=touch_number){
-	    		//ABRIMOS
-	    		jQuery('.offcanvas-button').trigger('click');
-	    		jQuery('#buf_offcanvas').removeAttr( 'style' );
-	    		jQuery('#buf_offcanvas').removeClass('buff_off_animate');
-	    	}else{
-	    		//CERRAMOS
-	    		jQuery('#buf_offcanvas').removeAttr( 'style' );
-	    		jQuery('#buf_offcanvas').removeClass('buff_off_animate');
-	    	}
-			}
-	    	
-
-	    	text_enter=false;
-	    	currentX = e.clientX;
-
-	  	}).mousedown(function(e) {
-
-	  		if(jQuery('body').hasClass('offcanvas_show')) return;
-
-	  		if(e.clientY <= 50) return;
-
-	  		//OPEN RIGHT
-			if(jQuery('#buf_offcanvas').hasClass('buf_off_pos_right')){
-				if(e.clientX >= (tamano_ventana-80)) text_enter=true;
-			}else{
-				if(e.clientX <= 80) text_enter=true;
-			}
-
-	  		currentX=e.clientX;
-
-  		}).mousemove(function(ta){
-
-  			if(ta.clientY <= 50) return;
-  			if(jQuery('body').hasClass('offcanvas_show')) return;
-  	  		if(text_enter==false) return;
-
-  	  		porcentaje = (ta.clientX*100)/tamano_ventana-100;
-
-  	  		jQuery('#buf_offcanvas').css('transform', 'translateX('+porcentaje+'%)');
-  	  		jQuery('#buf_offcanvas').addClass('buff_off_animate');
-
-  	});
-
-
-
-
-}
-*/
 
 

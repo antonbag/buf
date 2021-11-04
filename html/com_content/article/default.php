@@ -7,31 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use BUF\BufHelper;
 
-defined('_JEXEC') or die;
-if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
-{
+use JTFramework\JTfunc;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')){
     require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
 }else{
-    $app = Factory::getApplication();
-    $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+    Factory::getApplication()->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
 } 
 
-include_once JPATH_SITE.'/templates/buf/classes/bufhelper.php';
-
-
-
-
-
-$jversion = BufHelper::getJVersion();
-
-
-
-if($jversion == '4'){
-
-	include_once('default_v4.php');
-
+if(JTfunc::isJ4()){
+	include_once('components/com_content/tmpl/article/default.php');
 	return;
 }
 

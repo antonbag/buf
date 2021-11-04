@@ -9,6 +9,35 @@
 
 defined('_JEXEC') or die;
 
+
+use JTFramework\JTfunc;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
+
+if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')){
+    require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
+}else{
+    Factory::getApplication()->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
+} 
+
+if(JTfunc::isJ4()){
+	//get default for J4
+	include_once('modules/mod_login/tmpl/default.php');
+	return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 require_once JPATH_SITE . '/components/com_users/helpers/route.php';
 
 JHtml::_('behavior.keepalive');

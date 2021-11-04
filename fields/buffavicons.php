@@ -6,14 +6,16 @@
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 
-//no direct accees
-defined ('_JEXEC') or die ('resticted aceess');
+//no direct access
+defined('_JEXEC') or die;
 
-jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
 
-class JFormFieldBuffavicons extends JFormField
+class JFormFieldBuffavicons extends FormField
 {
     protected	$type = 'buffavicons';
     protected function getInput() {
@@ -36,7 +38,7 @@ class JFormFieldBuffavicons extends JFormField
             data.append( 'upload_file_svg', jQuery('#jform_params_buf_favicon_svg')[0].files[0]);
           }
                   
-          data.append( 'token', '".JSession::getFormToken()."');
+          data.append( 'token', '".Session::getFormToken()."');
           data.append( 'templateid', '".$templateid."');
           data.append( 'buf_layout', '".$params->get('buf_layout','default')."');
              
@@ -77,8 +79,9 @@ class JFormFieldBuffavicons extends JFormField
         ";
 
 
-
-      $doc = Factory::getDocument();
+      /** @var CMSApplication $app */
+      $app = Factory::getApplication();
+      $doc = $app->getDocument();
       $doc->addCustomTag('<script type="text/javascript">'.$upload_svg.'</script>');
 
     
@@ -121,7 +124,7 @@ class JFormFieldBuffavicons extends JFormField
 
       }else{
         $favicons .= '<div class="buffavicons_thumbs">';
-          $favicons .= JText::_('TPL_BUF_FAVICON_NOT_CREATED');
+          $favicons .= Text::_('TPL_BUF_FAVICON_NOT_CREATED');
         $favicons .= '</div>';
       }
       $favicons .= '<div class="buffavicons_messages">';

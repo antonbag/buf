@@ -1,13 +1,13 @@
 <?php
 /**
 * @package BUF Framework
-* @author dibuxo http://www.dibuxo.com
-* @copyright Copyright (c) 2005 - 2019 dibuxo
+* @author jtotal https://jtotal.com
+* @copyright Copyright (c) 2005 - 2021 jtotal
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */  
 
-//no direct accees
-defined ('_JEXEC') or die ('resticted aceess');
+//no direct access
+defined('_JEXEC') or die;
 
 //jimport('joomla.form.formfield');
 use Joomla\CMS\Form\FormField;

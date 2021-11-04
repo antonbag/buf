@@ -1,7 +1,6 @@
 <?php defined( '_JEXEC' ) or die; 
 
-//2.1.0
-
+//2.3.34
 use BUF\BufHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -51,7 +50,6 @@ if($jversion == '4'){
 	// Add Asset registry files
 	$wr = $this->getWebAssetManager()->getRegistry();
 }
-
 
 
 
@@ -413,7 +411,6 @@ $js_params['oc_style']  		= $templateparams->get('buf_offcanvas_style','buf_off_
 $js_params['oc_position']  		= $templateparams->get('buf_offcanvas_position','buf_off_pos_left');
 
 
-
 /******************************************************************************/
 
 $buf_offcanvas_position = $templateparams->get('buf_offcanvas_position','buf_off_pos_left');
@@ -571,9 +568,20 @@ $doc->addScriptDeclaration("var php_buf_params = '{$params_to_js}';");
 
 
 
-/***************************************/
-//PARAMS TO JS
-/***************************************/
+
+$hasClass = '';
+
+if ($this->countModules('sidebar-left', true))
+{
+	$hasClass .= ' has-sidebar-left';
+}
+
+if ($this->countModules('sidebar-right', true))
+{
+	$hasClass .= ' has-sidebar-right';
+}
+
+
 
 $bodyclass=[];
 $bodyclass[]= $browserType;
@@ -585,6 +593,7 @@ $bodyclass[]= $docalias;
 $bodyclass[]= $body_mobile;
 $bodyclass[]= 'menutype_'.$menutype;
 $bodyclass[]= 'bs_version_'.$bs_version;
+$bodyclass[]= $hasClass;
 
 
 

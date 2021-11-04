@@ -75,7 +75,7 @@ class JFormFieldBufinit extends FormField
         /******* JOOMLA 4 ******/
         if($jversion == "4"){
           $wa = $doc->getWebAssetManager();
-          $wa->registerAndUseStyle('bufadmin4',$buf_path.'/css/bufadmin4.css');
+          $wa->registerAndUseStyle('bufadmin4','templates/buf/backend/css/bufadmin4.css');
           $scriptDeclaration .= "var jversion = '4';";
         }
       

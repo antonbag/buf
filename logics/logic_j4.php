@@ -588,125 +588,17 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 
 
+
+
 /***************************/
 /***************************/
 /*****  ANALYTICS  *********/
 /***************************/
 /***************************/
-
-if($templateparams->get('buf_analytics', 0)){
-	
-
-
-	if($templateparams->get('buf_analytics_version','3') == '3'){
-
-
-		//v3
-		$a_code = $templateparams->get('buf_analytics_code', 'UA-XXXXX-Y');
-		
-		//doest work
-		$buf_analytics_storage = $templateparams->get('buf_analytics_storage', '0');
-
-		if($a_code != 'UA-XXXXX-Y'){
-			//$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, false, true);
-			//$doc->addScript('templates/buf/js/analytics/buf_gtag.js?id='.$a_code, false, true);
-			//$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, array(), array('async'=>'async'));
-
-			
-
-			if($buf_analytics_storage){
-				$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$a_code, array(), array('async'=>'async'));
-
-				$doc->addScriptDeclaration("
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
-				
-					gtag('config', '".$a_code."');
-				");
-			}else{
-				//$doc->addScript('templates/buf/js/analytics/buf_gtag.js?id='.$a_code, array(), array('async'=>'async'));
-				$s = JFactory::getSession();
-				$doc->addScriptDeclaration("
-				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-					ga('create', '".$a_code."', {'storage': 'none', 'clientId': '".$s->getId()."'});
-					ga('send', 'pageview');
-				");
-			}
-		
-			/*
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
-					gtag('config', '".$a_code."');
-			*/
-
-			/*
-
-
-				$doc->addScriptDeclaration("
-				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-				");
-
-				if($buf_analytics_storage){
-					$doc->addScriptDeclaration("ga('create', '".$a_code."', 'auto');");
-				}else{
-					$doc->addScriptDeclaration("
-						ga('create', '".$a_code."', {
-							'client_storage': 'none'
-						});
-					");
-				}
-			
-				if($buf_analytics_storage){
-					$doc->addScriptDeclaration("
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', 'UA-163795028-1');
-					");
-				}else{
-					$doc->addScriptDeclaration("
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-		
-						gtag('config', 'UA-163795028-1');
-					");
-				}
-
-			*/
-
-		}
-
-	}else{
-
-		$m_id = $templateparams->get('buf_analytics_measurementid', 'G-XXXXXXXXXX');
-		
-		//V4
-		if($m_id != 'G-XXXXXXXXXX'){
-
-			$doc->addScript('https://www.googletagmanager.com/gtag/js?id='.$m_id, array(), array('async'=>'async'));
-			$doc->addScriptDeclaration("
-				window.dataLayer = window.dataLayer || [];
-				function gtag(){dataLayer.push(arguments);}
-				gtag('js', new Date());
-			
-				gtag('config', '".$m_id."');
-			");
-		}
-
-	}
-
-
-
+$buf_anal = new Registry; 
+$buf_anal->loadString(json_encode($templateparams->get('g_analytics'))); 
+if($buf_anal->get('buf_analytics', 0)){
+	include_once('googleAnalytics.php');
 }
 
 

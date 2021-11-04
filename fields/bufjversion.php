@@ -7,8 +7,8 @@
 */  
 
 
-//no direct accees
-defined ('_JEXEC') or die ('resticted aceess');
+//no direct access
+defined('_JEXEC') or die;
 
 //J3.8
 //jimport('joomla.form.formfield');
