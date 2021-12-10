@@ -10,10 +10,12 @@ namespace BUF;
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+use BUF\PHP_ICO;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Uri\Uri;
+
 
 class BUFfavicon
 {

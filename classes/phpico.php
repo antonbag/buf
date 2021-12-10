@@ -6,7 +6,7 @@ Licensed under GPLv2 or above
 
 Version 1.0.4
 */
-
+namespace BUF;
 class PHP_ICO {
   /**
    * Images in the BMP format.
