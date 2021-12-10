@@ -100,7 +100,17 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 
 			<?php if ($buf_topbar_on) : ?>
 			<div id="buf_topbar" class="<?php echo $buf_topbar_classes;?>">
-				<?php echo $buf_topbar_logo;?>
+
+				<?php 
+					echo $buf_topbar_logo;
+					if($buf_topbar_module != ''){
+						echo '<div class="buf_topbar_modulewrapper">
+							<jdoc:include type="modules" name="'.$buf_topbar_module.'"/>
+							</div>
+						';
+					}
+				?>
+				
 			<?php else : ?>
 			<div id="buf_topbar" class="buf_topbar_off">
 			<?php endif; ?>
@@ -132,6 +142,16 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				<?php if ($buf_topbar_oc_on){
 						echo  '<div id="buf_topbar_oc" class="'.$buf_topbar_oc_classes.'">';
 						echo $buf_topbar_oc_logo;
+
+	
+						if($buf_topbar_oc_module != ''){
+							echo '<div class="buf_topbar_oc_modulewrapper">
+								<jdoc:include type="modules" name="'.$buf_topbar_oc_module.'"/>
+								</div>
+							';
+						}
+					
+
 					}else{
 						echo  '<div id="buf_topbar_oc" class="buf_topbar_off">';
 					}

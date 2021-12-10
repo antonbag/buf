@@ -108,7 +108,7 @@ class BUFsass
 
     self::$buf_layout = $templateparams->get('buf_layout','default');
     self::$img_path = $uri.'templates/buf/images/';
-    self::$layout_img_path = $uri.'templates/buf/'.self::$buf_layout.'images/';
+    self::$layout_img_path = $uri.'templates/buf/layouts/'.self::$buf_layout.'/images/';
 
     //PARAMS
     $sass_editor = $templateparams->get('create_editor',0);

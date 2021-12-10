@@ -28,12 +28,21 @@
 					<!--<option value="3">TPL_BUF_BOTH</option>-->
 				</field>
 
+					<field name="buf_bootstrap_css" type="radio" default="cdn" class="btn-group" label="TPL_BUF_LOAD_BOOSTRAP_CSS" description="TPL_BUF_LOAD_BOOSTRAP_CSS_DESC">
+						<option value="0">BUF_NO</option>
+						<option value="joomla">BUF_JOOMLA</option>
+						<option value="cdn">BUF_CDN</option>
+						<option value="custom">BUF_BTN_LOGO</option>
+					</field>
+
 				<field name="buf_bs_selector"
 					type="list" 
 					default="2" 
 					class="btn-group" 
 					label="TPL_BUF_BS_SELECTOR" 
-					description="TPL_BUF_BS_SELECTOR_DESC">
+					description="TPL_BUF_BS_SELECTOR_DESC"
+					showon="buf_bootstrap_css:custom" 
+				>
 						<option value="none">None</option>
 						<option value="minimum">TPL_BUF_BS_MINIMUM</option>
 						<option value="recommended">TPL_BUF_BS_RECOMMENDED</option>
@@ -47,7 +56,9 @@
 					multiple="true" 
 					label="TPL_BUF_BOOTSTRAP4_FILES" 
 					layout="joomla.form.field.groupedlist-fancy-select"
-					description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
+					description="TPL_BUF_BOOTSTRAP4_FILES_DESC"
+					showon="buf_bootstrap_css:custom" 
+					>
 				  
 				  	<!--<option value="minimum">Minimum</option>
 				  	<option value="recommended">Recomended</option>-->

@@ -25,7 +25,8 @@ if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
   require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
 
 }else{
-  $app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
+  $app = Factory::getApplication();
+  Factory::getLanguage()->load('plg_system_jtframework', JPATH_PLUGINS . '/system/jtframework/language');
   $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
   return;
 }

@@ -150,8 +150,8 @@ function loadBS(){
 		}
 	 
 		if(bs_version == 4){
-			jQuery.loadScript(buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js', function(){
-				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js Async: '+bs_load_async);
+			jQuery.loadScript(buf_params.buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js', function(){
+				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_params.buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js Async: '+bs_load_async);
 			
 			 });
 		}

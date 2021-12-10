@@ -29,7 +29,7 @@
 
 
 	<field name="buf_bs_selector" 
-		type="list" default="recommended" class="btn-group" label="TPL_BUF_BS_SELECTOR" description="TPL_BUF_BS_SELECTOR_DESC"
+		type="list" default="recommended" class="btn-group" label="TPL_BUF_BS_SELECTOR" description="TPL_BUF_BS_SELECTOR_DESC" showon="buf_bootstrap_css:custom" 
 	>
 		<option value="none">None</option>
 		<option value="minimum">TPL_BUF_BS_MINIMUM</option>
@@ -44,7 +44,7 @@
 		default='["functions","variables","mixins","root", "containers", "grid", "utilities","reboot","type", "images","tables","buttons","button-group","card","close", "dropdown","forms","list-group","nav","navbar","pagination","transitions", "helpers", "api"]' 
 		multiple="true" 
 		layout="joomla.form.field.groupedlist-fancy-select" 
-		showon="buf_bs_selector:custom" 
+		showon="buf_bootstrap_css:custom" 
 		label="TPL_BUF_BOOTSTRAP4_FILES" description="TPL_BUF_BOOTSTRAP4_FILES_DESC">
 		<group label="Core variables and mixins">
 			<option value="functions">functions</option>

@@ -55,20 +55,26 @@
     </field>
  
     <field name="buf_topbar_height" 
-        type="number" 
+        type="text" 
         default="54"
-        min="0" max="200" step="1"
         label="TPL_BUF_TOPBAR_H" 
+        description="TPL_BUF_TOPBAR_H_DESC" 
         showon="buf_topbar_on:1"
-        filter="integer"
     />
-
 
     <field name="buf_topbar_color" 
         type="color" 
         default="#ffffff" 
         format="rgba"
         label="BUF_COLOR" 
+        showon="buf_topbar_on:1"
+    />
+
+    <field name="buf_topbar_module" 
+        type="text" 
+        default="" 
+        label="TPL_BUF_TOPBAR_MODULEPOSITION" 
+        description="TPL_BUF_TOPBAR_MODULEPOSITION_DESC" 
         showon="buf_topbar_on:1"
     />
 

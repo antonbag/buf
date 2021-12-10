@@ -277,6 +277,7 @@ $buf_topbar_logo_fallback = $buf_topbar->get('buf_topbar_logo_fallback','');
 $buf_topbar_logo_pos = $buf_topbar->get('buf_topbar_logo_pos',"l");
 $buf_topbar_height = $buf_topbar->get('buf_topbar_height','54');
 $buf_topbar_color = $buf_topbar->get('buf_topbar_color','#fff');
+$buf_topbar_module = $buf_topbar->get('buf_topbar_module','');
 
 $buf_topbar_classes = '';
 $buf_topbar_logo = '';
@@ -292,20 +293,26 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 	if($buf_topbar->get('buf_topbar_logo','') != '' || $buf_topbar->get('buf_topbar_logo_fallback','') != ''){
 
 
-		$buf_topbar_logo .= '<div class="buf_topbar_logo pos_'.$buf_topbar_logo_pos.'">';
+		$buf_topbar_logo .= '<div class="buf_topbar_logo pos_'.$buf_topbar_logo_pos.' '. (($buf_topbar_module==""?"w100":"")).'">';
 		$buf_topbar_logo .= '<a href="index.php">';
+
+
 			$buf_topbar_logo .= '<picture>';
 
 				//svg
 				if($buf_topbar_logo_img != '' && $buf_topbar_logo_fallback != '') {
 					$buf_topbar_logo .= '<source type="'.mime_content_type($buf_topbar_logo_img).'" srcset="'.$buf_topbar_logo_img.'">';
 				}
+
 				//fallback
 				if($buf_topbar_logo_fallback == '' && $buf_topbar_logo_img != ''){
-					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo"
-					width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
-					height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'" 
-				/>';
+					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo"';
+					if(mime_content_type($buf_topbar_logo_img) != 'image/svg+xml'){
+						$buf_topbar_logo .= 'width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
+						height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'"';
+					}
+					$buf_topbar_logo .= '/>';
+				
 				}else if($buf_topbar_logo_fallback != ''){
 
 					$buf_topbar_logo .= '<img 
@@ -313,8 +320,8 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 						type="'.mime_content_type($buf_topbar_logo_fallback).'" 
 						src='.$buf_topbar_logo_fallback.' 
 						alt="logo"
-						width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
-						height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'" 
+						width="'.Image::getImageFileProperties($buf_topbar_logo_fallback)->width.'" 
+						height="'.Image::getImageFileProperties($buf_topbar_logo_fallback)->height.'" 
 					/>';
 				}
 
@@ -337,6 +344,7 @@ $buf_topbar_oc_logo_fallback = $buf_topbar_oc->get('buf_topbar_logo_fallback',''
 $buf_topbar_oc_logo_pos = $buf_topbar_oc->get('buf_topbar_logo_pos',"l");
 $buf_topbar_oc_height = $buf_topbar_oc->get('buf_topbar_height','90');
 $buf_topbar_oc_color = $buf_topbar_oc->get('buf_topbar_color','#fff');
+$buf_topbar_oc_module = $buf_topbar_oc->get('buf_topbar_module','');
 
 $buf_topbar_oc_classes = '';
 $buf_topbar_oc_logo = '';
