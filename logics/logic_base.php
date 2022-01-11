@@ -52,7 +52,6 @@ if($jversion == '4'){
 }
 
 
-
 ///////////////////////
 //CHECK PHP VERSION
 ///////////////////////
@@ -95,10 +94,6 @@ $devel_mode = file_exists (JPATH_SITE.'/templates/buf/composer.json');
 if($devel_mode){
 	include_once JPATH_THEMES.'/'.$this->template.'/buf_devel.php';
 }
-
-
-
-
 
 
 //* check JTFRAMEWORK
@@ -406,6 +401,7 @@ $js_params = array();
 $js_params['buf_anal_url'] 		= $buf_anal_url;
 $js_params['buf_path'] 			= $tpath;
 $js_params['jtlibs_media'] 		= $libs_media_tpath;
+$js_params['jtlibs_omedia'] 	= $libs_media_opath;
 $js_params['debug'] 			= ($buf_debug_param == 1) ? true : false;
 $js_params['ismobile'] 			= $ismobile;
 $js_params['layout'] 			= $buf_layout;

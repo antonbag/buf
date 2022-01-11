@@ -11,6 +11,11 @@
 	</field>
 
 
+	<field name="buf_bs_bundle" type="radio" default="" class="btn-group" label="TPL_BUF_LOAD_BS_BUNDLE" description="TPL_BUF_LOAD_BS_BUNDLE_DESC" showon="buf_bootstrap_js:custom">
+		<option value="">BUF_BS_REGULAR</option>
+		<option value=".bundle">BUF_BS_BUNDLE</option>
+	</field>
+
 
 	<field name="buf_bs_defer" type="radio" default="1" class="btn-group" label="TPL_BUF_LOAD_BS_DEFER" description="TPL_BUF_LOAD_BS_DEFER_DESC" showon="buf_bootstrap_js:custom">
 		<option value="0">BUF_NO</option>

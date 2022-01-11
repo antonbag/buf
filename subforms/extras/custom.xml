@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form hidden="true" name="buf_load_custom_js_modal" repeat="true">
+    <field name="buf_load_custom_js_script"
+        label="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT"
+        size="30"
+        class="input-xxlarge"
+        type="text"
+        placeholder="http://example.com/path/to/script.js"
+    />
+    <field name="buf_js_defer" 
+        type="list" 
+        default="1" 
+        label="TPL_BUF_LOAD_JS_DEFER" 
+        description="TPL_BUF_LOAD_JS_DEFER_DESC">
+        <option value="0">None</option>
+        <option value="1">TPL_BUF_DEFER</option>
+        <option value="2">TPL_BUF_ASYNC</option>
+    </field>
+</form>

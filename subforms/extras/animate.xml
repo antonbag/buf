@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form>
+
+	<field name="animate_on" 
+        type="radio" 
+        default="0" 
+        class="btn-group" 
+        label="TPL_BUF_ON" 
+        layout="joomla.form.field.radio.switcher"
+    >
+		<option value="0">BUF_NO</option>
+		<option value="1">BUF_YES</option>
+	</field>
+
+
+</form>

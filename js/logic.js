@@ -50,6 +50,7 @@ function buf_js_init(){
 
 	buf_params = JSON.parse(php_buf_params).params;
 
+
 	//READY
 	jQuery(document).ready(function($) {
 		
@@ -65,9 +66,11 @@ function buf_js_init(){
 
 
 
+		/* 		
+		2.3.63 DEPRECATED
 		if(bs_load == 'true'){
 			loadBS();
-		}
+		} */
 
 		if(jQuery('div.buf_dev_mode').length >= 1){
 			jQuery('a.buf_dev_mode_close').click(function(e){
@@ -138,7 +141,8 @@ function getBufParams(){
 /**
  *  j4. Use JTfunc::getPromiseScript([]);
  */
-function loadBS(){
+//* DEPRECATED
+/* function loadBS(){
 
 	jQuery.loadScript = function (url, callback) {
 		    jQuery.ajax({
@@ -149,20 +153,20 @@ function loadBS(){
 		    });
 		}
 	 
+
 		if(bs_version == 4){
-			jQuery.loadScript(buf_params.buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js', function(){
-				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_params.buf_path+'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js Async: '+bs_load_async);
-			
-			 });
+			jQuery.loadScript(buf_params.jtlibs_omedia+'/bootstrap4/js/bootstrap.bundle.min.js', function(){
+				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_params.jtlibs_omedia+'/bootstrap4/js/bootstrap.bundle.min.js Async: '+bs_load_async);
+			});
 		}
 
 		if(bs_version == 5){
 			jQuery.loadScript(buf_params.jtlibs_media+'/bootstrap/js/bootstrap.bundle.min.js', function(){
 				if(buf_params.debug == 1) console.log('BS5 loaded from js. Async: '+bs_load_async);
-			 });
+			});
 		}
 
-}
+} */
 
 
 /**************************/

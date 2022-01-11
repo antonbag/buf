@@ -24,6 +24,34 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			$buf_debug +=  BUFHelper::addDebug('BASE CSS', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
 		?>
 	</style>
+<!-- <style>
+
+.lazyload{
+	height: 100% !important;
+	filter: blur(10px);
+	transform: scale(1.00);
+}
+@keyframes itp_blur {
+  from {    
+	  filter: blur(10px);
+	  transform: scale(1.00);
+	}
+  to {    
+		filter: blur(0px);	
+		transform: scale(1);
+	}
+}
+.lazyloading{
+	filter: blur(10px);
+	transform: scale(1.00);
+}
+.lazyloaded{
+	transform: scale(1);
+	animation-name: itp_blur;
+	animation-duration: 500ms;
+}
+
+</style> -->
 
 
 	<?php if($jversion=='3'): ?>

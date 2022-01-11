@@ -31,7 +31,8 @@ $doc->setMetadata('x-ua-compatible','IE=edge,chrome=1');
 /*****  JS BOOTSTRAP *******/
 /***************************/
 /***************************/
-$doc->addScriptDeclaration("var bs_load = 'false';");
+//** DEPRECATED
+//$doc->addScriptDeclaration("var bs_load = 'false';");
 
 
 if($buf_bs_on){
@@ -53,16 +54,19 @@ if($buf_bs_on){
 
 		}elseif($bs4_js=='custom'){
 
+			HTMLHelper::_('bootstrap.framework', false);
+
 			if($templateparams->get('buf_unset','') != ''){
 				if (in_array('media/jui/js/bootstrap.min.js', $templateparams->get('buf_unset',''))){
 					unset($doc->_scripts[$this->baseurl .'/media/jui/js/bootstrap.min.js']);
 					$buf_debug += BufHelper::addDebug('BS joomla JS', 'code', '<strong>UNSET:</strong> <small>media/jui/js/bootstrap.min.js</small>', $startmicro, 'table-info', 'logic.php');
 				}
 			}
-
 	
 			$defer = BufHelper::check_defer_v4($bs_4->get('buf_bs_defer',0));
 
+			//DEPRECATED
+			/* 			
 			if($defer){
 				$doc->addScriptDeclaration("var bs_load = 'true';");
 
@@ -74,11 +78,15 @@ if($buf_bs_on){
 
 			}else{
 				$doc->addScriptDeclaration("var bs_load = 'false';");
-				$doc->addScript($tpath.'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js',array(), $defer);
+				$doc->addScript($libs_media_opath.'/bootstrap4/js/bootstrap.min.js',array(), $defer);
 			}
+ 			*/
+		
+			//$doc->addScriptDeclaration("var bs_load = 'false';");
+			$doc->addScript($libs_media_opath.'/bootstrap4/js/bootstrap.min.js',array(), $defer);
 
-			HTMLHelper::_('bootstrap.framework', false);
-			$buf_debug += BufHelper::addDebug('BOOSTRAP 4 custom', 'code', '<strong>/libs/bootstrap4/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+			
+			$buf_debug += BufHelper::addDebug('BOOSTRAP 4 custom', 'code', '<strong>/bootstrap4/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}	
 	}
 
@@ -95,6 +103,9 @@ if($buf_bs_on){
 		$bs_5->loadString(json_encode($templateparams->get('buf_bs_v5'))); 
 
 		$bs5_js = $bs_5->get("buf_bootstrap_js",'custom');
+		$bs5_js_bundle = $bs_5->get("buf_bs_bundle",'');
+
+		HTMLHelper::_('bootstrap.framework', false);
 
 		//Joomla bootstrap 3 JS.. I dont know if this is a good idea
 		if($bs5_js=='joomla' || $edit){
@@ -119,7 +130,8 @@ if($buf_bs_on){
 			}
 	
 			$defer = BufHelper::check_defer_v4($bs_5->get('buf_bs_defer',0));
-
+			//DEPRECATED
+			/* 			
 			if($defer){
 				$doc->addScriptDeclaration("var bs_load = 'true';");
 
@@ -132,10 +144,15 @@ if($buf_bs_on){
 			}else{
 				$doc->addScriptDeclaration("var bs_load = 'false';");
 				$doc->addScript($tpath.'/libs/bootstrap/dist/js/bootstrap.bundle.min.js',array(), $defer);
-			}
+			} 
+			*/
+
+					
+			//$doc->addScriptDeclaration("var bs_load = 'false';");
+			$doc->addScript($libs_media_opath.'/bootstrap/js/bootstrap'.$bs5_js_bundle.'.min.js',array(), $defer);
 
 			HTMLHelper::_('bootstrap.framework', false);
-			$buf_debug += BufHelper::addDebug('BOOSTRAP 5 custom', 'code', '<strong>/libs/bootstrap/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+			$buf_debug += BufHelper::addDebug('BOOSTRAP 5 custom', 'code', '<strong>/libs/bootstrap/dist/js/bootstrap'.$bs5_js_bundle.'.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}	
 
 		/***************************/
@@ -217,7 +234,6 @@ foreach ($buf_load_custom_js as $key => $cus_js) {
 if($unset_js && $edit==false){
 
 	foreach ($unset_js as $key => $unset) {
-
 
 		unset($doc->_scripts[$this->baseurl .'/'.$unset]);
 		
@@ -383,10 +399,14 @@ if ($templateparams->get('runless', 0) != 2 || !$buf_check_files){
 /***************************/
 /***************************/
 
+//* ASYNC
 if($templateparams->get('buf_load_css_async', 1)){
 
 	if(!$css_mix){
+
+		$doc->addStyleSheet(URI::base(false).$cache_opath.'buf.css'.'?'.$doc->getMediaVersion(), array(), array('media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\''));
 		//BUF.css
+		/*
 		echo '<noscript id="deferred-styles_buf"><link rel="stylesheet" type="text/css" href="'.$cache_tpath.'buf.css?'.$doc->getMediaVersion().'"/>
 		</noscript>';
 
@@ -403,39 +423,17 @@ if($templateparams->get('buf_load_css_async', 1)){
 			if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf, 0); });
 			else window.addEventListener(\'load\', loadDeferredStyles_buf);
 		');
-
-		
-
-    $buf_debug += BufHelper::addDebug('BUF css ASYNC', 'thumbs-up', 'LOADED <small>'.$cache_tpath.'buf.css</small>', $startmicro ,'table-success', 'logic.php');
+		*/
+		$buf_debug += BufHelper::addDebug('BUF css ASYNC', 'thumbs-up', 'LOADED <small>'.$cache_tpath.'buf.css</small>', $startmicro ,'table-success', 'logic.php');
 	
 	}
 
-
-
-    //layout template.css
-	echo '<noscript id="deferred-styles_buf_layout">
-      <link rel="stylesheet" type="text/css" href="'.$css_path.'?'.$doc->getMediaVersion().'"/>
-    </noscript>';
-
-	$doc->addScriptDeclaration('
-      var loadDeferredStyles_buf_layout = function() {
-        var addStylesNode = document.getElementById("deferred-styles_buf_layout");
-        var replacement = document.createElement("div");
-        replacement.innerHTML = addStylesNode.textContent;
-        document.body.appendChild(replacement)
-        addStylesNode.parentElement.removeChild(addStylesNode);
-      };
-      var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-          webkitRequestAnimationFrame || msRequestAnimationFrame;
-      if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf_layout, 0); });
-      else window.addEventListener(\'load\', loadDeferredStyles_buf_layout);
-    ');
+	$doc->addStyleSheet(URI::base(false).$css_path.'?'.$doc->getMediaVersion(), array(), array('media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\''));
     $buf_debug += BufHelper::addDebug('BUF layout css ASYNC', 'thumbs-up', 'LOADED <small>'.$css_path.'<small>', $startmicro ,'table-success', 'logic.php');
-
 
 }else{
 //BUF SYNC CSS
-	$doc->addStyleSheet($cache_opath.'buf.css?'.$doc->getMediaVersion());
+	$doc->addStyleSheet(URI::base(false).$cache_opath.'buf.css'.'?'.$doc->getMediaVersion());
 	$buf_debug += BufHelper::addDebug('BUF css', 'thumbs-up', 'LOADED', $startmicro ,'table-success');
 	$doc->addStyleSheet($css_path.'?'.$doc->getMediaVersion());
 	$buf_debug += BufHelper::addDebug('TEMPLATE css', 'thumbs-up', 'LOADED', $startmicro ,'table-success');
@@ -516,7 +514,33 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 
 
+/***************************/
+/***************************/
+/*******  EXTRAS  **********/
+/***************************/
+/***************************/
 
+	//* ANIMATE
+	$buf_extras_animate = new Registry; 
+	$buf_extras_animate->loadString(json_encode($templateparams->get('buf_extra_animatecss'))); 
+
+	if($buf_extras_animate->get('animate_on','0')=='1'){
+		//$doc->addScript('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', array(), $defer);
+		$doc->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+		$buf_debug += BufHelper::addDebug('ANIMATE', 'helicopter', 'LOADED', $startmicro,'table-info', 'logic.php');
+	}
+
+	//* CUSTOM JS
+	$buf_extra_custom_js = new Registry; 
+	$buf_extra_custom_js->loadString(json_encode($templateparams->get('buf_extra_custom_js'))); 
+
+	foreach ($buf_extra_custom_js as $key => $cus_js) {
+		if($cus_js->buf_load_custom_js_script == '') continue;
+		$defer_custom_js = BufHelper::check_defer_v4($cus_js->buf_js_defer);
+		$doc->addScript($cus_js->buf_load_custom_js_script, array(), $defer_custom_js);
+		$buf_debug += BufHelper::addDebug($key, 'code', '<strong>'.$cus_js->buf_load_custom_js_script.'</strong> <small>'.var_export($defer_custom_js, true).'</small>', $startmicro, 'table-info', 'logic.php');
+	}
+	
 
 
 /***************************/

@@ -13,7 +13,7 @@
       {
         "name": "customjQuery",
         "type": "script",
-        "uri": "libraries/jtlibs/jquery/jquery.min.js"
+        "uri": "media/jtlibs/jquery/jquery.min.js"
       },
       {
         "name": "logic",

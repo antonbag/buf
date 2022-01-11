@@ -20,13 +20,6 @@ $buf_debug += BufHelper::addDebug('COMPONENTS | loaded', 'joomla fab', 'INIT log
 //$templateparams	= $app->getTemplate(true)->params;
 
 
-/***************************/
-/***************************/
-/*****  JS BOOTSTRAP *******/
-/***************************/
-/***************************/
-$doc->addScriptDeclaration("var bs_load = 'false';");
-
 
 if($buf_bs_on){
 
@@ -54,21 +47,9 @@ if($buf_bs_on){
 				}
 			}
 	
-			$defer = BufHelper::check_defer_v4($bs_4->get('buf_bs_defer',0));
 
-			if($defer){
-				$doc->addScriptDeclaration("var bs_load = 'true';");
-
-				if(!empty($defer['async'])){
-					$doc->addScriptDeclaration("var bs_load_async = 'true';");
-				}else{
-					$doc->addScriptDeclaration("var bs_load_async = 'false';");
-				}
-
-			}else{
-				$doc->addScriptDeclaration("var bs_load = 'false';");
-				$doc->addScript($tpath.'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js',array(), $defer);
-			}
+			$doc->addScript($tpath.'/libs/bootstrap4/dist/js/bootstrap.bundle.min.js',array(), $defer);
+			
 
 			HTMLHelper::_('bootstrap.framework', false);
 			$buf_debug += BufHelper::addDebug('BOOSTRAP 4 custom', 'code', '<strong>/libs/bootstrap4/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
@@ -88,6 +69,8 @@ if($buf_bs_on){
 		$bs_5->loadString(json_encode($templateparams->get('buf_bs_v5'))); 
 
 		$bs5_js = $bs_5->get("buf_bootstrap_js",'custom');
+		$bs5_js_bundle = $bs_5->get("buf_bs_bundle",'');
+
 
 		//Joomla bootstrap 3 JS.. I dont know if this is a good idea
 		if($bs5_js=='joomla' || $edit){
@@ -114,14 +97,13 @@ if($buf_bs_on){
 	
         }elseif($bs5_js=='custom'){
 
-            $doc->addScriptDeclaration("var bs_load = 'false';");
             
             //modern
             //JTfunc::getPromiseScript([$libs_media_opath.'/bootstrap/js/bootstrap.bundle.min.js']);
 			
             $defer = BufHelper::check_defer_v4($bs_5->get('buf_bs_defer',0));
 
-            $wa->registerScript('bootstrap.js', $libs_media_opath.'/bootstrap/js/bootstrap.bundle.min.js', [], []);
+            $wa->registerScript('bootstrap.js', $libs_media_opath.'/bootstrap/js/bootstrap'.$bs5_js_bundle.'.min.js', [], []);
 
 			if($defer){
           
@@ -135,7 +117,7 @@ if($buf_bs_on){
             $wa->useScript('bootstrap.js');
 
 			//HTMLHelper::_('bootstrap.framework', false);
-			$buf_debug += BufHelper::addDebug('BOOSTRAP 5 custom', 'code', '<strong>/libs/bootstrap/dist/js/bootstrap.bundle.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
+			$buf_debug += BufHelper::addDebug('BOOSTRAP 5 custom', 'code', '<strong>/libs/bootstrap/dist/js/bootstrap'.$bs5_js_bundle.'.min.js</strong> <small>'.var_export($defer, true).'</small>', $startmicro, 'table-info', 'logic.php');
 		}	
 
 		/***************************/
@@ -588,6 +570,55 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 
 
+/***************************/
+/***************************/
+/*******  EXTRAS  **********/
+/***************************/
+/***************************/
+
+	//* ANIMATE
+	$buf_extras_animate = new Registry; 
+	$buf_extras_animate->loadString(json_encode($templateparams->get('buf_extra_animatecss'))); 
+
+	if($buf_extras_animate->get('animate_on','0')=='1'){
+		//$doc->addScript('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', array(), $defer);
+		//$doc->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+		$wa->registerStyle('animatecss', 
+			'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', 
+			[], 
+			['rel' => 'lazy-stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\'']
+		);
+		$wa->useStyle('animatecss');
+
+		$buf_debug += BufHelper::addDebug('ANIMATE', 'helicopter', 'LOADED', $startmicro,'table-info', 'logic.php');
+	}
+
+	//* CUSTOM JS
+	$buf_extra_custom_js = new Registry; 
+	$buf_extra_custom_js->loadString(json_encode($templateparams->get('buf_extra_custom_js'))); 
+
+	foreach ($buf_extra_custom_js as $key => $cus_js) {
+		if($cus_js->buf_load_custom_js_script == '') continue;
+		$defer_custom_js = BufHelper::check_defer_v4($cus_js->buf_js_defer);
+		$doc->addScript($cus_js->buf_load_custom_js_script, array(), $defer_custom_js);
+
+		$wa->registerScript('extra_custom'.$key, $cus_js->buf_load_custom_js_script, [], []);
+
+		if($defer_custom_js){
+	  
+			if(!empty($defer['async'])){
+				$wa->getAsset('script','extra_custom'.$key)->setAttribute('async', true);
+			}else{
+				$wa->getAsset('script','extra_custom'.$key)->setAttribute('defer', true);
+			}
+		   }
+					
+		$wa->useScript('extra_custom'.$key);
+
+
+		$buf_debug += BufHelper::addDebug($key, 'code', '<strong>'.$cus_js->buf_load_custom_js_script.'</strong> <small>'.var_export($defer_custom_js, true).'</small>', $startmicro, 'table-info', 'logic.php');
+	}
 
 
 /***************************/
