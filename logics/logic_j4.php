@@ -105,6 +105,7 @@ if($buf_bs_on){
 
             $wa->registerScript('bootstrap.js', $libs_media_opath.'/bootstrap/js/bootstrap'.$bs5_js_bundle.'.min.js', [], []);
 
+
 			if($defer){
           
 				if(!empty($defer['async'])){
@@ -162,7 +163,8 @@ if($buf_bs_on){
 /***************************/
 $buf_fa_selector = $templateparams->get('buf_fa_selector', '4');
 $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
-$buf_fa5_files = $templateparams->get('buf_fa5_files', 'solid');
+$buf_fa5_files = $templateparams->get('buf_fa5_files', array('solid'));
+$buf_fa6_files = $templateparams->get('buf_fa6_files', array('solid'));
 $buf_fa5_fa4fallback = $templateparams->get('buf_fa4fallback', 0);
 $buf_fa_defer = $templateparams->get('buf_fa_defer', 0);
 
@@ -193,7 +195,7 @@ if($buf_load_layout_js){
 /***************************/
 /*******  JS CUSTOM ********/
 
-$buf_load_custom_js = $templateparams->get('buf_load_custom_js','');
+$buf_load_custom_js = $templateparams->get('buf_load_custom_js',array());
 
 foreach ($buf_load_custom_js as $key => $cus_js) {
 	if($cus_js->buf_load_custom_js_script == '') continue;
@@ -502,8 +504,7 @@ if($jversion=='4'){
 /***************************/
 /***************************/
 
-//FA5 SVG+JS
-if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
+if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 
 	//if fa is activated
 	if($buf_fa_selector){
@@ -528,16 +529,32 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 			//fa5PRO
 			foreach ($buf_fa5_files as $key => $value) {
-				$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', array(), $deferfa);
+				
+				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', array(), $deferfa);
+
+				$wa->registerScript($value.'.min.js', $tpath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', [], []);
+				$wa->getAsset('script',$value.'.min.js')->setAttribute('defer', true);
+				$wa->useScript($value.'.min.js');
+
 				$buf_debug += BufHelper::addDebug($key.' FA5pro', 'font-awesome fab', '/fontawesome5pro/js/'.$value.'.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
 			}
 			//fa4 fallback
 			if($buf_fa5_fa4fallback){
-				$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/v4-shims.min.js', array(), $deferfa);
+				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/v4-shims.min.js', array(), $deferfa);
+
+				$wa->registerScript('v4-shims.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/v4-shims.min.js', [], []);
+				$wa->getAsset('script','v4-shims.min.js')->setAttribute('defer', true);
+				$wa->useScript('v4-shims.min.js');
+
 				$buf_debug += BufHelper::addDebug($key.' FA5pro', 'font-awesome fab', 'Fallback fa4 loaded', $startmicro,'table-info', 'logic.php');
 			}
 
-			$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/fontawesome.min.js', array(), $deferfa);
+			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/fontawesome.min.js', array(), $deferfa);
+
+			$wa->registerScript('fontawesome.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
+			$wa->getAsset('script','fontawesome.min.js')->setAttribute('defer', true);
+			$wa->useScript('fontawesome.min.js');
+
 			$buf_debug += BufHelper::addDebug(' FA5pro gen', 'font-awesome fab', '/fontawesome5pro/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
 
 		}else{
@@ -567,6 +584,86 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 	}
 }
+
+
+
+
+
+/***************************/
+/***************************/
+/*******  FA6 JS  **********/
+/***************************/
+/***************************/
+
+//FA6
+if((int) $buf_fa_selector == 6 ){
+
+
+
+		$fa6pro_exists = file_exists(JPATH_THEMES.'/'.$this->template.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
+
+		//$deferfa = BufHelper::check_defer_v4($templateparams->get('buf_fa_defer',0));
+
+		$deferfa = false;
+		if($templateparams->get('buf_fa_defer',0)>=1){
+			$deferfa = ($templateparams->get('buf_fa_defer',0)==1) ? 'defer' : 'async';
+		}
+
+		$buf_debug += BufHelper::addDebug(' FA6JS', 'font-awesome fab', '	--------- FONTAWESOME 6 JS ---------', $startmicro,'table-info', 'logic.php');
+
+		//include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+
+		if($fa6pro_exists && $buf_fa_pro){
+			//fa6PRO
+			foreach ($buf_fa6_files as $key => $value) {
+
+			
+				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', array(), $deferfa);
+
+				$wa->registerScript($value.'.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', [], []);
+				if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
+				$wa->useScript($value.'.min.js');
+
+				$buf_debug += BufHelper::addDebug($key.' FA6pro', 'font-awesome fab', '/fontawesome6pro/js/'.$value.'.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+			}
+	
+			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', array(), $deferfa);
+
+			$wa->registerScript('fontawesome.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
+			if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
+			$wa->useScript('fontawesome.min.js');
+
+			$buf_debug += BufHelper::addDebug(' FA6pro gen', 'font-awesome fab', '/fontawesome6pro/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+
+		}else{
+			//fa6 FREE
+
+			//remove PRO files
+	        $buf_fa6_files = \array_diff($buf_fa6_files, ["duotone", "light", "thin"]);
+	        
+			//fa5FREE
+			foreach ($buf_fa6_files as $key => $value) {
+				$wa->registerScript($value.'.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', [], []);
+				if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
+				$wa->useScript($value.'.min.js');
+				$buf_debug += BufHelper::addDebug('FA6 | '.$value, 'font-awesome fab', $value, $startmicro,'table-info', 'logic.php');
+			}
+
+			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
+
+			$wa->registerScript('fontawesome.min.js', $tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
+			if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
+			$wa->useScript('fontawesome.min.js');
+
+			$buf_debug += BufHelper::addDebug(' FA6 gen', 'font-awesome fab', '/fontawesome6/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+
+
+		}
+
+}
+
+
+
 
 
 

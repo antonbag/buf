@@ -16,7 +16,7 @@ div.buf_topbar_on,div.buf_topbar_oc_on{
     height: $buf_topbar_height;
     div.buf_topbar_logo{
         display: flex;
-        //width: 100%;
+        width: 100%;
         img{
             max-height: $buf_topbar_height;
         }

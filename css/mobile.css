@@ -1,0 +1,17 @@
+div.buf_offcanvas {
+  padding: 0px;
+}
+
+div.pagination {
+  -webkit-box-align: inherit;
+      -ms-flex-align: inherit;
+          align-items: inherit;
+  text-align: center;
+}
+
+div.pagination ul.pagination {
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+/*# sourceMappingURL=mobile.css.map */

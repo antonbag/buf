@@ -155,44 +155,7 @@ jQuery(function($){
 
 
     function buf_fa_seletion(){
-
-        
-        $('#jform_params_buf_fa_selector').on('change', function(){
-
-            var fa_version = $('#jform_params_buf_fa_selector input:checked').val();
-
-            if(fa_version == '4'){
-
-                $('#jform_params_buf_fa').parent().parent().show();
-                $('#jform_params_buf_fa_defer').parent().parent().show();
-                $('#jform_params_buf_fa_pro').parent().parent().hide();
-                $('#jform_params_buf_fa5_tech').parent().parent().hide();
-                $('#jform_params_buf_fa5_files').parent().parent().hide();
-                $('#jform_params_buf_fa4fallback').parent().parent().hide();
-            
-            }else if(fa_version == '5'){
-                $('#jform_params_buf_fa').parent().parent().show();
-                $('#jform_params_buf_fa_defer').parent().parent().show();
-                $('#jform_params_buf_fa_pro').parent().parent().show();
-                $('#jform_params_buf_fa5_tech').parent().parent().show();
-                $('#jform_params_buf_fa5_files').parent().parent().show();
-                $('#jform_params_buf_fa4fallback').parent().parent().show();
-
-            }else{
-                $('#jform_params_buf_fa_pro').parent().parent().hide();
-                $('#jform_params_buf_fa').parent().parent().hide();
-                $('#jform_params_buf_fa5_tech').parent().parent().hide();
-                $('#jform_params_buf_fa5_files').parent().parent().hide();
-                $('#jform_params_buf_fa4fallback').parent().parent().hide();
-                $('#jform_params_buf_fa_defer').parent().parent().hide();
-            }
-
-        });
-
-        $('#jform_params_buf_fa_selector').trigger('change');
-
-
-
+        return;
     }
 
 

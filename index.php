@@ -6,6 +6,8 @@ use BUF\BufHelper;
 defined( '_JEXEC' ) or die; 
 include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 
+
+
 ?>
 
 <html lang="<?php echo $this->language; ?>">
@@ -146,14 +148,14 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			
 
 		        <button id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
-		        " type="button">
+		        " type="button" aria-label="Menu">
 				  <span class="hamburger-box">
 				    <span class="hamburger-inner"></span>
 				  </span>
 				</button>
 			
 			</div>
-			
+			 
 
 
 	<?php endif; ?>

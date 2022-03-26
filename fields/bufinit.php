@@ -17,7 +17,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Plugin\PluginHelper;
-use JTFramework\Fa5;
+use JTFramework\Fa;
 
 //LOAD JTFW
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php'))
@@ -69,7 +69,8 @@ class JFormFieldBufinit extends FormField
         if($jversion == "3"){
           /******* JOOMLA 3 ******/
           $doc->addStyleSheet($buf_path.'/css/bufadmin.css');
-          Fa5::getFaCDN();
+          //Fa5::getFaCDN();
+          Fa::getFa5CDN();
           $scriptDeclaration .= "var jversion = '3';";
         }
          
@@ -150,8 +151,6 @@ class JFormFieldBufinit extends FormField
         $ext_versions .= '</div>';
 
 
-
-
         /**************** */
         /****FILES CHECK**** */
         /**************** */
@@ -225,11 +224,6 @@ class JFormFieldBufinit extends FormField
 
         $template_init .='</div>';
         
-
-
-
-
-
 
 
 

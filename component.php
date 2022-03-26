@@ -61,7 +61,7 @@ if(File::exists($cachepath.'print.css')) $doc->addStyleSheet($cache_tpath.'/css/
 		if(!$check_jtfw || $check_jtfw=='1.0.0' || !$check_jtlibs || $check_jtlibs=='1.0.0'){
 				
 		}else{
-			include_once JPATH_THEMES.'/'.$this->template.'/logics/logic.php';
+			include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_j'.$jversion.'.php';
 		}
 	}
 ?>

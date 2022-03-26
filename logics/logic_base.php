@@ -152,10 +152,10 @@ $edit = ($jinput->getValue('layout') == 'edit') ? true : false;
 $edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
 
 
-
 //PATHS
 ///////////////////////
 $tpath = $this->baseurl.'/templates/'.$this->template;
+$opath = uri::base().'/templates/'.$this->template;
 $tpath_abs = JPATH_SITE.'/templates/buf';
 $layoutpath = JPATH_SITE.'/templates/buf/layouts/'.$buf_layout;
 $cachepath = JPATH_SITE.'/cache/buf_'.$buf_layout.'/';
@@ -238,9 +238,23 @@ $buf_anal_url = Uri::base().'templates/buf/js/analytics/buf_anal.js';
 
 //STYLE
 ///////////////////////
-$container = ($templateparams->get('buf_container',0) ? 'container-fluid' : 'container');
-$content_container = ($templateparams->get('buf_content_container',0) ? 'container-fluid' : 'container');
+//CONTAINER
+if($templateparams->get('buf_container', '0') == '-1'){
+	$container = '';
+}elseif($templateparams->get('buf_container', '0') == '0'){
+	$container = 'container';
+}else{
+	$container = 'container-fluid';
+}
 
+//CONTENT CONTAINER
+if($templateparams->get('buf_content_container', '0') == '-1'){
+	$content_container = '';
+}elseif($templateparams->get('buf_container', '0') == '0'){
+	$content_container = 'container';
+}else{
+	$content_container = 'container-fluid';
+}
 
 //OFFCANVAS
 $buf_offcanvas = false;
@@ -637,7 +651,7 @@ if($templateparams->get('force_recache', 0)){
 /***************************/
 /*******  UNSET **********/
 /***************************/
-$unset_js = $templateparams->get('buf_unset','');
+$unset_js = $templateparams->get('buf_unset',array());
 
 
 

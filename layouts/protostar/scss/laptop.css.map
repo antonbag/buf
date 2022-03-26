@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,iCAAiC;AACjC,iCAAiC;AACjC,iCAAiC;AACjC,mCAAmC;AACnC,iCAAiC;AACjC,iCAAiC;AACjC,qCAAqC",
+    "sources": [
+        "laptop.scss"
+    ],
+    "names": [],
+    "file": "laptop.css"
+}

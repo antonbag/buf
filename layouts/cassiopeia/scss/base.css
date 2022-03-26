@@ -1,0 +1,98 @@
+/*******************************/
+/*********   BUF   *************/
+/*******************************/
+/*******  base style   *********/
+/*******************************/
+/*******************************/
+/* This styles are loaded at first stage. */
+/* Put here only the necessary elements */
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+#superwrapper {
+  opacity: 0.1;
+  -webkit-transition: opacity 300ms;
+  transition: opacity 300ms;
+}
+
+.bs_version_4 .container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bs_version_4 .container-fluid {
+  width: 100%;
+}
+
+.bs_version_4 .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+div.wrapper_contents p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+div#dxmenu_pral #tm_navbar > ul.totalmenu {
+  opacity: 0;
+}
+
+div#dxmenu_pral {
+  background-color: #57616d;
+}
+
+div.bg {
+  position: fixed;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+div.bg img {
+  height: 100%;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+/*# sourceMappingURL=base.css.map */

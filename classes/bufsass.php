@@ -23,6 +23,7 @@ class BUFsass
   public static $libspath = JPATH_SITE.'/templates/buf/libs';
   public static $img_path;
   public static $layout_img_path;
+  public static $layout_opath;
   public static $buf_layout;
   public static $recache;
   public static $isajax = false;
@@ -109,6 +110,8 @@ class BUFsass
     self::$buf_layout = $templateparams->get('buf_layout','default');
     self::$img_path = $uri.'templates/buf/images/';
     self::$layout_img_path = $uri.'templates/buf/layouts/'.self::$buf_layout.'/images/';
+    self::$layout_opath = $uri.'templates/buf/layouts/'.self::$buf_layout.'/';
+
 
     //PARAMS
     $sass_editor = $templateparams->get('create_editor',0);
@@ -769,7 +772,8 @@ class BUFsass
         $imports_css .= '$img_path: "'.self::$img_path.'";';
         $imports_css .= '$layout_img_path: "'.self::$layout_img_path.'";';
         $imports_css .= '$layout_path: "'.self::$layoutpath.'";';
-
+        $imports_css .= '$layout_opath: "'.self::$layout_opath.'";';
+       
         
         //OFFCANVAS
         $imports_css .= self::getOffcanvasStyles();

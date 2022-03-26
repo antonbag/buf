@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.(9|10|11)" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>11-ene-2022</creationDate>
+	<creationDate>27-mar-2022</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.65</version>
+	<version>2.3.75</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">2.3.65</small>
+				<small class="buf_version badge badge-success bg-success">2.3.75</small>
 			</div>
 		</div>
 	]]></description>
@@ -527,18 +527,17 @@
 				/>
 
 
-
-
 				
 				<field type="spacer" name="buf_style_container_hr" hr="false"  class="text"
 					label="TPL_BUF_STYLE_CONTAINER_HR"/>
 
 				<field name="buf_container" 
-					type="radio" 
+					type="list" 
 					default="0" 
 					class="btn-group" 
 					label="TPL_BUF_CONTAINER" 
 					description="TPL_BUF_CONTAINER_DESC">
+					<option value="-1">None</option>
 					<option value="0">Static</option>
 					<option value="1">Fluid</option>
 				</field>
@@ -550,6 +549,7 @@
 					size="10"
 					label="TPL_BUF_BS4_CONTAINER_FLUID_MAX" 
 					description="TPL_BUF_BS4_CONTAINER_FLUID_MAX_DESC"
+					showon="buf_container:1"
 				/>
 
 				<field type="text" 
@@ -559,17 +559,20 @@
 					size="10"
 					label="TPL_BUF_BS4_CONTAINER_MAX" 
 					description="TPL_BUF_BS4_CONTAINER_MAX_DESC"
+					showon="buf_container:0"
 				/>
 
 				<field name="buf_content_container" 
-					type="radio" 
+					type="list" 
 					default="0" 
 					class="btn-group" 
 					label="TPL_BUF_CONTENT_CONTAINER" 
 					description="TPL_BUF_CONTENT_CONTAINER_DESC">
+					<option value="-1">None</option>
 					<option value="0">Static</option>
 					<option value="1">Fluid</option>
 				</field>
+
 
 				<field type="text" 
 					name="buf_bs_container_content_max" 
@@ -578,6 +581,9 @@
 					label="TPL_BUF_BS4_CONTAINER_CONTENT_MAX" 
 					description="TPL_BUF_BS4_CONTAINER_CONTENT_MAX_DESC"
 				/>
+
+
+
 
 
 				<!--BS GRID-->
@@ -652,6 +658,7 @@
 					<option value="0">JNO</option>
 					<option value="4">Fa 4</option>
 					<option value="5">Fa 5</option>
+					<option value="6">Fa 6</option>
 				</field>
 
 				<field name="buf_fa_pro" 
@@ -660,7 +667,7 @@
 					class=" btn-group" 
 					label="TPL_BUF_FONTAWESOME_PRO" 
 					description="TPL_BUF_FONTAWESOME_PRO_DESC"
-					showon="buf_fa_selector:5"
+					showon="buf_fa_selector:5[OR]buf_fa_selector:6"
 					>
 					<option value="0">TPL_BUF_FREE</option>
 					<option value="1">TPL_BUF_FA5_PRO</option>
@@ -673,8 +680,7 @@
 					label="TPL_BUF_FONTAWESOME_FILES" 
 					description="TPL_BUF_FONTAWESOME_FILES_DESC"
 					showon="buf_fa_selector:5"
-
-					>
+				>
 					<option value="0">JNO</option>
 					<option value="1">Minimum</option>
 					<option value="2">All</option>
@@ -705,9 +711,27 @@
 				  	<option value="solid">Solid</option>
 				  	<option value="regular">Regular</option>
 				  	<option value="brands">Brands</option>
-				  	<option value="light">Light(pro)</option>
-				  	<option value="duotone">Duotone(pro)</option>
+				  	<option showon="buf_fa_pro:1" value="light">Light(pro)</option>
+				  	<option showon="buf_fa_pro:1" value="duotone">Duotone(pro)</option>
 				  	<!--<option value="v4-shims">Fa4 fallback</option>-->
+				</field>
+
+				<field name="buf_fa6_files" 
+					type="list" 
+					default="solid" 
+					multiple="true" 
+					label="TPL_BUF_FA5_FILES" 
+					description="TPL_BUF_FA5_FILES_DESC"
+					layout="joomla.form.field.list-fancy-select" 
+					showon="buf_fa_selector:6"
+				>
+					<option value="solid">Solid</option>
+					<option value="regular">Regular</option>
+					<option value="brands">Brands</option>
+					<option showon="buf_fa_pro:1" value="light">Light (pro)</option>
+					<option showon="buf_fa_pro:1" value="thin">Thin (pro)</option>
+					<option showon="buf_fa_pro:1" value="duotone">Duotone(pro)</option>
+					<!--<option value="v4-shims">Fa4 fallback</option>-->
 				</field>
 
 				<field name="buf_fa4fallback" 
@@ -730,7 +754,7 @@
 					class="btn-group" 
 					label="TPL_BUF_LOAD_FA_DEFER" 
 					description="TPL_BUF_LOAD_FA_DEFER_DESC"
-					showon="buf_fa5_tech:1"
+					showon="buf_fa5_tech:1[AND]buf_fa_selector:5[OR]buf_fa_selector:6"
 					>
 					<option value="0">None</option>
 					<option value="1">TPL_BUF_DEFER</option>

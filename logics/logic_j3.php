@@ -180,12 +180,10 @@ if($buf_bs_on){
 /***************************/
 $buf_fa_selector = $templateparams->get('buf_fa_selector', '4');
 $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
-$buf_fa5_files = $templateparams->get('buf_fa5_files', 'solid');
+$buf_fa5_files = $templateparams->get('buf_fa5_files', array('solid'));
+$buf_fa6_files = $templateparams->get('buf_fa6_files', array('solid'));
 $buf_fa5_fa4fallback = $templateparams->get('buf_fa4fallback', 0);
 $buf_fa_defer = $templateparams->get('buf_fa_defer', 0);
-
-
-
 
 /***************************/
 /*******  JS LAYOUT ********/
@@ -211,7 +209,7 @@ if($buf_load_layout_js){
 /***************************/
 /*******  JS CUSTOM ********/
 
-$buf_load_custom_js = $templateparams->get('buf_load_custom_js','');
+$buf_load_custom_js = $templateparams->get('buf_load_custom_js',array());
 
 foreach ($buf_load_custom_js as $key => $cus_js) {
 	if($cus_js->buf_load_custom_js_script == '') continue;
@@ -316,9 +314,10 @@ if($templateparams->get('buf_custom_unset','')){
 
 $buf_fa_run_webfont = false;
 
-if($buf_fa_selector && $buf_fa5_tech == 2){
+if(($buf_fa_selector == 5) && $buf_fa5_tech == 2){
 
 	$fa5pro_exists = file_exists ($libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true:false;
+	$fa6pro_exists = file_exists ($libspath . '/font-awesome/fontawesome6pro/webfonts/fa-brands-400.ttf') ? true:false;
 
 	if($buf_fa_selector == 5){
 
@@ -334,8 +333,8 @@ if($buf_fa_selector && $buf_fa5_tech == 2){
 
 		if(!$buf_fa_webfont_exists) $buf_fa_run_webfont = true;
 	}
-
 }
+
 
 
 //TRUE or FALSE
@@ -399,31 +398,33 @@ if ($templateparams->get('runless', 0) != 2 || !$buf_check_files){
 /***************************/
 /***************************/
 
-//* ASYNC
+//* ASYNC DEPRECATED
 if($templateparams->get('buf_load_css_async', 1)){
 
 	if(!$css_mix){
 
 		$doc->addStyleSheet(URI::base(false).$cache_opath.'buf.css'.'?'.$doc->getMediaVersion(), array(), array('media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\''));
 		//BUF.css
+		
 		/*
-		echo '<noscript id="deferred-styles_buf"><link rel="stylesheet" type="text/css" href="'.$cache_tpath.'buf.css?'.$doc->getMediaVersion().'"/>
-		</noscript>';
+			echo '<noscript id="deferred-styles_buf"><link rel="stylesheet" type="text/css" href="'.$cache_tpath.'buf.css?'.$doc->getMediaVersion().'"/>
+			</noscript>';
 
-		$doc->addScriptDeclaration('
-			var loadDeferredStyles_buf = function() {
-				var addStylesNode = document.getElementById("deferred-styles_buf");
-				var replacement = document.createElement("div");
-				replacement.innerHTML = addStylesNode.textContent;
-				document.body.appendChild(replacement)
-				addStylesNode.parentElement.removeChild(addStylesNode);
-			};
-			var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-				webkitRequestAnimationFrame || msRequestAnimationFrame;
-			if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf, 0); });
-			else window.addEventListener(\'load\', loadDeferredStyles_buf);
-		');
+			$doc->addScriptDeclaration('
+				var loadDeferredStyles_buf = function() {
+					var addStylesNode = document.getElementById("deferred-styles_buf");
+					var replacement = document.createElement("div");
+					replacement.innerHTML = addStylesNode.textContent;
+					document.body.appendChild(replacement)
+					addStylesNode.parentElement.removeChild(addStylesNode);
+				};
+				var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+					webkitRequestAnimationFrame || msRequestAnimationFrame;
+				if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf, 0); });
+				else window.addEventListener(\'load\', loadDeferredStyles_buf);
+			');
 		*/
+
 		$buf_debug += BufHelper::addDebug('BUF css ASYNC', 'thumbs-up', 'LOADED <small>'.$cache_tpath.'buf.css</small>', $startmicro ,'table-success', 'logic.php');
 	
 	}
@@ -440,6 +441,8 @@ if($templateparams->get('buf_load_css_async', 1)){
 }
 
 
+
+
 /***************************/
 /***************************/
 /*******  FA5 JS  **********/
@@ -447,7 +450,8 @@ if($templateparams->get('buf_load_css_async', 1)){
 /***************************/
 
 //FA5 SVG+JS
-if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
+if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
+
 
 	//if fa is activated
 	if($buf_fa_selector){
@@ -460,7 +464,7 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 		$buf_debug += BufHelper::addDebug(' FA5JS', 'font-awesome fab', '	--------- FONTAWESOME JS ---------', $startmicro,'table-info', 'logic.php');
 
-		include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+		//include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
 
 
 		if($fa5pro_exists && $buf_fa_pro){
@@ -511,6 +515,58 @@ if($buf_fa5_tech == 1 && $buf_fa_selector=='5'){
 
 	}
 }
+
+
+
+
+/***************************/
+/***************************/
+/*******  FA6 JS  **********/
+/***************************/
+/***************************/
+
+//FA6
+if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 6 ){
+
+
+	//if fa is activated
+	if($buf_fa_selector){
+
+		$fa6pro_exists = file_exists(JPATH_THEMES.'/'.$this->template.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
+
+		$deferfa = BufHelper::check_defer_v4($templateparams->get('buf_fa_defer',0));
+		$buf_debug += BufHelper::addDebug(' FA6JS', 'font-awesome fab', '	--------- FONTAWESOME 6 JS ---------', $startmicro,'table-info', 'logic.php');
+
+		//include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+
+		if($fa6pro_exists && $buf_fa_pro){
+			//fa6PRO
+			foreach ($buf_fa6_files as $key => $value) {
+				$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', array(), $deferfa);
+				$buf_debug += BufHelper::addDebug($key.' FA6pro', 'font-awesome fab', '/fontawesome6pro/js/'.$value.'.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+			}
+	
+			$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', array(), $deferfa);
+			$buf_debug += BufHelper::addDebug(' FA6pro gen', 'font-awesome fab', '/fontawesome6pro/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+
+		}else{
+			//fa6 FREE
+
+			//remove PRO files
+	        $buf_fa6_files = \array_diff($buf_fa6_files, ["duotone", "light", "thin"]);
+	        
+			//fa5FREE
+			foreach ($buf_fa6_files as $key => $value) {
+				$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/'.$value.'.min.js', array(), $deferfa);
+				$buf_debug += BufHelper::addDebug('FA6 | '.$value, 'font-awesome fab', $value, $startmicro,'table-info', 'logic.php');
+			}
+
+			$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
+		}
+
+	}
+}
+
 
 
 
