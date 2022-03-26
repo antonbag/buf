@@ -12,7 +12,7 @@ Keep in mind it's only a base for your creativity... download and show us what d
 
 ## Functions
 
-* Boostrap 4 and 5
+* Boostrap 4
 * Integrated scss compiler
 * Integrated scss editor
 * Fontawesome 5
