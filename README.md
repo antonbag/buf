@@ -7,20 +7,20 @@ It has a layout system that allows you to get multimple templates in your web. E
 
 ## Demo
 
-Look at [https://jtotal.org/joomla/templates/buf-template](https://jtotal.org/joomla/templates/buf-template) to see the a demo. 
+Look at [https://jtotal.org/joomla/templates/buf-template](https://jtotal.org/joomla/templates/buf-template) to see the a demo.
 Keep in mind it's only a base for your creativity... download and show us what do you can do!
 
 ## Functions
 
-* Boostrap 4
+* Boostrap 4 & 5
 * Integrated scss compiler
 * Integrated scss editor
-* Fontawesome 5
+* Fontawesome 5 & 6
 
-## Addons 
+## Addons
 
-* [Bootstrap 4](http://getbootstrap.com/)
-* [Font Awesome 5](https://fortawesome.github.io/Font-Awesome/)
+* [Bootstrap 5](http://getbootstrap.com/)
+* [Font Awesome 6](https://fortawesome.github.io/Font-Awesome/)
 * [scssphp](http://leafo.github.io/scssphp)
 
 

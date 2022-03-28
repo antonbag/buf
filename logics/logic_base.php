@@ -429,34 +429,54 @@ $js_params['oc_style']  		= $templateparams->get('buf_offcanvas_style','buf_off_
 $js_params['oc_position']  		= $templateparams->get('buf_offcanvas_position','buf_off_pos_left');
 
 
-/******************************************************************************/
+/**********************LOAD OFFCANVAS POSITIONS**************************************/
 
 $buf_offcanvas_position = $templateparams->get('buf_offcanvas_position','buf_off_pos_left');
 $buf_offcanvas_style = $templateparams->get('buf_offcanvas_style','buf_off_move');
 
-$buf_offcanvas_positions =  $templateparams->get('buf_offcanvas_positions','');
-$buf_offcanvas_modules = '';
+$buf_offcanvas_positions =  $templateparams->get('buf_offcanvas_positions',array());
+
+$buf_offcanvas_positions_array = $buf_offcanvas_positions;
+//old versions of buf
+if(!is_array($buf_offcanvas_positions)){
+	$buf_offcanvas_positions_array = explode(',',$buf_offcanvas_positions);
+}
+
+/**********************LOAD OFFCANVAS MODULES**************************************/
+
+$buf_offcanvas_loadmodules =  $templateparams->get('buf_offcanvas_loadmodules',array());
 
 /****************************************************/
 /******** CUSTOM MODULES IN CANVAS  *****************/
-if($buf_offcanvas_positions !=''){
+$buf_offcanvas_modules = '';
+if(!empty($buf_offcanvas_positions || !empty($buf_offcanvas_loadmodules))){
 
 	$buf_offcanvas_modules .= '<div class="offcanvas_module_in">';
 
 		//$buf_offcanvas_positions = 'menu_portada';
-		$buf_offcanvas_positions_array = explode(',',$buf_offcanvas_positions);
-							
-		foreach ($buf_offcanvas_positions_array as $b_off) {
-			$modules = ModuleHelper::getModules($b_off);
-			
-			foreach ($modules as $module) {
-				$buf_offcanvas_modules .=  ModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
+
+		if(!empty($buf_offcanvas_positions)){
+			foreach ($buf_offcanvas_positions_array as $b_off) {
+				$modules = ModuleHelper::getModules($b_off);
+				
+				foreach ($modules as $module) {
+					var_dump($module);
+					$buf_offcanvas_modules .=  ModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
+				}
 			}
+		}				
+
+		if(!empty($buf_offcanvas_loadmodules)){		
+			foreach ($buf_offcanvas_loadmodules as $moduleid) {
+				$module = ModuleHelper::getModuleById($moduleid);
+
+					$buf_offcanvas_modules .=  ModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
+	
+			}	
 		}
+
 	$buf_offcanvas_modules .=  '</div>';
 }
-
-
 
 
 
@@ -499,6 +519,7 @@ $buf_left_lg = ' col-lg-'.$bs_left_lg;
 $content_pral_bs_sm = '';
 $content_pral_bs_md = '';
 $content_pral_bs_lg = '';
+
 
 $buf_right = false;
 if($this->countModules($bs_right_pos)){

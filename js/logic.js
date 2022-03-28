@@ -11,8 +11,7 @@ Joomla = window.Joomla || {};
   });
 
 })(Joomla, document);
-
-
+ 
 
 
 
@@ -59,11 +58,6 @@ function buf_js_init(){
 
 
 		buf_debug_n("buf_try: jQuery loaded!");
-
-		//offcanvas_v1();
-		
-		//loadBufoc();
-
 
 
 		/* 		

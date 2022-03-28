@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.(9|10|11)" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>27-mar-2022</creationDate>
+	<creationDate>28-mar-2022</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.78</version>
+	<version>2.3.79</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">2.3.78</small>
+				<small class="buf_version badge badge-success bg-success">2.3.79</small>
 			</div>
 		</div>
 	]]></description>
@@ -309,13 +309,7 @@
 				/>
 
 	
-				<field type="spacer" name="buf_top_bar_hr" hr="true"  class="text"
-					label="TPL_BUF_TOP_BAR_HR"/>
 
-				<field name="buf_topbar" type="subform"
-				    formsource="templates/buf/subforms/oc_topbar.xml"
-				    label="TPL_BUF_TOP_BAR"
-				/>
 
 
 
@@ -375,11 +369,28 @@
 					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
 				/>
 
-				<field name="buf_offcanvas_positions" type="text"	
+				<field name="buf_offcanvas_positions"
+					type="sql"
 					label="TPL_BUF_OFFCANVAS_MODULES"
+					query="SELECT position as id, position as title FROM #__modules GROUP BY position"
 					description="TPL_BUF_OFFCANVAS_MODULES_DESC"
-					default=""
-					maxlength="100" 
+					key_field="id"
+					value_field="title"
+					required="false"
+					multiple="true"
+					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+				/>
+
+				<field
+					name="buf_offcanvas_loadmodules"
+					type="sql"
+					default="10"
+					label="TPL_BUF_OFFCANVAS_LOAD_MODULES"
+					query="SELECT id, title FROM #__modules WHERE published = '1'"
+					key_field="id"
+					value_field="title"
+					required="false"
+					multiple="true"
 					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
 				/>
 
@@ -389,7 +400,14 @@
 				    label="TPL_BUF_TOP_BAR_OC"
 					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
 				/>
+				
+				<field type="spacer" name="buf_top_bar_hr" hr="true"  class="text"
+					label="TPL_BUF_TOP_BAR_HR"/>
 
+				<field name="buf_topbar" type="subform"
+				    formsource="templates/buf/subforms/oc_topbar.xml"
+				    label="TPL_BUF_TOP_BAR"
+				/>
 
 				<!--BS STYLES-->
 				<field type="spacer" name="buf_oc_button_spacer" hr="true"  class="text"
