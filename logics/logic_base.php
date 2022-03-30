@@ -123,7 +123,6 @@ if(!$check_jtlibs || $check_jtlibs=='1.0.0'){
 ///////////////////////
 $params = $app->getParams();
 
-
 $templateparams	= $app->getTemplate(true)->params;
 $menu = $app->getMenu();
 
@@ -135,6 +134,7 @@ if($menu->getActive()){
 
 
 $menutype = ($menu->getActive() != null) ? $menu->getActive()->menutype: '';
+$superParentMenu = ($active->tree != null) ? $menu->getItem($active->tree[0])->alias : '';
 
 $docalias = OutputFilter::stringUrlSafe($doc->title);
 $pageclass = $params->get('pageclass_sfx','');
@@ -631,6 +631,7 @@ $bodyclass[]= 'alias_'.$docalias;
 $bodyclass[]= $docalias;
 $bodyclass[]= $body_mobile;
 $bodyclass[]= 'menutype_'.$menutype;
+if($superParentMenu!= '') $bodyclass[] = 'superParentMenu_'.$superParentMenu;
 $bodyclass[]= 'bs_version_'.$bs_version;
 $bodyclass[]= $hasClass;
 

@@ -30,7 +30,7 @@
         type="media" 
         directory="" 
         default="templates/buf/images/buf_logos/logo_buf_64.webp" 
-        showon="buf_topbar_on:1"
+        showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
     <field 
@@ -40,14 +40,14 @@
         default="templates/buf/images/buf_logos/logo_buf_64.png" 
         type="media" 
         directory="" 
-        showon="buf_topbar_on:1"
+        showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
     <field name="buf_topbar_logo_pos" 
         type="radio" default="l"
         class="btn-group" 
         label="TPL_BUF_TOPBAR_LOGO_POSITION" 
-        showon="buf_topbar_on:1"
+        showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     >
         <option value="l">TPL_BUF_OC_BUTTON_ACTIVE_LEFT</option>
         <option value="c">TPL_BUF_OC_BUTTON_ACTIVE_CENTER</option>

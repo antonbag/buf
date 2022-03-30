@@ -71,6 +71,13 @@
 	        <jdoc:include type="message" />
 	        <jdoc:include type="component" />
 
+			<!-- SUBCOMPONENT -->
+			<?php if ($this->countModules('subcomponent', true)) : ?>
+			<div id="subcomponent">
+				<jdoc:include type="modules" name="subcomponent"/>
+			</div>
+            <?php endif; ?>
+
 		</div>
 		<div class="buf_right <?php echo $buf_right_sm.$buf_right_md.$buf_right_lg; ?>">
 			<jdoc:include type="modules" name="<?php echo $bs_right_pos;?>"/>
@@ -93,6 +100,13 @@
 	        <jdoc:include type="message" />
 	        <jdoc:include type="component" />
 
+			<!-- SUBCOMPONENT -->
+			<?php if ($this->countModules('subcomponent', true)) : ?>
+			<div id="subcomponent">
+				<jdoc:include type="modules" name="subcomponent"/>
+			</div>
+            <?php endif; ?>
+
 		</div>
 
 	</div>
@@ -108,6 +122,13 @@
 
 	        <jdoc:include type="message" />
 	        <jdoc:include type="component" />
+
+			<!-- SUBCOMPONENT -->
+			<?php if ($this->countModules('subcomponent', true)) : ?>
+			<div id="subcomponent">
+				<jdoc:include type="modules" name="subcomponent"/>
+			</div>
+            <?php endif; ?>
 
 		</div>
 

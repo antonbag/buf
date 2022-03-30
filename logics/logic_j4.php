@@ -532,7 +532,7 @@ if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 				
 				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', array(), $deferfa);
 
-				$wa->registerScript($value.'.min.js', $tpath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', [], []);
+				$wa->registerScript($value.'.min.js', $opath.'/libs/font-awesome/fontawesome5pro/js/'.$value.'.min.js', [], []);
 				$wa->getAsset('script',$value.'.min.js')->setAttribute('defer', true);
 				$wa->useScript($value.'.min.js');
 
@@ -542,7 +542,7 @@ if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 			if($buf_fa5_fa4fallback){
 				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/v4-shims.min.js', array(), $deferfa);
 
-				$wa->registerScript('v4-shims.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/v4-shims.min.js', [], []);
+				$wa->registerScript('v4-shims.min.js', $opath.'/libs/font-awesome/fontawesome5pro/js/v4-shims.min.js', [], []);
 				$wa->getAsset('script','v4-shims.min.js')->setAttribute('defer', true);
 				$wa->useScript('v4-shims.min.js');
 
@@ -551,7 +551,7 @@ if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 
 			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome5pro/js/fontawesome.min.js', array(), $deferfa);
 
-			$wa->registerScript('fontawesome.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
+			$wa->registerScript('fontawesome.min.js', $opath.'/libs/font-awesome/fontawesome5pro/js/fontawesome.min.js', [], []);
 			$wa->getAsset('script','fontawesome.min.js')->setAttribute('defer', true);
 			$wa->useScript('fontawesome.min.js');
 
@@ -780,7 +780,6 @@ if($templateparams->get('runless', 1) != 2){
 /*******  BUF OffCanvas **********/
 /***************************/
 /***************************/
-
 
 if(($templateparams->get('buf_offcanvas', 1) != 0) && !$tmplComponent){
 	if($buf_debug_param){
