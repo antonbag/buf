@@ -460,7 +460,6 @@ if(!empty($buf_offcanvas_positions || !empty($buf_offcanvas_loadmodules))){
 				$modules = ModuleHelper::getModules($b_off);
 				
 				foreach ($modules as $module) {
-					var_dump($module);
 					$buf_offcanvas_modules .=  ModuleHelper::renderModule($module,array('buf_offcanvas'=>true));
 				}
 			}

@@ -30,7 +30,7 @@ foreach ($buf_debug as $key => $value) {
 	if(in_array('fas', $fa_fixed) || in_array('far', $fa_fixed) || in_array('fab', $fa_fixed)){
 		$final_fa = 'fa-'.$value['icon'];
 	}else{
-		$final_fa = 'fas fa-'.$value['icon'];
+		$final_fa = 'fa-solid fas fa-'.$value['icon'];
 	}
 
 

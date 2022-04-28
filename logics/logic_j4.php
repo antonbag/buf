@@ -566,6 +566,7 @@ if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 
 
 			//remove PRO files
+			if(gettype($buf_fa5_files) == 'string') $buf_fa5_files = array("solid");
 	        $buf_fa5_files = \array_diff($buf_fa5_files, ["duotone", "light"]);
 	        
 			//fa5FREE
@@ -598,67 +599,63 @@ if($buf_fa5_tech == 1 && (int) $buf_fa_selector == 5 ){
 //FA6
 if((int) $buf_fa_selector == 6 ){
 
+	$fa6pro_exists = file_exists(JPATH_THEMES.'/'.$this->template.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
 
+	//$deferfa = BufHelper::check_defer_v4($templateparams->get('buf_fa_defer',0));
 
-		$fa6pro_exists = file_exists(JPATH_THEMES.'/'.$this->template.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
+	$deferfa = false;
+	if($templateparams->get('buf_fa_defer',0)>=1){
+		$deferfa = ($templateparams->get('buf_fa_defer',0)==1) ? 'defer' : 'async';
+	}
 
-		//$deferfa = BufHelper::check_defer_v4($templateparams->get('buf_fa_defer',0));
+	$buf_debug += BufHelper::addDebug(' FA6JS', 'font-awesome fab', '	--------- FONTAWESOME 6 JS ---------', $startmicro,'table-info', 'logic.php');
 
-		$deferfa = false;
-		if($templateparams->get('buf_fa_defer',0)>=1){
-			$deferfa = ($templateparams->get('buf_fa_defer',0)==1) ? 'defer' : 'async';
+	//include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+
+	if($fa6pro_exists && $buf_fa_pro){
+		//fa6PRO
+		foreach ($buf_fa6_files as $key => $value) {
+
+		
+			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', array(), $deferfa);
+
+			$wa->registerScript($value.'.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', [], []);
+			if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
+			$wa->useScript($value.'.min.js');
+
+			$buf_debug += BufHelper::addDebug($key.' FA6pro', 'font-awesome fab', '/fontawesome6pro/js/'.$value.'.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
 		}
 
-		$buf_debug += BufHelper::addDebug(' FA6JS', 'font-awesome fab', '	--------- FONTAWESOME 6 JS ---------', $startmicro,'table-info', 'logic.php');
+		//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', array(), $deferfa);
 
-		//include_once JPATH_SITE.'/templates/buf/classes/bufsass.php';
+		$wa->registerScript('fontawesome.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
+		if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
+		$wa->useScript('fontawesome.min.js');
 
-		if($fa6pro_exists && $buf_fa_pro){
-			//fa6PRO
-			foreach ($buf_fa6_files as $key => $value) {
+		$buf_debug += BufHelper::addDebug(' FA6pro gen', 'font-awesome fab', '/fontawesome6pro/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
 
-			
-				//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', array(), $deferfa);
-
-				$wa->registerScript($value.'.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', [], []);
-				if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
-				$wa->useScript($value.'.min.js');
-
-				$buf_debug += BufHelper::addDebug($key.' FA6pro', 'font-awesome fab', '/fontawesome6pro/js/'.$value.'.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
-			}
-	
-			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', array(), $deferfa);
-
-			$wa->registerScript('fontawesome.min.js', $opath.'/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
-			if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
-			$wa->useScript('fontawesome.min.js');
-
-			$buf_debug += BufHelper::addDebug(' FA6pro gen', 'font-awesome fab', '/fontawesome6pro/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
-
-		}else{
-			//fa6 FREE
-
-			//remove PRO files
-	        $buf_fa6_files = \array_diff($buf_fa6_files, ["duotone", "light", "thin"]);
-	        
-			//fa5FREE
-			foreach ($buf_fa6_files as $key => $value) {
-				$wa->registerScript($value.'.min.js', $tpath.'/libs/font-awesome/fontawesome6pro/js/'.$value.'.min.js', [], []);
-				if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
-				$wa->useScript($value.'.min.js');
-				$buf_debug += BufHelper::addDebug('FA6 | '.$value, 'font-awesome fab', $value, $startmicro,'table-info', 'logic.php');
-			}
-
-			//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
-
-			$wa->registerScript('fontawesome.min.js', $tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
-			if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
-			$wa->useScript('fontawesome.min.js');
-
-			$buf_debug += BufHelper::addDebug(' FA6 gen', 'font-awesome fab', '/fontawesome6/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
-
-
+	}else{
+		//fa6 FREE
+		//remove PRO files
+		$buf_fa6_files = \array_diff($buf_fa6_files, ["duotone", "light", "thin"]);
+		
+		//fa6FREE
+		foreach ($buf_fa6_files as $key => $value) {
+			$wa->registerScript($value.'.min.js', $opath.'/libs/font-awesome/fontawesome6/js/'.$value.'.min.js', [], []);
+			if($deferfa) $wa->getAsset('script',$value.'.min.js')->setAttribute($deferfa, true);
+			$wa->useScript($value.'.min.js');
+			$buf_debug += BufHelper::addDebug('FA6 | '.$value, 'font-awesome fab', $value, $startmicro,'table-info', 'logic.php');
 		}
+
+		//$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
+
+		$wa->registerScript('fontawesome.min.js', $opath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
+		if($deferfa) $wa->getAsset('script','fontawesome.min.js')->setAttribute($deferfa, true);
+		$wa->useScript('fontawesome.min.js');
+
+		$buf_debug += BufHelper::addDebug(' FA6 gen', 'font-awesome fab', '/fontawesome6/js/fontawesome.min.js, '.var_export($deferfa, true), $startmicro,'table-info', 'logic.php');
+
+	}
 
 }
 

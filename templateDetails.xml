@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.(9|10|11)" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>07-abr-2022</creationDate>
+	<creationDate>28-abr-2022</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.81</version>
+	<version>2.3.87</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">2.3.81</small>
+				<small class="buf_version badge badge-success bg-success">2.3.87</small>
 			</div>
 		</div>
 	]]></description>
@@ -721,7 +721,7 @@
 
 				<field name="buf_fa5_files" 
 					type="list" 
-					default="solid" 
+					default="['solid']" 
 					multiple="true" 
 					label="TPL_BUF_FA5_FILES" 
 					description="TPL_BUF_FA5_FILES_DESC"

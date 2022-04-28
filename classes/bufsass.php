@@ -121,8 +121,9 @@ class BUFsass
     $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
     $buf_fa_selector = $templateparams->get('buf_fa_selector', '4');
     $buf_fa5_tech = $templateparams->get('buf_fa5_tech', '1');
-    $buf_fa5_files = $templateparams->get('buf_fa5_files', 'solid');
-
+    $buf_fa5_files = $templateparams->get('buf_fa5_files', array('solid'));
+    if(gettype($buf_fa5_files) == 'string') $buf_fa5_files = array("solid");
+    
     if($buf_fa_pro == 0){
        $buf_fa5_files = array_diff($buf_fa5_files, ["light", "duotone"]);
     }
