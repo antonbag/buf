@@ -125,11 +125,10 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<?php if ($buf_offcanvas) : ?>
 			
 
-
 			<?php $buf_debug += BUFHelper::addDebug('offcanvas_button', 'bars', 'active and module present', $startmicro, 'table-success', 'index.php');?>
 
 			<?php if ($buf_topbar_on) : ?>
-			<div id="buf_topbar" class="<?php echo $buf_topbar_classes;?>">
+			<nav id="buf_topbar" role="banner" aria-disabled="true" class="<?php echo $buf_topbar_classes;?>">
 
 				<?php 
 					echo $buf_topbar_logo;
@@ -142,19 +141,17 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 				?>
 				
 			<?php else : ?>
-			<div id="buf_topbar" class="buf_topbar_off">
+			<nav id="buf_topbar" class="buf_topbar_off">
 			<?php endif; ?>
 	
-			
-
-		        <button id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
+			    <button role="button" tabindex="0" id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
 		        " type="button" aria-label="Menu">
 				  <span class="hamburger-box">
 				    <span class="hamburger-inner"></span>
 				  </span>
 				</button>
 			
-			</div>
+			</nav>
 			 
 
 
@@ -167,7 +164,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		
 			<?php $buf_debug += BUFHelper::addDebug('offcanvas', 'bars', 'active', $startmicro, 'table-success', 'index.php');?>
 			
-			<div id="buf_offcanvas" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
+			<div id="buf_offcanvas" aria-disabled="true" aria-label="offcanvas" tabindex="-1" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
 				
 				<?php if ($buf_topbar_oc_on){
 						echo  '<div id="buf_topbar_oc" class="'.$buf_topbar_oc_classes.'">';

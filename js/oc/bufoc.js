@@ -160,6 +160,10 @@ class offcanvas {
 
         this.topbar.classList.remove('buf_oc_hide');
         this.ocbutton.classList.remove('buf_oc_hide');
+
+        this.topbar.setAttribute('aria-disabled', 'false');
+        this.bufcanvas.setAttribute('aria-disabled', 'false');
+        this.bufcanvas.setAttribute('aria-hidden', 'false');
     }
 
     offcanvasRemove(){
@@ -171,6 +175,10 @@ class offcanvas {
             this.ocbutton.classList.remove('buf_oc_show');
 
             this.ocbutton.classList.remove('is-active');
+
+            this.topbar.setAttribute('aria-disabled', 'true');
+            this.bufcanvas.setAttribute('aria-disabled', 'true');
+            this.bufcanvas.setAttribute('aria-hidden', 'true');
             
             //HIDE offcanvas
             document.body.classList.remove('offcanvas_show');

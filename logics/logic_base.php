@@ -165,7 +165,7 @@ $libspath = JPATH_SITE.'/templates/buf/libs';
 $jtfw_libspath = JPATH_LIBRARIES.'/jtlibs';
 $libs_media_tpath = $this->baseurl.'/media/jtlibs';
 $libs_media_opath = uri::base().'media/jtlibs';
-
+$jconfig = Factory::getConfig();
 
 
 //GET BROWSER
@@ -315,7 +315,7 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 
 				//fallback
 				if($buf_topbar_logo_fallback == '' && $buf_topbar_logo_img != ''){
-					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo"';
+					$buf_topbar_logo .= '<img class="img-fluid" type="'.mime_content_type($buf_topbar_logo_img).'" src='.$buf_topbar_logo_img.' alt="logo '.$jconfig->get( 'sitename' ).' "';
 					if(mime_content_type($buf_topbar_logo_img) != 'image/svg+xml'){
 						$buf_topbar_logo .= 'width="'.Image::getImageFileProperties($buf_topbar_logo_img)->width.'" 
 						height="'.Image::getImageFileProperties($buf_topbar_logo_img)->height.'"';
@@ -328,7 +328,7 @@ if($buf_topbar->get('buf_topbar_image_show','0')){
 						class="img-fluid" 
 						type="'.mime_content_type($buf_topbar_logo_fallback).'" 
 						src='.$buf_topbar_logo_fallback.' 
-						alt="logo"
+						alt="logo '.$jconfig->get( 'sitename' ).'" 
 						width="'.Image::getImageFileProperties($buf_topbar_logo_fallback)->width.'" 
 						height="'.Image::getImageFileProperties($buf_topbar_logo_fallback)->height.'" 
 					/>';
