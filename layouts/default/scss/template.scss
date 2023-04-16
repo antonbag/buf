@@ -8,6 +8,19 @@
 
 
 
+//TODO this in config file
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+
+
+
 //IMAGES
 //background-image:url(#{$img_path}yourimage.png);
 //LAYOUT IMAGES

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.(9|10|11)" type="template" client="site" method="upgrade">
+<extension version="4.(1|2|3)" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>14-may-2022</creationDate>
+	<creationDate>16-abr-2023</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>2.3.89</version>
+	<version>4.0.22</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">2.3.89</small>
+				<small class="buf_version badge badge-success bg-success">4.0.22</small>
 			</div>
 		</div>
 	]]></description>
@@ -274,17 +274,17 @@
 					>
 					<option value="device">TPL_BUF_DEVICE</option>
 					<option value="media">TPL_BUF_SIZE</option>
-					<option value="mix">TPL_BUF_MIX</option>
+<!-- 					<option value="mix">TPL_BUF_MIX</option> -->
 				</field>
 
 				<field name="buf_offcanvas_max_w" 
 					type="text" 
-					default="900" 
+					default="991" 
 					class="input" 
 					label="TPL_BUF_OFFCANVAS_MAX_W"
 					description="TPL_BUF_OFFCANVAS_MAX_W_DESC"
-					showon="buf_offcanvas:2"
-					/>
+					showon="buf_offcanvas:2[AND]buf_offcanvas_detection:media"
+				/>
 
 
 				<field name="buf_tablet_as_mobile" 
@@ -293,7 +293,7 @@
 					class="btn-group " 
 					layout="joomla.form.field.radio.switcher"
 					label="TPL_BUF_TABLET_AS_MOBILE"
-					showon="buf_offcanvas:2"
+					showon="buf_offcanvas:2[AND]buf_offcanvas_detection:device"
 					>
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -501,26 +501,25 @@
 
 
 
-			<!--
-				***********************************
-				***********************************
-				**********   BOOTSTRAP   **************
-				***********************************
-				***********************************
-			-->
+<!--
+***********************************
+***********************************
+**********   BOOTSTRAP   **************
+***********************************
+***********************************
+-->
 			<fieldset name="bootstrapCustom">
 
 				<field name="buf_bs_on" 
 					type="radio" 
-					default="4" 
+					default="5" 
 					class="btn-group" 
 					label="TPL_BUF_BS_ON">
-					<option value="0">
-					 JNO </option>
-					<option value="4"><![CDATA[ 
+					<option value="0"> JNO </option>
+					<!--<option value="4"><![CDATA[ 
 							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap4_logo32.png" style="height:16px;"/>
 							<span> Boostrap 4</span>
-					]]></option>
+					]]></option>-->
 					<option value="5"><![CDATA[ 
 							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap5_logo32.png" style="height:16px;"/>
 							<span> Boostrap 5</span>
@@ -529,14 +528,15 @@
 
 				<field name="buf_bs_exists" type="bufbsexists" file="bs"/>
 
+				
 				<!--BOOOOOOOOOOOOOOOOOO 4 SUBFORM-->
-
+				<!--
 				<field name="buf_bs_v4" type="subform"
 				    formsource="templates/buf/subforms/bs_v4.xml"
 				    label="TPL_BUF_BS_VERSION4"
 					showon="buf_bs_on:4"
 				/>
-
+				-->
 
 				<!--BOOOOOOOOOOOOOOOOOO 5 SUBFORM-->
 
@@ -603,7 +603,15 @@
 				/>
 
 
+				<field type="spacer" name="buf_bs_breakpoint_hr" hr="false"  class="text"
+					label="TPL_BUF_BREAKPOINTS"/>
 
+				<field name="buf_bs_breakpoint_xs" label="xs" type="text" default="0"/>
+				<field name="buf_bs_breakpoint_sm" label="sm" type="text" default="576"/>
+				<field name="buf_bs_breakpoint_md" label="md" type="text" default="768"/>
+				<field name="buf_bs_breakpoint_lg" label="lg" type="text" default="992"/>
+				<field name="buf_bs_breakpoint_xl" label="xl" type="text" default="1200"/>
+				<field name="buf_bs_breakpoint_xxs" label="xxl" type="text" default="1400"/>
 
 
 				<!--BS GRID-->
@@ -671,13 +679,12 @@
 
 				<field name="buf_fa_selector" 
 					type="radio" 
-					default="5" 
+					default="jdefault" 
 					class="btn-group" 
 					label="TPL_BUF_FONTAWESOME_SELECTOR" 
 					description="TPL_BUF_FONTAWESOME_SELECTOR_DESC">
 					<option value="0">JNO</option>
-					<option value="4">Fa 4</option>
-					<option value="5">Fa 5</option>
+					<option value="jdefault">TPL_BUF_FA_JOOMLA_DEFAULT</option>
 					<option value="6">Fa 6</option>
 				</field>
 
@@ -687,54 +694,13 @@
 					class=" btn-group" 
 					label="TPL_BUF_FONTAWESOME_PRO" 
 					description="TPL_BUF_FONTAWESOME_PRO_DESC"
-					showon="buf_fa_selector:5[OR]buf_fa_selector:6"
+					showon="buf_fa_selector:6"
 					>
+
 					<option value="0">TPL_BUF_FREE</option>
 					<option value="1">TPL_BUF_FA5_PRO</option>
 				</field>
 
-				<field name="buf_fa" 
-					type="radio" 
-					default="1" 
-					class="btn-group" 
-					label="TPL_BUF_FONTAWESOME_FILES" 
-					description="TPL_BUF_FONTAWESOME_FILES_DESC"
-					showon="buf_fa_selector:5"
-				>
-					<option value="0">JNO</option>
-					<option value="1">Minimum</option>
-					<option value="2">All</option>
-				</field>
-
-				<field name="buf_fa5_tech" 
-					type="radio" 
-					default="1" 
-					class="btn-group" 
-					label="TPL_BUF_FA5_TECH" 
-					description="TPL_BUF_FA5_TECH_DESC"
-					showon="buf_fa_selector:5"
-					>
-					<option value="0">JNO</option>
-					<option value="1">svg + js</option>
-					<option value="2">fonts + css</option>
-				</field>
-
-				<field name="buf_fa5_files" 
-					type="list" 
-					default="['solid']" 
-					multiple="true" 
-					label="TPL_BUF_FA5_FILES" 
-					description="TPL_BUF_FA5_FILES_DESC"
-					layout="joomla.form.field.list-fancy-select" 
-					showon="buf_fa_selector:5"
-					>
-				  	<option value="solid">Solid</option>
-				  	<option value="regular">Regular</option>
-				  	<option value="brands">Brands</option>
-				  	<option showon="buf_fa_pro:1" value="light">Light(pro)</option>
-				  	<option showon="buf_fa_pro:1" value="duotone">Duotone(pro)</option>
-				  	<!--<option value="v4-shims">Fa4 fallback</option>-->
-				</field>
 
 				<field name="buf_fa6_files" 
 					type="list" 
@@ -754,27 +720,13 @@
 					<!--<option value="v4-shims">Fa4 fallback</option>-->
 				</field>
 
-				<field name="buf_fa4fallback" 
-					type="radio" 
-					default="0" 
-					class="btn-group" 
-					label="TPL_BUF_FONTAWESOME5_FA4_FALLBACK" 
-					description="TPL_BUF_FONTAWESOME5_FA4_FALLBACK_DESC"
-					showon="buf_fa_selector:5"
-					layout="joomla.form.field.radio.switcher"
-
-					>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
 				<field name="buf_fa_defer" 
 					type="radio" 
 					default="0" 
 					class="btn-group" 
 					label="TPL_BUF_LOAD_FA_DEFER" 
 					description="TPL_BUF_LOAD_FA_DEFER_DESC"
-					showon="buf_fa5_tech:1[AND]buf_fa_selector:5[OR]buf_fa_selector:6"
+					showon="buf_fa_selector:6"
 					>
 					<option value="0">None</option>
 					<option value="1">TPL_BUF_DEFER</option>

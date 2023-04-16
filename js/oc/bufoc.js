@@ -8,7 +8,7 @@ class offcanvas {
 
         this.buf_params = JSON.parse(php_buf_params).params;
 
-        this.currentDevice = 'mobile';
+        this.currentDevice = 'desktop';
 
         this.topbar = document.querySelector('#buf_topbar');
         this.ocbutton = document.querySelector('#bufoc_button');
@@ -58,8 +58,10 @@ class offcanvas {
 
         ///////
         this.init();
+
         this.offcanvas_resize();
         this.addEventListeners();
+
 
     }
 
@@ -115,8 +117,9 @@ class offcanvas {
         }
 
         //MEDIA
-        if(this.buf_params.detection == 'media'){         
+        if(this.buf_params.detection == 'media' || this.buf_params.detection == 'mix'){         
             this.offcanvas_media();
+
         }
 
     }
@@ -128,6 +131,9 @@ class offcanvas {
         this.vw = ancho;
 
         document.body.classList.remove('buf_oc_'+this.currentDevice);
+
+        this.buf_debug(ancho);
+        this.buf_debug(this.buf_params.media_w);
 
         if(ancho<=this.buf_params.media_w && this.currentDevice=='desktop'){
 
@@ -154,6 +160,7 @@ class offcanvas {
 
 
     offcanvasCreate(){
+        this.buf_debug("show oc button");
         //show BUTTON
         this.topbar.classList.add('buf_oc_show');
         this.ocbutton.classList.add('buf_oc_show');
@@ -198,6 +205,7 @@ class offcanvas {
     offcanvas_resize(){
         const media = this.offcanvas_media;
         window.addEventListener('resize', media);
+ 
     }
 
 

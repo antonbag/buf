@@ -4,9 +4,11 @@
 use BUF\BufHelper;
 
 defined( '_JEXEC' ) or die; 
+
+
+//include '/var/www/online/4dev/plugins/content/jtfaparser/tmpl/jtfaeditor.php';
+
 include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
-
-
 
 ?>
 
@@ -26,50 +28,10 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			$buf_debug +=  BUFHelper::addDebug('BASE CSS', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
 		?>
 	</style>
-<!-- <style>
 
-.lazyload{
-	height: 100% !important;
-	filter: blur(10px);
-	transform: scale(1.00);
-}
-@keyframes itp_blur {
-  from {    
-	  filter: blur(10px);
-	  transform: scale(1.00);
-	}
-  to {    
-		filter: blur(0px);	
-		transform: scale(1);
-	}
-}
-.lazyloading{
-	filter: blur(10px);
-	transform: scale(1.00);
-}
-.lazyloaded{
-	transform: scale(1);
-	animation-name: itp_blur;
-	animation-duration: 500ms;
-}
-
-</style> -->
-
-
-	<?php if($jversion=='3'): ?>
-		<jdoc:include type="head" />
-
-	<?php endif;?>
-
-	<?php if($jversion=='4'): ?>
-		<jdoc:include type="metas" />
-		<jdoc:include type="styles" />
-		<jdoc:include type="scripts" />
-	<?php endif;?>
-	
-
-
-
+	<jdoc:include type="metas" />
+	<jdoc:include type="styles" />
+	<jdoc:include type="scripts" />
 
 	<?php
 		//PRELOAD 
@@ -79,7 +41,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 
 	<link rel="shortcut icon" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon.ico" />
 
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -98,7 +60,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 	<link rel="icon" type="image/png" sizes="32x32" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/favicon-96x96.png">
 
-	<link rel="manifest" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/manifest.json">
+ 	<link rel="manifest" href="<?php echo $tpath.'/layouts/'.$buf_layout;?>/icons/manifest.json">
 	
 	<meta name="msapplication-TileColor" content="<?php echo $templateparams->get('buf_mscolor','#57616d'); ?>">
 	<meta name="msapplication-TileImage" content="<?php echo $tpath; ?>/images/icons/ms-icon-144x144.png">
@@ -144,13 +106,14 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 			<nav id="buf_topbar" class="buf_topbar_off">
 			<?php endif; ?>
 	
-			    <button role="button" tabindex="0" id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
-		        " type="button" aria-label="Menu">
+			    <button type="button" tabindex="0" id="bufoc_button" class="hamburger hamburger--collapse hamburger--<?php echo $buf_oc_button_style.$buf_reverse;?> oc_button_vpos_<?php echo $buf_oc_button_vpos;?> oc_button_hpos_<?php echo $buf_oc_button_hpos;?>
+		        "  aria-label="Menu" aria-controls="buf_offcanvas" aria-expanded="false" >
 				  <span class="hamburger-box">
 				    <span class="hamburger-inner"></span>
 				  </span>
 				</button>
-			
+
+
 			</nav>
 			 
 
@@ -164,7 +127,7 @@ include_once JPATH_THEMES.'/'.$this->template.'/logics/logic_base.php';
 		
 			<?php $buf_debug += BUFHelper::addDebug('offcanvas', 'bars', 'active', $startmicro, 'table-success', 'index.php');?>
 			
-			<div id="buf_offcanvas" aria-disabled="true" aria-label="offcanvas" tabindex="-1" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
+			<div id="buf_offcanvas"  aria-modal="true" role="dialog" aria-label="offcanvas" tabindex="-1" class="buf_offcanvas <?php echo $buf_offcanvas_style.' '.$buf_offcanvas_position;?>">
 				
 				<?php if ($buf_topbar_oc_on){
 						echo  '<div id="buf_topbar_oc" class="'.$buf_topbar_oc_classes.'">';

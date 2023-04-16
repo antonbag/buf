@@ -10,9 +10,9 @@ div#superwrapper{
     opacity:1;
 }
 
-#buf_topbar{
-    opacity:1;
 
+#buf_topbar.buf_oc_show{
+    opacity:1;
 }
 
 
@@ -31,8 +31,10 @@ div.flex_wrapper{
 }
 
 html {
+    /*
 	overflow-y: scroll; // scrollbar fix (prevent ugly left pull for lower content sites)
     overflow-y: auto; // test
+    */
 }
 
 

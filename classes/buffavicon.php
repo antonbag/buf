@@ -321,8 +321,23 @@ class BUFfavicon
     }
 
     //put images in canvas
-    imagecopyresampled($new, $img, ($size-$width)/2, ($size-$height)/2, $x, 0, $width, $height, $w, $h);
-    
+    //imagecopyresampled($new, $img, ($size-$width)/2, ($size-$height)/2, $x, 0, $width, $height, $w, $h);
+
+
+
+    imagecopyresampled($new, $img, 
+      (int) (($size-$width)/2), 
+      (int) (($size-$height)/2), 
+      (int) ($x), 
+      0, 
+      (int) ($width), 
+      (int) ($height), 
+      (int) ($w), 
+      (int) ($h)
+    );
+
+
+
     //create PNG
     imagepng($new, $dst); 
     return true;

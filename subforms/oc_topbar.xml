@@ -29,7 +29,7 @@
         description="TPL_BUF_TOPBAR_LOGO_DESC" 
         type="media" 
         directory="" 
-        default="templates/buf/images/buf_logos/logo_buf_64.webp" 
+        default="" 
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
@@ -37,7 +37,7 @@
         name="buf_topbar_logo_fallback" 
         label="TPL_BUF_TOPBAR_LOGO_FALLBACK" 
         description="TPL_BUF_TOPBAR_LOGO_FALLBACK_DESC" 
-        default="templates/buf/images/buf_logos/logo_buf_64.png" 
+        default="" 
         type="media" 
         directory="" 
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"

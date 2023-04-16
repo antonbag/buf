@@ -15,8 +15,6 @@ jQuery(function($){
           } else { callback (); }
         }
 
-
-
         when_external_loaded (function () {
 
                 //remove current codemirror
@@ -1037,18 +1035,21 @@ jQuery(function($){
         }
         if(jversion=='4'){
             
+            /*
             $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
                 buf_check_bs_selector_j4($(this).val(),4);
             });
+            */
             $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
                 buf_check_bs_selector_j4($(this).val(),5);
             });
         }
     }
-
+    /*
     $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
         buf_check_bs_selector_j4($(this).val(),4);
     });
+    */
     $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
         buf_check_bs_selector_j4($(this).val(),5);
     });
@@ -1060,19 +1061,13 @@ jQuery(function($){
         var files = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files'):  $('#jform_params__buf_bs_v4__buf_bs_files');
         var files_option = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files option'):  $('#jform_params__buf_bs_v4__buf_bs_files option');
         
-        if(version == 4){
-            var minimum = ['functions','variables','mixins', 'reboot', 'grid'];
-            var recommended = ['functions','variables','mixins', 'root', 'reboot', 'images', 'grid', 'tables', 'forms', 'buttons', 'transitions', 'dropdown', 'button-group', 'input-group', 'nav', 'navbar', 'card', 'pagination', 'media', 'list-group', 'close', 'utilities'];
-        }
-        
-        if(version == 5){
-            var minimum = ['functions','variables','mixins', 'utilities', 'grid'];
-            var recommended = [
-                'functions','variables','mixins', 'root', 'reboot', 'utilities', 'grid', 
+        var minimum = ['functions','variables','maps','mixins', 'utilities', 'grid'];
+        var recommended = [
+                'functions','variables','maps','mixins', 'root', 'reboot', 'utilities', 'grid', 
                     'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
                 'dropdown', 'button-group', 'nav', 'navbar', 
                 'card', 'pagination', 'list-group', 'close', 'api'];
-        }
+ 
 
         selected = selected.toLowerCase();
 
@@ -1113,13 +1108,19 @@ jQuery(function($){
 
         if(jversion=='3') return;
         
-        console.log('CHECK all FILES IN BOOTSTRAP 4 ');
+        //console.log('CHECK all FILES IN BOOTSTRAP');
         
         //var example = new Choices(document.getElementById('jform_params__buf_bs_v5__buf_bs_files'));
 
         var files = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files'):  $('#jform_params__buf_bs_v4__buf_bs_files');
         var files_option = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files option'): $('#jform_params__buf_bs_v4__buf_bs_files option');
-        
+
+        var files_bs_core = $('#jform_params__buf_bs_v5__buf_bs_files_core input');
+        var files_bs_layout = $('#jform_params__buf_bs_v5__buf_bs_files_layout input');
+        var files_bs_components = $('#jform_params__buf_bs_v5__buf_bs_files_components input');
+        var files_bs_helpers = $('#jform_params__buf_bs_v5__buf_bs_files_helpers input');
+
+        /*
         if(version == 4){
             var minimum = ['functions','variables','mixins', 'reboot', 'grid'];
             var recommended = ['functions','variables','mixins', 'root', 'reboot', 'images', 'grid', 'tables', 'forms', 'buttons', 'transitions', 'dropdown', 'button-group', 'input-group', 'nav', 'navbar', 'card', 'pagination', 'media', 'list-group', 'close', 'utilities'];
@@ -1163,19 +1164,20 @@ jQuery(function($){
                 'close'
             ];
         }
-        
+        */
 
 
         if(version == 5){
-            var minimum = ['functions','variables','mixins', 'utilities', 'grid'];
+            var minimum = ['functions','variables','maps','mixins', 'utilities', 'grid'];
             var recommended = [
-                'functions','variables','mixins', 'root', 'reboot', 'utilities', 'grid', 
+                'functions','variables','maps','mixins', 'root', 'reboot', 'utilities', 'grid', 
                     'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
                 'dropdown', 'button-group', 'nav', 'navbar', 
                 'card', 'pagination', 'list-group', 'close', 'api'];
             var all = [
                 'functions',
                 'variables',
+                'maps',
                 'mixins',
                 'utilities',
                 'root',
@@ -1208,6 +1210,7 @@ jQuery(function($){
                 'carousel',
                 'spinners',
                 'offcanvas',
+                'placeholders',
                 'helpers',
                 'api'
             ];
@@ -1216,66 +1219,74 @@ jQuery(function($){
 
         selected = selected.toLowerCase();
 
+
         if(selected=='none'){
-            var selectedValues = []; 
-            files_option.removeAttr('selected').trigger("chosen:updated");
+
+            files_bs_core.prop('checked',false);
+            files_bs_layout.prop('checked',false);
+            files_bs_components.prop('checked',false);
+            files_bs_helpers.prop('checked',false);
 
         }else if(selected == 'minimum'){
-            var selectedValues = []; 
 
-            files_option.removeAttr('selected');
-            $.each( minimum, function( key, value ) {
-                if(version == 5) $('#jform_params__buf_bs_v5__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
-                if(version == 4) $('#jform_params__buf_bs_v4__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
-                
-                    var cosa = {value:value,label:value};
-                    selectedValues.push(cosa);
-                    
+
+            //files_option.removeAttr('selected');
+
+            //borro todos
+            files_bs_core.prop('checked',false);
+            files_bs_layout.prop('checked',false);
+            files_bs_components.prop('checked',false);
+            files_bs_helpers.prop('checked',false);
+
+            minimum.forEach(function(value) {
+
+                document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_core input[value="'+value+'"]').forEach(function (el) {
+                    el.checked = true;
+                });
+                document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_layout input[value="'+value+'"]').forEach(function (el) {
+                    el.checked = true;
+                });
+                document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_components input[value="'+value+'"]').forEach(function (el) {
+                    el.checked = true;
+                });
+                document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_helpers input[value="'+value+'"]').forEach(function (el) {
+                    el.checked = true;
+                });
+
+              
             });
-            //files.trigger("chosen:updated");
-            console.log(selectedValues);
+
 
 
         }else if(selected == 'recommended'){
             var selectedValues = []; 
 
-            files_option.removeAttr('selected').trigger("chosen:updated");
+            files_bs_core.prop('checked',false);
+            files_bs_layout.prop('checked',false);
+            files_bs_components.prop('checked',false);
+            files_bs_helpers.prop('checked',false);
+
+            //files_option.removeAttr('selected').trigger("chosen:updated");
             $.each( recommended, function( key, value ) {
-                if(version == 5) $('#jform_params__buf_bs_v5__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
-                if(version == 4) $('#jform_params__buf_bs_v4__buf_bs_files option[value="'+value+'"]').attr('selected', 'selected');
-                var cosa = {value:value,label:value};
-                selectedValues.push(cosa);
+                $('#jform_params__buf_bs_v5__buf_bs_files_core input[value="'+value+'"]').prop('checked',true);
+                $('#jform_params__buf_bs_v5__buf_bs_files_layout input[value="'+value+'"]').prop('checked',true);
+                $('#jform_params__buf_bs_v5__buf_bs_files_components input[value="'+value+'"]').prop('checked',true);
+                $('#jform_params__buf_bs_v5__buf_bs_files_helpers input[value="'+value+'"]').prop('checked',true);
+
             });
             //files.trigger("chosen:updated");
             //files.trigger("chosen:updated").trigger("liszt:updated.chosen");
 
         }else if(selected == 'all' || selected == 'custom'){
 
-            //files_option.attr('selected', 'selected').trigger("chosen:updated");
-            var selectedValues = []; 
-            $.each(all, function( key, value ) {
-            var cosa = {value:value,label:value};
-            selectedValues.push(cosa);
-            });
+            files_bs_core.prop('checked',true);
+            files_bs_layout.prop('checked',true);
+            files_bs_components.prop('checked',true);
+            files_bs_helpers.prop('checked',true);
         }
 
-        console.log(selected);
-        
-        if(version == 4){
-            jQuery("#jform_params__buf_bs_v4__buf_bs_files").parents("joomla-field-fancy-select").each(function(i,e){
-                
-                this.choicesInstance.clearStore();
-                this.choicesInstance.setValue(selectedValues);
-            })
-        }
-                    
-        if(version == 5){
-            jQuery("#jform_params__buf_bs_v5__buf_bs_files").parents("joomla-field-fancy-select").each(function(i,e){
-                this.choicesInstance.clearStore();
-                this.choicesInstance.setValue(selectedValues);
-            })
-        }
-
+ 
+ 
     }
 
 

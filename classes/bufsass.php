@@ -35,6 +35,9 @@ class BUFsass
   public static $buf_bs_container_fluid_max;
   public static $buf_bs_container_max;
   public static $buf_bs_container_content_max;
+  //breakpoints
+  public static $grid_breakpoints;
+
 
   //OFFCANVAS
   public static $buf_offcanvas_width = '90';
@@ -55,12 +58,12 @@ class BUFsass
   public static $buf_topbar_oc_height;
   public static $buf_topbar_oc_color;
 
-  public static $buf_bs_on = 4;
+  public static $buf_bs_on = 5;
 
   public static $buf_bs_css_source = "cdn";
 
 
-  public static $bs5_all = ["functions","variables","mixins","utilities","root","reboot","type","images",
+  public static $bs5_all = ["functions","variables","maps","mixins","utilities","root","reboot","type","images",
   "containers","grid",  "tables",  "forms",  "buttons",  "transitions",  "dropdown",
   "button-group",  "nav",  "navbar",  "card",  "accordion",  "breadcrumb",  "pagination",  "badge",
   "alert",  "progress",  "list-group",  "close",  "toasts",  "modal",  "tooltip",  "popover",
@@ -68,7 +71,6 @@ class BUFsass
 
   //just in devel
   public static $debug_develmode_bs = false;
-
 
 
   public static function runsass($templateid='', $params='', $template_name='', $startmicro='', $bs_or_fa=''){
@@ -119,7 +121,7 @@ class BUFsass
 
     $buf_fa = $templateparams->get('buf_fa', 1);
     $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
-    $buf_fa_selector = $templateparams->get('buf_fa_selector', '4');
+    $buf_fa_selector = $templateparams->get('buf_fa_selector', 'jdefault');
     $buf_fa5_tech = $templateparams->get('buf_fa5_tech', '1');
     $buf_fa5_files = $templateparams->get('buf_fa5_files', array('solid'));
     if(gettype($buf_fa5_files) == 'string') $buf_fa5_files = array("solid");
@@ -130,8 +132,8 @@ class BUFsass
 
     $buf_fa5_fa4fallback = $templateparams->get('buf_fa4fallback', 0);
 
-    self::$buf_bs_on = $templateparams->get('buf_bs_on',4);
-    $buf_bs_on = $templateparams->get('buf_bs_on',4);
+    self::$buf_bs_on = $templateparams->get('buf_bs_on',5);
+    $buf_bs_on = $templateparams->get('buf_bs_on',5);
 
 
 		$bs_4 = new Registry; 
@@ -160,6 +162,19 @@ class BUFsass
       'bs_custom_light'      => $bs_styles->get('bs_custom_light', ''),
       'bs_custom_dark'       => $bs_styles->get('bs_custom_dark', '')
     );
+
+    self::$grid_breakpoints = array(
+      //breakpoints
+      'xs' => $bs_styles->get('buf_bs_breakpoint_xs','0'),
+      'sm' => $bs_styles->get('buf_bs_breakpoint_sm','576'),
+      'md' => $bs_styles->get('buf_bs_breakpoint_md','768'),
+      'lg' => $bs_styles->get('buf_bs_breakpoint_lg','992'),
+      'xl' => $bs_styles->get('buf_bs_breakpoint_xl','1200'),
+      'xxl' => $bs_styles->get('buf_bs_breakpoint_xxl','1400')
+    );
+
+
+
 
     //SET CONTAINER PARAMS
     self::buf_get_container($templateparams->get('buf_bs_container_fluid_max','100%'), $templateparams->get('buf_bs_container_max','1140'),$templateparams->get('buf_bs_container_content_max','1140'));
@@ -235,7 +250,7 @@ class BUFsass
 
       if($buf_bs_on){
 
-
+        /*
         //BS4
         if($buf_bs_on == 4){
 
@@ -252,6 +267,7 @@ class BUFsass
                 self::$buf_debug += self::addDebug('BS4 | Selector', 'cubes','bs selector none', $startmicro);
             }
         }
+        */
         
 
 
@@ -260,9 +276,14 @@ class BUFsass
          
           if($bs_5->get('buf_bs_selector','recommended') != 'none'){
 
+            
+
               //BOOSTRAP
-              //select correnct order and files
-              $bs5files = $bs_5->get('buf_bs_files', array());
+              //select all the boxes into bs5files array
+              $bs5files = $bs_5->get('buf_bs_files_core', array());
+              $bs5files = array_merge($bs5files,$bs_5->get('buf_bs_files_layout', array()));
+              $bs5files = array_merge($bs5files,$bs_5->get('buf_bs_files_components', array()));
+              $bs5files = array_merge($bs5files,$bs_5->get('buf_bs_files_helpers', array()));
 
               //aproximacion diferente: 
               //recorro el array de todos archivos y veo si coincide. Así preservo el orden.
@@ -302,29 +323,26 @@ class BUFsass
 
     //ON
     if ($process == 0 || $buf_fa_css_exists == false){
-      
+          
       if($buf_fa_selector == 0) $buf_fa = 0;
+
+      if($buf_fa_selector == 'jdefault') $buf_fa = 0;
       
       //files ON
       if($buf_fa != 0) {
         $fa_process = true;
-
         //AJAX BS
         if($bs_or_fa == 'bs'){
           $fa_process = false;
         }
-
-
       }else{
         self::$buf_debug += self::addDebug('FA | ', 'hand-paper fab', 'NOT LOADED', $startmicro, 'table-info');
       }
-
     }
 
 
-
+    /*
     if($fa_process) {
-
       //FA4
       if($buf_fa_selector == '4'){
         
@@ -337,9 +355,9 @@ class BUFsass
 
       }else{
 
-        /**********************************/
-        /*******      CSS + FONT      ******/
-        /**********************************/
+        //////////////////////////////////
+        ////////      CSS + FONT     ////////
+        //////////////////////////////////
         if($buf_fa5_tech == 2){
         
           //check fa5pro files
@@ -351,7 +369,7 @@ class BUFsass
           }
 
  
-          /*******    PRO    ******/
+           //////////    PRO    //////////
           if($fa5pro_exists == true && $buf_fa_pro){
           
             self::$buf_debug += self::addDebug('FA5PRO | file', 'font-awesome fab', 'fa5pro files <strong>exist</strong>', $startmicro);
@@ -392,7 +410,7 @@ class BUFsass
 
           }else{
 
-            /*******    FREE    ******/
+            //////////    FREE     //////////
 
             //FREE
             self::$buf_debug += self::addDebug('FA5free | started', 'flag-checkered', 'FONT+CSS', $startmicro);
@@ -438,6 +456,7 @@ class BUFsass
       }
 
     }
+    */
 
  
     
@@ -619,43 +638,100 @@ class BUFsass
         }
 
         $imports = '';
-       
+        
+        /*
         if(self::$buf_bs_on == 4){
 
           //recorro los archivos de bs
           foreach ($sass_bs_files as $key => $value) {
             
             $imports .= '@import "'.$key.'";
-';
+            ';
 
             //add the custom variables before _mixins
             if($key == self::$libspath.'/bootstrap4/scss/_mixins.scss'){
               $imports .= self::bs4_custom($bs_custom);
             }
-
             //var_dump($imports);
-
-
           }
         }
+        */
 
 
-        if(self::$buf_bs_on == 5){
+        if(self::$buf_bs_on != 0){
 
           if(self::$buf_bs_css_source == "custom"){
             
+
+            //Defaults
+            $imports .= '
+              $grid-breakpoints: (
+                xs: 0,
+                sm: 576px,
+                md: 768px,
+                lg: 992px,
+                xl: 1200px,
+                xxl: 1400px
+              ) !default;
+
+              $blue:    #0d6efd !default;
+              $indigo:  #6610f2 !default;
+              $purple:  #6f42c1 !default;
+              $pink:    #d63384 !default;
+              $red:     #dc3545 !default;
+              $orange:  #fd7e14 !default;
+              $yellow:  #ffc107 !default;
+              $green:   #198754 !default;
+              $teal:    #20c997 !default;
+              $cyan:    #0dcaf0 !default;
+
+              $white:    #fff !default;
+              $gray-100: #f8f9fa !default;
+              $gray-200: #e9ecef !default;
+              $gray-300: #dee2e6 !default;
+              $gray-400: #ced4da !default;
+              $gray-500: #adb5bd !default;
+              $gray-600: #6c757d !default;
+              $gray-700: #495057 !default;
+              $gray-800: #343a40 !default;
+              $gray-900: #212529 !default;
+              $black:    #000 !default;
+
+              $primary:       $blue !default;
+              $secondary:     $gray-600 !default;
+              $success:       $green !default;
+              $info:          $cyan !default;
+              $warning:       $yellow !default;
+              $danger:        $red !default;
+              $light:         $gray-100 !default;
+              $dark:          $gray-900 !default;
+
+            ';
+
+            $imports .= '
+              $grid-breakpoints: (
+                xs: '.self::$grid_breakpoints['xs'].',
+                sm: '.self::$grid_breakpoints['sm'].'px,
+                md: '.self::$grid_breakpoints['md'].'px,
+                lg: '.self::$grid_breakpoints['lg'].'px,
+                xl: '.self::$grid_breakpoints['xl'].'px,
+                xxl: '.self::$grid_breakpoints['xxl'].'px
+              );
+            ';
+
+
+
+            $imports .= self::bs5_custom($bs_custom);
+
             //recorro los archivos de bs5
             foreach ($sass_bs_files as $key => $value) {
 
-              //$imports .= '/*'.$key.'*/';
-              
-              $imports .= '@import "'.$key.'";
-              ';
-              
-              //add the custom variables before _mixins
-              if($key == self::$libspath.'/bootstrap/scss/_mixins.scss'){
-                $imports .= self::bs5_custom($bs_custom);
-              }
+            //$imports .= '/*'.$key.'*/';
+            
+            $imports .= '@import "'.$key.'";
+            ';
+             
+    
             } 
 
           }else{
@@ -957,6 +1033,7 @@ class BUFsass
 
 
   //FA4 files
+  /*
   private static function buf_fa_files($buf_fa){
     $fafiles = array();
     //var_dump($buf_fa);
@@ -972,8 +1049,8 @@ class BUFsass
     }
 
     return $fafiles ;
-
   }
+  */
 
 
   //BS4 CUSTOM COLORS
@@ -1015,19 +1092,23 @@ class BUFsass
   }
 
   //BS5 CUSTOM COLORS
-    private static function bs5_custom($bs5_custom){
-
-      //llamo a bs4 porque es igual
-      $custom = self::bs4_custom($bs5_custom);
-      
-      return $custom;
-    }
+  private static function bs5_custom($bs5_custom){
+    //llamo a bs4 porque es igual
+    $custom = self::bs4_custom($bs5_custom);
+    return $custom;
+  }
 
 
   //FA COPY TO CACHE
   public static function buf_fa_copy_to_cache($fa_version = 'fontawesome5'){
 
-    
+      return;
+      /////////////////////////////////
+      /////////////////////////////////
+      ///////  DEPRECATED  ////////////
+      /////////////////////////////////
+      /////////////////////////////////
+      /*
       //check fa5pro files
       if($fa_version == 'fontawesome5pro'){
           $fa5pro_exists = file_exists (self::$libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true:false;
@@ -1035,6 +1116,7 @@ class BUFsass
               $fa_version = 'fontawesome5';
           }
       }
+      
     
       if (!file_exists(self::$cachepath.'/'.$fa_version.'/webfonts/fa-regular-400.woff2')){
 
@@ -1057,9 +1139,10 @@ class BUFsass
           self::$buf_debug += self::addDebug('FA5 | cache', 'font-awesome fab', $fa_version.' cache webfonts doesnt exist files <strong>CREATED</strong>', self::$startmicro);
         }
       }
-      
+
 
     return true;
+    */
   }
 
 

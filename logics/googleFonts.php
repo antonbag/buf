@@ -8,6 +8,9 @@
 /**********************/
 if($jversion=='4'){
     $gfont = $templateparams->get('buf_googlefonts_name', '');
+
+
+	
     $this->getPreloadManager()->dnsPrefetch('https://fonts.googleapis.com/', []);
     $this->getPreloadManager()->preconnect('https://fonts.googleapis.com/', []);
     $this->getPreloadManager()->preconnect('https://fonts.gstatic.com/', []);

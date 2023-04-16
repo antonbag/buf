@@ -161,7 +161,7 @@ if($buf_bs_on){
 /***************************/
 /*******  FA OPTIONS **********/
 /***************************/
-$buf_fa_selector = $templateparams->get('buf_fa_selector', '4');
+$buf_fa_selector = $templateparams->get('buf_fa_selector', 'jdefault');
 $buf_fa_pro = $templateparams->get('buf_fa_pro', 0);
 $buf_fa5_files = $templateparams->get('buf_fa5_files', array('solid'));
 $buf_fa6_files = $templateparams->get('buf_fa6_files', array('solid'));
@@ -301,7 +301,7 @@ if($jversion=='3'){
 
 $buf_fa_run_webfont = false;
 
-if($buf_fa_selector && $buf_fa5_tech == 2){
+if($buf_fa_selector && $buf_fa5_tech == 2 && $buf_fa_selector != 'jdefault'){
 
 	$fa5pro_exists = file_exists ($libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true:false;
 
@@ -378,69 +378,7 @@ if ($templateparams->get('runless', 0) != 2 || !$buf_check_files){
 
 
 
-/***************************/
-/***************************/
-/*******  CSS  TEMPLATE  j3 **********/
-/***************************/
-/***************************/
-/*
-if($jversion=='3'){
-	if($templateparams->get('buf_load_css_async', 1)){
 
-		if(!$css_mix){
-			//BUF.css
-			echo '<noscript id="deferred-styles_buf"><link rel="stylesheet" type="text/css" href="'.$cache_tpath.'buf.css"/>
-			</noscript>';
-
-			$doc->addScriptDeclaration('
-				var loadDeferredStyles_buf = function() {
-					var addStylesNode = document.getElementById("deferred-styles_buf");
-					var replacement = document.createElement("div");
-					replacement.innerHTML = addStylesNode.textContent;
-					document.body.appendChild(replacement)
-					addStylesNode.parentElement.removeChild(addStylesNode);
-				};
-				var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-					webkitRequestAnimationFrame || msRequestAnimationFrame;
-				if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf, 0); });
-				else window.addEventListener(\'load\', loadDeferredStyles_buf);
-			');
-			$buf_debug += BufHelper::addDebug('BUF css ASYNC', 'thumbs-up', 'LOADED <small>'.$cache_tpath.'buf.css</small>', $startmicro ,'table-success', 'logic.php');
-		}
-
-		//layout template.css
-		echo '<noscript id="deferred-styles_buf_layout">
-		<link rel="stylesheet" type="text/css" href="'.$css_path.'"/>
-		</noscript>';
-
-		$doc->addScriptDeclaration('
-		var loadDeferredStyles_buf_layout = function() {
-			var addStylesNode = document.getElementById("deferred-styles_buf_layout");
-			var replacement = document.createElement("div");
-			replacement.innerHTML = addStylesNode.textContent;
-			document.body.appendChild(replacement)
-			addStylesNode.parentElement.removeChild(addStylesNode);
-		};
-		var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-			webkitRequestAnimationFrame || msRequestAnimationFrame;
-		if (raf) raf(function() { window.setTimeout(loadDeferredStyles_buf_layout, 0); });
-		else window.addEventListener(\'load\', loadDeferredStyles_buf_layout);
-		');
-		$buf_debug += BufHelper::addDebug('BUF layout css ASYNC', 'thumbs-up', 'LOADED <small>'.$css_path.'<small>', $startmicro ,'table-success', 'logic.php');
-
-
-	}else{
-
-			$doc->addStyleSheet($cache_tpath.'/buf.css');
-			$buf_debug += BufHelper::addDebug('BUF css', 'thumbs-up', 'LOADED', $startmicro ,'table-success');
-			
-			$doc->addStyleSheet($css_path);
-			$buf_debug += BufHelper::addDebug('TEMPLATE css', 'thumbs-up', 'LOADED', $startmicro ,'table-success');
-	
-
-	}
-}
-*/
 /***************************/
 /***************************/
 /*******  CSS  TEMPLATE  j4**********/
@@ -475,6 +413,12 @@ if($jversion=='4'){
 
     $wa->useStyle('own');
 
+	//JOOMLA DEFAULT FA
+	if($buf_fa_selector == 'jdefault'){
+		$wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
+		$wa->useStyle('fontawesome');
+		$buf_debug += BufHelper::addDebug('FA css JDEFAULT', 'thumbs-up', 'LOADED', $startmicro ,'table-success');
+	}
 
 
 	/*
@@ -766,7 +710,7 @@ if($templateparams->get('runless', 1) != 2){
 	  			<span>BUF template in development mode. Please use Production for better load times.</span>
 	  		</div>
 	  		<a class="buf_dev_mode_edit_base" href="'.$uri_base.'"><i class="fas fa-box-open"></i> Base </a>
-  			<a class="buf_dev_mode_close"><i class="fas fa-times-circle"></i> Close</a>
+  			<a class="buf_dev_mode_close" href="#"><i class="fas fa-times-circle"></i> Close</a>
   	</div>';
 }
 

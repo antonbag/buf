@@ -61,7 +61,7 @@
 <!--ALL-->
 <?php if ( $this->countModules($bs_right_pos) && $this->countModules($bs_left_pos) ) : ?>
 
-	<div class="row">
+	<div class="row leftandright">
 
 		<div class="buf_left <?php echo $buf_left_sm.$buf_left_md.$buf_left_lg; ?>">
 			<jdoc:include type="modules" name="<?php echo $bs_left_pos;?>"/>
@@ -87,7 +87,7 @@
 <!--left-->
 <?php elseif($this->countModules($bs_left_pos)) : ?>
 
-	<div class="row">
+	<div class="row onlyleft">
 
 		<div class="buf_left <?php echo $buf_left_sm.$buf_left_md.$buf_left_lg; ?>">
 			<jdoc:include type="modules" name="<?php echo $bs_left_pos;?>"/>
@@ -116,7 +116,7 @@
 <!--right-->
 <?php elseif($this->countModules($bs_right_pos)) : ?>
 
-	<div class="row">
+	<div class="row onlyright">
 
 		<div class="content_pral <?php echo $content_pral_bs_sm.$content_pral_bs_md.$content_pral_bs_lg; ?>">
 
