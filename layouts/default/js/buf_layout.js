@@ -25,7 +25,7 @@ function buf_custom_try(){
 function buf_custom_js_init(){
   jQuery(document).ready(function($) {
 
-
+	console.log("****************hola*****************");
 
   });
 }

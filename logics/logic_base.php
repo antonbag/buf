@@ -161,8 +161,8 @@ $edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
 
 //PATHS
 ///////////////////////
-$tpath = $this->baseurl . '/templates/' . $this->template;
-$opath = uri::base() . '/templates/' . $this->template;
+$tpath = $this->baseurl . '/templates/' . $this->template; //
+$opath = uri::base() . 'templates/' . $this->template;
 $tpath_abs = JPATH_SITE . '/templates/buf';
 $layoutpath = JPATH_SITE . '/templates/buf/layouts/' . $buf_layout;
 $cachepath = JPATH_SITE . '/cache/buf_' . $buf_layout . '/';

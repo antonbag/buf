@@ -40,7 +40,7 @@ jQuery(function($){
                 });
 
                 buf_load_sccs_file();
-                $( '#jform_params_buf_layout_files input' ).trigger('change');
+                //$( '#jform_params_buf_layout_files input' ).trigger('change');
 
                 //buf_editor.setValue('Text');
                 
@@ -1025,33 +1025,20 @@ jQuery(function($){
     /**************************************/
     function  buf_check_bs_selector_click(){
 
-        if(jversion=='3'){
-            $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
-                buf_check_bs_selector($('#jform_params__buf_bs_v4__buf_bs_selector_chzn a.chzn-single span').html(),4);
-            });
-            $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
-                buf_check_bs_selector($('#jform_params__buf_bs_v5__buf_bs_selector_chzn a.chzn-single span').html(),5);
-            });
-        }
-        if(jversion=='4'){
-            
-            /*
-            $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
-                buf_check_bs_selector_j4($(this).val(),4);
-            });
-            */
-            $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
-                buf_check_bs_selector_j4($(this).val(),5);
-            });
-        }
+        $('#jform_params__buf_bs_v5__buf_bootstrap_css').change(function(){
+           //buf_check_bs_selector_j4($(this).val());
+          
+        });
+
     }
     /*
     $('#jform_params__buf_bs_v4__buf_bs_selector').change(function(){
         buf_check_bs_selector_j4($(this).val(),4);
     });
     */
-    $('#jform_params__buf_bs_v5__buf_bs_selector').change(function(){
-        buf_check_bs_selector_j4($(this).val(),5);
+    $('#jform_params__buf_bs_v5__buf_bs_selector input').click(function(){
+        buf_check_bs_selector_j4($(this).val());
+        console.log($(this).val());
     });
 
 
@@ -1104,117 +1091,64 @@ jQuery(function($){
         }
     }
 
-    function  buf_check_bs_selector_j4(selected, version){
+    function  buf_check_bs_selector_j4(selected){
 
         if(jversion=='3') return;
         
-        //console.log('CHECK all FILES IN BOOTSTRAP');
-        
-        //var example = new Choices(document.getElementById('jform_params__buf_bs_v5__buf_bs_files'));
-
-        var files = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files'):  $('#jform_params__buf_bs_v4__buf_bs_files');
-        var files_option = version == 5 ? $('#jform_params__buf_bs_v5__buf_bs_files option'): $('#jform_params__buf_bs_v4__buf_bs_files option');
 
         var files_bs_core = $('#jform_params__buf_bs_v5__buf_bs_files_core input');
         var files_bs_layout = $('#jform_params__buf_bs_v5__buf_bs_files_layout input');
         var files_bs_components = $('#jform_params__buf_bs_v5__buf_bs_files_components input');
         var files_bs_helpers = $('#jform_params__buf_bs_v5__buf_bs_files_helpers input');
 
-        /*
-        if(version == 4){
-            var minimum = ['functions','variables','mixins', 'reboot', 'grid'];
-            var recommended = ['functions','variables','mixins', 'root', 'reboot', 'images', 'grid', 'tables', 'forms', 'buttons', 'transitions', 'dropdown', 'button-group', 'input-group', 'nav', 'navbar', 'card', 'pagination', 'media', 'list-group', 'close', 'utilities'];
-            var all = [
-                'functions',
-                'variables',
-                'mixins',
-                'root',
-                'grid',
-                'media',
-                'utilities',
-                'print',
-                'reboot',
-                'type',
-                'code',
-                'images',
-                'tables',
-                'alert',
-                'badge',
-                'breadcrumb',
-                'buttons',
-                'button-group',
-                'card',
-                'carousel',
-                'dropdown',
-                'forms',
-                'input-group',
-                'custom-forms',
-                'jumbotron',
-                'list-group',
-                'modal',
-                'nav',
-                'navbar',
-                'pagination',
-                'popover',
-                'progress',
-                'spinners',
-                'toasts',
-                'tooltip',
-                'transitions',
-                'close'
-            ];
-        }
-        */
 
-
-        if(version == 5){
-            var minimum = ['functions','variables','maps','mixins', 'utilities', 'grid'];
-            var recommended = [
-                'functions','variables','maps','mixins', 'root', 'reboot', 'utilities', 'grid', 
-                    'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
-                'dropdown', 'button-group', 'nav', 'navbar', 
-                'card', 'pagination', 'list-group', 'close', 'api'];
-            var all = [
-                'functions',
-                'variables',
-                'maps',
-                'mixins',
-                'utilities',
-                'root',
-                'reboot',
-                'type',
-                'images',
-                'containers',
-                'grid',
-                'tables',
-                'forms',
-                'buttons',
-                'transitions',
-                'dropdown',
-                'button-group',
-                'nav',
-                'navbar',
-                'card',
-                'accordion',
-                'breadcrumb',
-                'pagination',
-                'badge',
-                'alert',
-                'progress',
-                'list-group',
-                'close',
-                'toasts',
-                'modal',
-                'tooltip',
-                'popover',
-                'carousel',
-                'spinners',
-                'offcanvas',
-                'placeholders',
-                'helpers',
-                'api'
-            ];
-        }
+        var minimum = ['functions','variables','maps','mixins', 'utilities', 'grid'];
+        var recommended = [
+            'functions','variables','maps','mixins', 'root', 'reboot', 'utilities', 'grid', 
+                'type', 'images', 'containers', 'grid', 'tables', 'forms', 'buttons', 'transitions', 
+            'dropdown', 'button-group', 'nav', 'navbar', 
+            'card', 'pagination', 'list-group', 'close', 'api'];
+        var all = [
+            'functions',
+            'variables',
+            'maps',
+            'mixins',
+            'utilities',
+            'root',
+            'reboot',
+            'type',
+            'images',
+            'containers',
+            'grid',
+            'tables',
+            'forms',
+            'buttons',
+            'transitions',
+            'dropdown',
+            'button-group',
+            'nav',
+            'navbar',
+            'card',
+            'accordion',
+            'breadcrumb',
+            'pagination',
+            'badge',
+            'alert',
+            'progress',
+            'list-group',
+            'close',
+            'toasts',
+            'modal',
+            'tooltip',
+            'popover',
+            'carousel',
+            'spinners',
+            'offcanvas',
+            'placeholders',
+            'helpers',
+            'api'
+        ];
+    
 
 
         selected = selected.toLowerCase();
@@ -1227,6 +1161,15 @@ jQuery(function($){
             files_bs_components.prop('checked',false);
             files_bs_helpers.prop('checked',false);
 
+       
+            document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_core input').forEach(function (el) {
+                el.checked = false;
+            });
+    
+
+            
+
+
         }else if(selected == 'minimum'){
 
 
@@ -1238,6 +1181,7 @@ jQuery(function($){
             files_bs_components.prop('checked',false);
             files_bs_helpers.prop('checked',false);
 
+            
             minimum.forEach(function(value) {
 
                 document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_core input[value="'+value+'"]').forEach(function (el) {

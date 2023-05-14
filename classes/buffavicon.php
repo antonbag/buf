@@ -20,12 +20,24 @@ use Joomla\CMS\Uri\Uri;
 class BUFfavicon
 {
 
+  public $iconsFolderUrl;
+  public $templateparams;
+
+  public function __construct($templateid) {
+    $this->templateparams = new Registry(BUFfavicon::getCurrentParams($templateid)->params);
+    $buf_layout = $this->templateparams->get('buf_layout','default');
+    $this->iconsFolderUrl =  uri::root().'/templates/buf/layouts/'.$buf_layout.'/icons/';
+  }
+
   public static function create_favicons($templateid, $image){
     
     //$templateparams = json_decode(BUFfavicon::getCurrentParams($templateid)->params);
     $templateparams = new Registry(BUFfavicon::getCurrentParams($templateid)->params);
     $template_name = BUFfavicon::getCurrentParams($templateid)->template;
     
+    $buf_layout = $templateparams->get('buf_layout','default');
+    $iconsFolderUrl =  uri::root().'templates/buf/layouts/'.$buf_layout.'/icons/';
+
     $template_path = JPATH_SITE.'/templates/buf/';
     $image_path =  JPATH_SITE.'/'.$image;
     $buf_layout = $templateparams->get('buf_layout','default');
@@ -48,7 +60,8 @@ class BUFfavicon
       return $android;
     }
 
-    $android_json = BUFfavicon::_generateAndroidJson($template_name,$fav_path);
+
+    $android_json = BUFfavicon::_generateAndroidJson($template_name,$fav_path, $iconsFolderUrl);
     
     $ms_json = BUFfavicon::_generateMsXml($template_name,$fav_path,$templateparams->get('buf_mscolor','#57616d'),$buf_layout);
 
@@ -111,42 +124,42 @@ class BUFfavicon
     return true ;
   }
 
-  private static function _generateAndroidJson($template_name, $fav_path){
+  public static function _generateAndroidJson($template_name, $fav_path,$iconsFolderUrl){
 
     $icos = array('name'=>$template_name, 'icons'=>
       array(
         array(
-        'src'=>'/android-icon-36x36.png',
+        'src'=>$iconsFolderUrl.'android-icon-36x36.png',
         'sizes'=>'36x36',
         'type'=>'image/png',
         'density'=>'0.75'
         ),
         array(
-        'src'=>'/android-icon-48x48.png',
+        'src'=>$iconsFolderUrl.'android-icon-48x48.png',
         'sizes'=>'48x48',
         'type'=>'image/png',
         'density'=>'1.0'
         ),
         array(
-        'src'=>'/android-icon-72x72.png',
+        'src'=>$iconsFolderUrl.'android-icon-72x72.png',
         'sizes'=>'72x72',
         'type'=>'image/png',
         'density'=>'1.5'
         ),
         array(
-        'src'=>'/android-icon-96x96.png',
+        'src'=>$iconsFolderUrl.'android-icon-96x96.png',
         'sizes'=>'96x96',
         'type'=>'image/png',
         'density'=>'2.0'
         ),
         array(
-        'src'=>'/android-icon-144x144.png',
+        'src'=>$iconsFolderUrl.'android-icon-144x144.png',
         'sizes'=>'144x144',
         'type'=>'image/png',
         'density'=>'3.0'
         ),
         array(
-        'src'=>'/android-icon-192x192.png',
+        'src'=>$iconsFolderUrl.'android-icon-192x192.png',
         'sizes'=>'192x192',
         'type'=>'image/png',
         'density'=>'4.0'

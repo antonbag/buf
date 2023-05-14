@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="4.(1|2|3)" type="template" client="site" method="upgrade">
+<extension version="4.(1|2|3|4|5|6)" type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>16-abr-2023</creationDate>
+	<creationDate>14-may-2023</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>4.0.22</version>
+	<version>4.0.30</version>
 	<description><![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">4.0.22</small>
+				<small class="buf_version badge badge-success bg-success">4.0.30</small>
 			</div>
 		</div>
 	]]></description>
@@ -807,7 +807,6 @@
 					<option value="0">None</option>
 					<option value="2">Joomla</option>
 					<option value="1">Custom</option>
-					
 				</field>
 
 				<field name="buf_jquery_defer" 
@@ -993,39 +992,18 @@
 					
 				</field>
 
-     
-				<field name="buf_load_custom_js"
+     			<field name="buf_load_custom_js"
 					   type="subform"
 					   layout="joomla.form.field.subform.repeatable-table"
 					   icon="list"
 					   label="TPL_BUF_LOAD_CUSTOM_JS"
+					   description="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT_DESC"
 					   default=''
 					   multiple="true"
+					   formsource="templates/buf/subforms/extras/custom.xml"
 					>
-
-					<form hidden="true" name="buf_load_custom_js_modal" repeat="true">
-						<field name="buf_load_custom_js_script"
-							   label="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT"
-							   description="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT_DESC"
-							   size="30"
-							   class="input-xxlarge input-large-text"
-							   type="text" 
-						/>
-
-						<field name="buf_js_defer" 
-							type="list" 
-							default="1" 
-							label="TPL_BUF_LOAD_JS_DEFER" 
-							description="TPL_BUF_LOAD_JS_DEFER_DESC">
-							<option value="0">None</option>
-							<option value="1">TPL_BUF_DEFER</option>
-							<option value="2">TPL_BUF_ASYNC</option>
-						</field>
-
-
-					</form>
-					
 				</field>
+
 
 
 

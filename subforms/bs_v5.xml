@@ -10,8 +10,26 @@
 
 	<field name="buf_bs_bundle" type="radio" default="" class="btn-group" label="TPL_BUF_LOAD_BS_BUNDLE" description="TPL_BUF_LOAD_BS_BUNDLE_DESC" showon="buf_bootstrap_js:custom">
 		<option value="">BUF_BS_REGULAR</option>
-		<option value=".bundle">BUF_BS_BUNDLE</option>
+		<option value="bundle">BUF_BS_BUNDLE</option>
+		<option value="custom">TPL_BUF_BS_CUSTOM</option>
 	</field>
+
+	<field name="buf_bs_js_files" type="checkboxes" label="BS js files" default="" showon="buf_bs_bundle:custom[AND]buf_bootstrap_js:custom" >
+		<option value="tooltip">tooltip</option>
+		<option value="toast">toast</option>
+		<option value="tab">tab</option>
+		<option value="scrollspy">scrollspy</option>
+		<option value="popover">popover</option>
+		<option value="offcanvas">offcanvas</option>
+		<option value="modal">modal</option>
+		<option value="dropdown">dropdown</option>
+		<option value="collapse">collapse</option>
+		<option value="carousel">carousel</option>
+		<option value="button">button</option>
+		<option value="alert">alert</option>
+	</field>
+
+
 
 	<field name="buf_bs_defer" type="radio" default="1" class="btn-group" label="TPL_BUF_LOAD_BS_DEFER" description="TPL_BUF_LOAD_BS_DEFER_DESC" showon="buf_bootstrap_js:custom">
 		<option value="0">BUF_NO</option>
@@ -27,11 +45,11 @@
 		<option value="cdn">BUF_CDN</option>
 		<option value="custom">BUF_BTN_LOGO</option>
 	</field>
-
+<!-- 
 
 	<field name="buf_bs_selector" 
-		type="list" default="recommended" class="btn-group" label="TPL_BUF_BS_SELECTOR" description="TPL_BUF_BS_SELECTOR_DESC" showon="buf_bootstrap_css:custom"
-		onchange=""
+		type="radio" default="recommended" class="btn-group" label="TPL_BUF_BS_SELECTOR" description="TPL_BUF_BS_SELECTOR_DESC" showon="buf_bootstrap_css:custom"
+		onClick="alert(this.value)"
 	>
 		<option value="none">None</option>
 		<option value="minimum">TPL_BUF_BS_MINIMUM</option>
@@ -39,9 +57,9 @@
 		<option value="all">TPL_BUF_BS_ALL</option>
 		<option value="custom">TPL_BUF_BS_CUSTOM</option>
 	</field>
+ -->
 
-
-	<field name="buf_bs_files_core" type="checkboxes" label="Core" default="functions,variables,maps,mixins,utilities" >
+	<field name="buf_bs_files_core" type="checkboxes" label="Core" default="functions,variables,maps,mixins,utilities" showon="buf_bootstrap_css:custom" >
 		<option value="functions">functions</option>
 		<option value="variables">variables</option>
 		<option value="maps">maps</option>
@@ -49,7 +67,7 @@
 		<option value="utilities">utilities</option>
 	</field>
 
-	<field name="buf_bs_files_layout" type="checkboxes" label="Layout" default="root,reboot,type,images,containers,grid" >
+	<field name="buf_bs_files_layout" type="checkboxes" label="Layout" default="root,reboot,type,images,containers,grid"  showon="buf_bootstrap_css:custom">
 		<option value="root">root</option>
 		<option value="reboot">reboot</option>
 		<option value="type">type</option>
@@ -61,6 +79,7 @@
 	<field name="buf_bs_files_components" type="checkboxes" 
 		label="Components" 
 		default="tables,forms,buttons,transitions,dropdown,button-group,nav,navbar,card,accordion,breadcrumb,pagination,badge,alert,progress,list-group,close,toasts,modal,tooltip,popover,carousel,spinners,offcanvas"
+		 showon="buf_bootstrap_css:custom"
 		>
 			<option value="tables">tables</option>
 			<option value="forms">forms</option>
@@ -88,7 +107,7 @@
 			<option value="offcanvas">offcanvas</option>
 	</field>
 
-	<field name="buf_bs_files_helpers" type="checkboxes" label="Helpers" default="helpers,api"  >
+	<field name="buf_bs_files_helpers" type="checkboxes" label="Helpers" default="helpers,api"  showon="buf_bootstrap_css:custom" >
 			<option value="helpers">helpers</option>
 			<option value="api">api</option>
 	</field>

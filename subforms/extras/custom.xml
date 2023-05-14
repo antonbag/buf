@@ -17,4 +17,45 @@
         <option value="1">TPL_BUF_DEFER</option>
         <option value="2">TPL_BUF_ASYNC</option>
     </field>
+<!-- 
+    <field name="buf_js_attribsasdf" 
+        type="text" 
+        size="30"
+         class="input-xxlarge"
+        default="" 
+        label="TPL_BUF_LOAD_JS_ATTRIBS" 
+        description="TPL_BUF_LOAD_JS_ATTRIBS_DESC"
+    />
+ -->
+
+    <field name="buf_js_attribs"
+            type="subform"
+            layout="joomla.form.field.subform.repeatable-table"
+            icon="list"
+            label="TPL_BUF_LOAD_JS_ATTRIBS"
+            description="TPL_BUF_LOAD_JS_ATTRIBS_DESC"
+            default=''
+            multiple="true"
+        >
+
+        <form hidden="true" name="buf_js_attribs_form" repeat="true">
+
+            <field name="buf_js_attrib_label"
+                    label="TPL_BUF_LOAD_JS_ATTRIB_LABEL"
+                    class=""
+                    type="text" 
+            />
+
+            <field name="buf_js_attrib_value"
+                    label="TPL_BUF_LOAD_JS_ATTRIB_VALUE"
+                    class=""
+                    type="text" 
+            />
+
+
+        </form>
+        
+    </field>
+
+
 </form>
