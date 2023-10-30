@@ -26,9 +26,7 @@ class offcanvas {
         this.hide_complete = false;
 
         this.super_started = false;
-
         this.offcanvas_media = this.offcanvas_media.bind(this);
-
 
         this.offcanvasClick = this.offcanvasClick.bind(this);
         this.showOffcanvas  = this.showOffcanvas.bind(this);
@@ -59,12 +57,11 @@ class offcanvas {
         ///////
         this.init();
 
-        this.offcanvas_resize();
+        //this.offcanvas_resize();
         this.addEventListeners();
 
 
     }
-
 
 
     init(){
@@ -73,54 +70,8 @@ class offcanvas {
             this.buf_debug('offcanvas disabled');
             return; 
         }
-        //jQuery('html').addClass('buf_canvas');
+       
         document.documentElement.classList.add('buf_canvas');
-
-
-        //DEVICE
-        if(this.buf_params.detection == 'device'){
-
-
-                this.ocbutton.addEventListener('click', function(ev){
-
-                    if(document.body.classList.contains('offcanvas_show')){
-                        document.body.classList.remove('offcanvas_show')
-                    }else{
-                        document.body.classList.add('offcanvas_show')
-                    }
-                });
-
-
-                //button
-                /*
-                jQuery('.offcanvas-button').click(function(){
-
-                    if(jQuery('body').hasClass('offcanvas_show')){
-                        jQuery('body').removeClass('offcanvas_show');
-                    }else{
-                        jQuery('body').addClass('offcanvas_show');
-                    }
-                });
-                */
-
-                //buf debug in offcanvas
-                if(jQuery('.buf_debug').length >=1){
-                    jQuery('.offcanvas-inner').append(jQuery('.buf_debug'));
-                }
-
-                //fix 
-                document.body.classList.add('buf_oc_mobile');
-
-                if(this.buf_params.ismobile) this.oc_max_px = this.max_mobile*(this.vw/100);
-                if(!this.buf_params.ismobile) this.oc_max_px = this.max_desktop*(this.vw/100);
-            
-        }
-
-        //MEDIA
-        if(this.buf_params.detection == 'media' || this.buf_params.detection == 'mix'){         
-            this.offcanvas_media();
-
-        }
 
     }
 
@@ -174,6 +125,7 @@ class offcanvas {
     }
 
     offcanvasRemove(){
+
         if(this.buf_params.offcanvas == 'mobile'){
             this.topbar.classList.add('buf_oc_hide');
             this.ocbutton.classList.add('buf_oc_hide');
@@ -190,12 +142,21 @@ class offcanvas {
             //HIDE offcanvas
             document.body.classList.remove('offcanvas_show');
 
-            jQuery('#buf_offcanvas').one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",function(event) {
+/*          jQuery('#buf_offcanvas').one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",function(event) {
                 if(!jQuery('body').hasClass('offcanvas_show')){
                     jQuery('body').addClass("buf_offcanvas_hidden");
                     jQuery('html').removeClass('buff_canvas_on');
                 }
+            }); */
+            const offcanvas = document.querySelector('#buf_offcanvas');
+
+            offcanvas.addEventListener('transitionend', function(event) {
+              if (!document.body.classList.contains('offcanvas_show')) {
+                document.body.classList.add('buf_offcanvas_hidden');
+                document.documentElement.classList.remove('buff_canvas_on');
+              }
             });
+
 
         }
     }
@@ -205,10 +166,7 @@ class offcanvas {
     offcanvas_resize(){
         const media = this.offcanvas_media;
         window.addEventListener('resize', media);
- 
-    }
-
-
+     }
 
 
 
@@ -218,10 +176,6 @@ class offcanvas {
         }
 
         this.ocbutton.addEventListener('click', this.offcanvasClick);
-
-        //this.bufcanvas.addEventListener('touchstart', this.onTouchStart, this.applyPassive());
-        //this.bufcanvas.addEventListener('touchmove', this.onTouchMove, this.applyPassive());
-        //this.bufcanvas.addEventListener('touchend', this.onTouchEnd);
 
         if(this.buf_params.oc_style == 'buf_off_cover'){
             this.superwrapper.addEventListener('touchstart', this.onSuperwrapperTouchStart, this.applyPassive());
@@ -493,10 +447,12 @@ class offcanvas {
 
 
 
-bufoc_try();
+
+new offcanvas();
 
 
-function bufoc_try(){
+//bufoc_try();
+/* function bufoc_try(){
     try {
       if(jQuery) {
         new offcanvas();
@@ -504,8 +460,8 @@ function bufoc_try(){
       }
     }catch(e){
        console.log("BUF OC |-*-| buf_try: jQuery not loaded. watting...")
-      setTimeout(function() { bufoc_try() }, 1000);
+       setTimeout(function() { bufoc_try() }, 1000);
     }
 }
 
-
+ */

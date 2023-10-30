@@ -1,3 +1,15 @@
+$buf_topbar_color: #123456 !default;
+$buf_topbar_height: 54px !default;
+$buf_topbar_oc_color: #123456 !default;
+$buf_topbar_oc_height: 54px !default;
+$buf_oc_button_color: #123456 !default;
+$buf_oc_button_color_hover: #654321 !default;
+$buf_oc_button_color_active: #654321 !default;
+$buf_oc_speed: 0.3s !default;
+$buf_offcanvas_width: 90% !default;
+$buf_offcanvas_bg_color: #ffffff !default;
+$buf_offcanvas_width_desktop: 400px !default;
+
 //OFFCANVAS
 #bufoc_button.buf_oc_hide{
 	display: none;
@@ -64,9 +76,8 @@ div.buf_topbar_logo{
 
     position:fixed;
     z-index: 5000;
-
     
-    @extend %buf_oc_button_editor;
+    @extend %buf_oc_button_editor !optional;
     
     //ESTADOS
     span.hamburger-inner{
@@ -140,13 +151,8 @@ html.buff_canvas_on{
 		-ms-transition: box-shadow 0.3s ease-in-out 0s;
 		*/
 		transition:transform $buf_oc_speed, opacity $buf_oc_speed;
-
-
 	} 
-
 }
-
-
 
 
 #buf_offcanvas{

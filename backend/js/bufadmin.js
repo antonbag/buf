@@ -1,51 +1,152 @@
-//v2.1.21
+//v4.0.34
 
 var buf_editor;
+
+
+//update to vanilla
+
+document.addEventListener('DOMContentLoaded', function () {
+ 
+    function when_external_loaded (callback) {
+        if (typeof CodeMirror === 'undefined' || $('.CodeMirror').length == 0) {
+          setTimeout (function () {
+             when_external_loaded (callback);
+          }, 500); // wait 100 ms
+        } else { callback (); }
+      }
+
+    when_external_loaded (function () {
+
+        //remove current codemirror
+           //$('.CodeMirror').remove();
+           codeMirrorDiv = document.querySelector('.CodeMirror');
+           codeMirrorDiv.remove();
+
+            
+            //$('#jform_params_scss_editor').attr('name','cleaned_editor');
+
+            //clean editor to avoid error in gzip and save in database
+            document.getElementById('jform_params_scss_editor').setAttribute('name', 'cleaned_editor');
+            
+            buf_editor = CodeMirror.fromTextArea(document.getElementById("jform_params_scss_editor"), {
+                "autofocus":false,
+                "lineWrapping":true,
+                "styleActiveLine":true,
+                "lineNumbers":true,
+                "gutters":["CodeMirror-linenumbers","CodeMirror-foldgutter","CodeMirror-markergutter"],
+                "foldGutter":true,
+                "markerGutter":true,
+                "mode":"scss",
+                "theme":"default",
+                "autoCloseBrackets":true,
+                "matchBrackets":true,
+                "scrollbarStyle":"native",
+                "keyMap":"default"
+            });
+
+            buf_load_sccs_file();
+            //$( '#jform_params_buf_layout_files input' ).trigger('change');
+            setTimeout(function(){
+                $( '#jform_params_buf_layout_files input:checked' ).trigger('change');
+            }, 500);
+
+            //buf_editor.setValue('Text');
+            
+    });
+
+
+
+
+}, false);
+
+
+
+
+/************** LAYOUT ****************/
+/**************************************/
+/******     LOAD SCSS FILE     ********/
+/**************************************/
+/**************************************/
+function buf_load_sccs_file(){
+
+
+    //Insert save
+    var buttons = $('.buf_scss_toolbar');
+
+
+    buttons.insertBefore( $("#jform_params_scss_editor") );
+    $('.buf_tb_icon').hide("fast");
+
+
+    $( '#jform_params_buf_layout_files input' ).on('change', function(event ) {
+
+        var current_element = $(this);
+        var current_element =  $( '#jform_params_buf_layout_files' );
+
+        //event.stopPropagation();
+        
+        //save before change
+        //$( "a.buf_scss_save" ).trigger( "click" );
+        
+        setTimeout(function(){
+
+            var scss_selected = current_element.find('input:checked').val();
+            //var scss_layout = $('#jform_params_buf_layout').val();
+
+            var data = {
+                templateid : templateid,
+                action : 'doreadsccsfile',
+                tpath: tpath,
+                file: scss_selected,
+                layout: buf_layout
+            };
+
+            var request = {'option':'com_ajax','plugin':'bufajax','data':data,'format':'json'};
+
+            $.ajax({
+                type   : 'POST',
+                dataType: 'json',
+                data   : request,
+                success: function (response) {
+
+                    console.log(response);
+
+                    
+                    buf_editor.setValue(response.data[0]);
+                    
+                    
+
+                    if(scss_selected=='buf_layout.js'){
+                        $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/js/'+scss_selected);
+                    }else if(scss_selected=='layout.php'){
+                        $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/'+scss_selected);
+                    }else{
+                        $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/scss/'+scss_selected+'.scss');
+                    }
+
+                    
+                },
+                error: function(response){
+                    //alert('Somethings wrong, Try again');
+                    console.log('ERROR in load scss: '+response.responseText);
+                }
+            });
+
+
+        }, 150);
+        
+
+    });
+
+    // $( "#jform_params_buf_layout_files" ).trigger( "click" );
+}
+
+
+
 jQuery(function($){
     "use strict";
 
     $(document).ready(function(){
-
-
-        function when_external_loaded (callback) {
-          if (typeof CodeMirror === 'undefined' || $('.CodeMirror').length == 0) {
-            setTimeout (function () {
-               when_external_loaded (callback);
-            }, 1000); // wait 100 ms
-          } else { callback (); }
-        }
-
-        when_external_loaded (function () {
-
-                //remove current codemirror
-               $('.CodeMirror').remove();
-
-                //clean editor to avoid error in gzip and save in database
-                $('#jform_params_scss_editor').attr('name','cleaned_editor');
-                
-                buf_editor = CodeMirror.fromTextArea(document.getElementById("jform_params_scss_editor"), {
-                    "autofocus":false,
-                    "lineWrapping":true,
-                    "styleActiveLine":true,
-                    "lineNumbers":true,
-                    "gutters":["CodeMirror-linenumbers","CodeMirror-foldgutter","CodeMirror-markergutter"],
-                    "foldGutter":true,
-                    "markerGutter":true,
-                    "mode":"scss",
-                    "theme":"default",
-                    "autoCloseBrackets":true,
-                    "matchBrackets":true,
-                    "scrollbarStyle":"native",
-                    "keyMap":"default"
-                });
-
-                buf_load_sccs_file();
-                //$( '#jform_params_buf_layout_files input' ).trigger('change');
-
-                //buf_editor.setValue('Text');
-                
-        });
-
 
         buf_checkplugins();
         
@@ -67,26 +168,16 @@ jQuery(function($){
 
         buf_zip_layout();
      
-
         //START Loading a file in editor
-        $( '#jform_params_buf_layout_files input' ).trigger( "change" );
+        //$( '#jform_params_buf_layout_files input' ).trigger( "change" );
 
+        buf_interface_4();
 
-        if(jversion == '4'){
-
-            buf_interface_4();
-
-            $('#jform_params__buf_bs_v4__buf_bs_selector').trigger('change');
-            $('#jform_params__buf_bs_v5__buf_bs_selector').trigger('change');
-
-
-        }else{
-            buf_interface();
-        }
+        $('#jform_params__buf_bs_v4__buf_bs_selector').trigger('change');
+        $('#jform_params__buf_bs_v5__buf_bs_selector').trigger('change');
 
         var scss_layout = $('#jform_params_buf_layout').val();
         if(scss_layout == null || scss_layout == '') scss_layout = 'default';
-
 
     });
 
@@ -195,20 +286,14 @@ jQuery(function($){
             
     }
 
-
+    //DEPRECATED
+    /*
     function buf_interface(){
 
         //COMPILATION BUTTONS
         var padre = $('#jform_title' ).parent().parent();
         var hijo = $('#jform_params_runless' ).parent().parent().addClass('pull-right');
         hijo.appendTo( padre);
-
-
-        //FAVICONS ICONS
-/*             var padre = $('#imageModal_jform_params_buf_favicon' ).parent();
-        var hijo = $('.buffavicons_thumbs_wrapper' );
-        hijo.appendTo( padre);
-*/
 
         //minilogo bar
         $('.buf_minilogo_bar').prependTo($('.form-inline-header'));
@@ -217,6 +302,7 @@ jQuery(function($){
         $('#toolbar-buf_empy_cache').appendTo('#toolbar');
 
     }
+    */
 
     function buf_save_aply(){
 
@@ -629,98 +715,6 @@ jQuery(function($){
 
     }
 
-    /************** LAYOUT ****************/
-    /**************************************/
-    /******     LOAD SCSS FILE     ********/
-    /**************************************/
-    /**************************************/
-    function buf_load_sccs_file(){
-
-
-        //Insert save
-        var buttons = $('.buf_scss_toolbar');
-
-
-        buttons.insertBefore( $("#jform_params_scss_editor") );
-        $('.buf_tb_icon').hide("fast");
-
-
-        $( '#jform_params_buf_layout_files input' ).on('change', function(event ) {
-
-            console.log("change!");
-
-            var current_element = $(this);
-            var current_element =  $( '#jform_params_buf_layout_files' );
-
-            //event.stopPropagation();
-            
-            //save before change
-            //$( "a.buf_scss_save" ).trigger( "click" );
-            
-            setTimeout(function(){
-
-    
-                var scss_selected = current_element.find('input:checked').val();
-                //var scss_layout = $('#jform_params_buf_layout').val();
-
-
-
-                var data = {
-                    templateid : templateid,
-                    action : 'doreadsccsfile',
-                    tpath: tpath,
-                    file: scss_selected,
-                    layout: buf_layout
-                };
-
-                var request = {'option':'com_ajax','plugin':'bufajax','data':data,'format':'json'};
-
-                $.ajax({
-                    type   : 'POST',
-                    dataType: 'json',
-                    data   : request,
-                    success: function (response) {
-
-                        console.log(response);
-
-                        
-                        buf_editor.setValue(response.data[0]);
-                        
-                        
-
-                        if(scss_selected=='buf_layout.js'){
-                            $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/js/'+scss_selected);
-                        }else if(scss_selected=='layout.php'){
-                            $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/'+scss_selected);
-                        }else{
-                            $('.buf_tb_path').html('buf/layouts/'+buf_layout+'/scss/'+scss_selected+'.scss');
-                        }
-
-                        
-                    },
-                    error: function(response){
-                        //alert('Somethings wrong, Try again');
-                        console.log('ERROR in load scss: '+response.responseText);
-                    }
-                });
-
-
-            }, 150);
-            
-
-        });
-
-        // $( "#jform_params_buf_layout_files" ).trigger( "click" );
-    }
-
-
-
-
-
-
-
-
-
 
 
     /************** LAYOUT ****************/
@@ -908,9 +902,9 @@ jQuery(function($){
 
 
 
-/***********************************************************************************/
-/***************************       STYLE       ************************************/
-/***********************************************************************************/
+    /***********************************************************************************/
+    /***************************       STYLE       ************************************/
+    /***********************************************************************************/
 
     function buf_favicon(){
     
@@ -920,23 +914,8 @@ jQuery(function($){
             buf_create += '<a class="mt-2 btn btn-default bg-info text-light buf_favicon_btn_create" title="Create favicon" href="#"><i class="fa fa-magic"></i> Create favicons</a>';
             buf_create += '';
 
-        if(jversion == '4'){
-
             $(buf_create).insertAfter($("#imageModal_jform_params_buf_favicon").parent()); 
-
-
-        }else{
-            //J36
-            if($('.media-preview').length >=1){
-                var btn_after = $('.media-preview').parent().find('>a.btn.hasTooltip');
-                $(buf_create).insertAfter(btn_after); 
-            }else{
-                //J37
-                //var btn_after = $('.field-media-preview').parent().find('>a.btn.hasTooltip');
-                $(buf_create).insertAfter($("#imageModal_jform_params_buf_favicon").parent().find('.btn.button-select')); 
-            }
-        }
-        
+             
         
         $( '.buf_favicon_btn_create' ).on( 'click', function( event ) {
             event.preventDefault();
@@ -964,6 +943,7 @@ jQuery(function($){
                 dataType: 'json',
                 data   : request,
                 success: function (response) {
+                    
                     if(response.data != 'true'){
                         $( '.buffavicons_messages' ).show();
                             $( '.buf_favicon_btn_create' ).addClass('btn-warning').html('<span class="icon-delete"></span> NOT created');
@@ -1093,14 +1073,10 @@ jQuery(function($){
 
     function  buf_check_bs_selector_j4(selected){
 
-        if(jversion=='3') return;
-        
-
         var files_bs_core = $('#jform_params__buf_bs_v5__buf_bs_files_core input');
         var files_bs_layout = $('#jform_params__buf_bs_v5__buf_bs_files_layout input');
         var files_bs_components = $('#jform_params__buf_bs_v5__buf_bs_files_components input');
         var files_bs_helpers = $('#jform_params__buf_bs_v5__buf_bs_files_helpers input');
-
 
         var minimum = ['functions','variables','maps','mixins', 'utilities', 'grid'];
         var recommended = [
@@ -1149,10 +1125,7 @@ jQuery(function($){
             'api'
         ];
     
-
-
         selected = selected.toLowerCase();
-
 
         if(selected=='none'){
 
@@ -1165,13 +1138,8 @@ jQuery(function($){
             document.querySelectorAll('#jform_params__buf_bs_v5__buf_bs_files_core input').forEach(function (el) {
                 el.checked = false;
             });
-    
-
-            
-
 
         }else if(selected == 'minimum'){
-
 
             //files_option.removeAttr('selected');
 
@@ -1180,7 +1148,6 @@ jQuery(function($){
             files_bs_layout.prop('checked',false);
             files_bs_components.prop('checked',false);
             files_bs_helpers.prop('checked',false);
-
             
             minimum.forEach(function(value) {
 
@@ -1199,8 +1166,6 @@ jQuery(function($){
 
               
             });
-
-
 
         }else if(selected == 'recommended'){
             var selectedValues = []; 
@@ -1228,18 +1193,8 @@ jQuery(function($){
             files_bs_components.prop('checked',true);
             files_bs_helpers.prop('checked',true);
         }
-
- 
  
     }
-
-
-
-
-
-
-
-
 
 });
 

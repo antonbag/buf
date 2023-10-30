@@ -7,6 +7,9 @@
 div#superwrapper {
   opacity: 1;
 }
+#contents{
+	opacity:1;
+}
 
 #buf_topbar {
   opacity: 1;

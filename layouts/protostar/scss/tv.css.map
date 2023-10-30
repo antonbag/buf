@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,iCAAiC;AACjC,iCAAiC;AACjC,iCAAiC;AACjC,+BAA+B;AAC/B,iCAAiC;AACjC,iCAAiC;AACjC,qCAAqC",
-    "sources": [
-        "tv.scss"
-    ],
-    "names": [],
-    "file": "tv.css"
-}

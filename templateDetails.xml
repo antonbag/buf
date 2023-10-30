@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="4.(1|2|3|4|5|6)" type="template" client="site" method="upgrade">
+<extension type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>14-may-2023</creationDate>
+	<creationDate>30-oct-2023</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
-	<version>4.0.30</version>
-	<description><![CDATA[ 
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<version>5.0.9</version>
+	<description>
+		<![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">4.0.30</small>
+				<small class="buf_version badge badge-success bg-success">5.0.9</small>
 			</div>
 		</div>
-	]]></description>
+	]]>
+	</description>
+	<namespace path="src">Jtotal\BUF</namespace>
 	<files>
-		<folder>classes</folder>
+		<folder>src</folder>
 		<folder>css</folder>
 		<folder>html</folder>
 		<folder>images</folder>
@@ -25,7 +29,6 @@
 		<folder>logics</folder>
 		<folder>layouts</folder>
 		<folder>backend</folder>
-		<folder>fields</folder>
 		<folder>libs</folder>
 		<folder>subforms</folder>
 		<filename>joomla.asset.json</filename>
@@ -40,11 +43,9 @@
 		<filename>README.md</filename>
 		<filename>TODO.txt</filename>
 	</files>
-
 	<languages folder="language">
 		<language tag="en-GB">en-GB.tpl_buf.ini</language>
 	</languages>
-
 	<positions>
 		<position>navbar</position>
 		<position>menu_header</position>
@@ -62,16 +63,12 @@
 		<position>buf_right</position>
 		<position>offcanvas</position>
 	</positions>
-	
 	<config>
-		<fields name="params">
-			<fieldset name="basic" addfieldpath="/templates/buf/fields">
-
-
-					<field name="bufreloadsass" type="bufreloadsass" />
-					<field name="clearcache" type="bufclearcache" />
-
-					<field name="runless" 
+		<fields name="params" addfieldprefix="Jtotal\BUF\Site\Field">
+			<fieldset name="basic">
+				<field name="bufreloadsass" type="BufReloadSass" />
+				<field name="clearcache" type="Bufclearcache" />
+				<field name="runless" 
 						type="radio" 
 						default="1" 
 						class="btn-group" 
@@ -79,12 +76,10 @@
 						layout="joomla.form.field.radio.switcher"
 						description="TPL_BUF_DEV_LESS_DESC"
 					>
-						<!--<option value="0">TPL_BUF_ALL</option>-->
-						<option value="1">TPL_BUF_CUSTOM</option>
-						<option value="2">BUF_NO_PROD_RECOM</option>
-					</field>
-
-					<field name="buf_edit_base" 
+					<option value="1">TPL_BUF_CUSTOM</option>
+					<option value="2">BUF_NO_PROD_RECOM</option>
+				</field>
+				<field name="buf_edit_base" 
 						type="radio" 
 						default="0" 
 						class="btn-group" 
@@ -92,85 +87,71 @@
 						label="TPL_BUF_DEV_BASE" 
 						description="TPL_BUF_DEV_BASE_DESC"
 						>
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
-					</field>
-
-					<field name="buf_debug" 
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="buf_debug" 
 						type="radio" 
 						default="1" 
 						class="btn-group"
 						layout="joomla.form.field.radio.switcher"
 						label="TPL_BUF_DEBUG" 
 						>
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
-					</field>
-
-	  				<field name="force_recache" 
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="force_recache" 
 						type="radio" 
 						default="0" 
 						class="btn-group " 
 						layout="joomla.form.field.radio.switcher"
 						label="TPL_BUF_DEV_FORCE_RECACHE" 
 						description="TPL_BUF_DEV_FORCE_RECACHE_DESC">
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
-					</field>
-
-					<field name="force_recache_js" 
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="force_recache_js" 
 						type="radio" 
 						default="0" 
 						class="btn-group " 
 						layout="joomla.form.field.radio.switcher"
 						label="TPL_BUF_DEV_FORCE_RECACHE_JS" 
 						description="TPL_BUF_DEV_FORCE_RECACHE_JS_DESC">
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
-					</field>
-
-					<field name="create_editor" 
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="create_editor" 
 						type="radio" 
 						default="0" 
 						class="btn-group " 
 						layout="joomla.form.field.radio.switcher"
 						label="TPL_BUF_CREATE_EDITOR" 
 						description="TPL_BUF_CREATE_EDITOR_DESC">
-						<option value="0">JNO</option>
-						<option value="1">JYES</option>
-					</field>
-
-					<field type="spacer" name="buf_bufinit_version" hr="true"  class="text" label=""/>
-
-					<field name="buf_show_credit" 
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field type="spacer" name="buf_bufinit_version" hr="true"  class="text" label=""/>
+				<field name="buf_show_credit" 
 						type="radio" 
 						default="1" 
 						class="btn-group " 
 						layout="joomla.form.field.radio.switcher"
 						label="TPL_BUF_SHOW_CREDITS" 
 						description="TPL_BUF_SHOW_CREDITS_DESC">
-						<option value="0">BUF_NO_PRO</option>
-						<option value="1">JYES</option>
-					</field>
-
-					<field type="bufinit" />
-
-					<field name="note11" type="note" label="BUF_CREDITS" />
-
-					<field name="bufjversion" type="bufjversion" />
-
-					
+					<option value="0">BUF_NO_PRO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field type="BufInit" />
+				<field name="note11" type="note" label="BUF_CREDITS" />
+				<!--DEP 5<field name="bufjversion" type="bufjversion" /> -->
 			</fieldset>
-
 			<fieldset name="layout">
-
 				<field
 					name="buf_layout_duplicate"
-					type="bufduplicatelayout"
+					type="BufDuplicateLayout"
 					class="inputbox"
 					default=""
 				/>
-
 				<field
 					name="buf_layout"
 					type="folderlist"
@@ -182,8 +163,6 @@
 					directory="/templates/buf/layouts"
 					label="TPL_BUF_LAYOUT"
 				/>
-
-
 				<field
 					name="buf_layout_files"
 					type="radio"
@@ -202,7 +181,6 @@
 					<option value="layout.php">TPL_BUF_LAYOUT_PHP</option>
 					<option value="buf_layout.js">TPL_BUF_LAYOUT_EDITOR_JS</option>
 				</field>
-
 				<field name="buf_load_layout_js" 
 					type="radio" 
 					default="1" 	
@@ -213,11 +191,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
-
-				<field type="bufeditorbuttons" />
-
-
+				<field type="BufEditorButtons" hiddenLabel="true"/>
 				<field name="scss_editor"
 		            type="editor"
 		            label="TPL_BUF_LAYOUT_EDITOR"
@@ -227,442 +201,370 @@
 		            filter="raw"
 		            mode="scss"
 		        />
-
-
 			</fieldset>
-
-
-
-
-
-<!--
-	***********************************
-	***********************************
-	**********   OFFCANVAS   **************
-	***********************************
-	***********************************
--->
+			<!--
+			***********************************
+			***********************************
+			**********   OFFCANVAS   **************
+			***********************************
+			***********************************
+			-->
 			<fieldset name="offcanvas">
+				<fieldset name="offcanvas_w" label="COM_TEMPLATES_OFFCANVAS_FIELDSET_LABEL">
 
+					<field name="buf_offcanvas" 
+						type="radio" 
+						default="0" 
+						class="btn-group" 
+						label="TPL_BUF_OFFCANVAS" 
+						description="TPL_BUF_OFFCANVAS_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+						<option value="2">TPL_BUF_OFFCANVAS_MOBILE</option>
+					</field>
 
-				<field type="spacer" 
-					name="buf_style_offcanvas_general_hr" 
-					hr="false" 
-					class="text j4_hidden"
-					label="TPL_BUF_STYLE_OFFCANVAS_GENERAL_HR"
-				/>
+					<!--<field name="buf_offcanvas_detection" 
+						type="radio" 
+						default="device" 
+						class="btn-group " 
+						label="TPL_BUF_OFFCANVAS_DETECTION"
+						description="TPL_BUF_OFFCANVAS_DETECTION_DESC"
+						showon="buf_offcanvas:2"
+						>
+						<option value="device">TPL_BUF_DEVICE</option>
+						<option value="media">TPL_BUF_SIZE</option>
+					</field> -->
+					<field name="buf_offcanvas_max_w" 
+						type="text" 
+						default="991" 
+						class="input" 
+						label="TPL_BUF_OFFCANVAS_MAX_W"
+						description="TPL_BUF_OFFCANVAS_MAX_W_DESC"
+						showon="buf_offcanvas:2"
+					/>
+					<!-- <field name="buf_tablet_as_mobile" 
+						type="radio" 
+						default="1" 
+						class="btn-group " 
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_TABLET_AS_MOBILE"
+						showon="buf_offcanvas:2[AND]buf_offcanvas_detection:device"
+						>
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field> -->
+					<field name="buf_offcanvas_speed" 
+						type="number" 
+						default="300"
+						min="0" max="5000" step="1"
+						label="TPL_BUF_OFFCANVAS_SPEED" 
+						description="TPL_BUF_OFFCANVAS_SPEED_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field type="spacer" name="buf_style_offcanvas_hr" hr="false"  class="text"
+						label="TPL_BUF_STYLE_BAR_HR" showon="buf_offcanvas:1[OR]buf_offcanvas:2"/>
+					<field name="buf_offcanvas_position" 
+						type="radio" 
+						default="buf_off_pos_left" 
+						class="btn-group" 
+						label="TPL_BUF_OFFCANVAS_POSITION" 
+						description="TPL_BUF_OFFCANVAS_POSITION_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+						>
+						<option value="buf_off_pos_left">BUF_LEFT</option>
+						<option value="buf_off_pos_right">BUF_RIGHT</option>
+					</field>
+					<field name="buf_offcanvas_style" 
+						type="list" 
+						default="buf_off_cover" 
+						class="btn-group" 
+						label="TPL_BUF_OFFCANVAS_STYLE" 
+						description="TPL_BUF_OFFCANVAS_STYLE_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+						>
+						<option value="buf_off_move">BUF_OFFCANVAS_STYLE_MOVE</option>
+						<option value="buf_off_cover">BUF_OFFCANVAS_STYLE_COVER</option>
+					</field>
+					<field name="buf_offcanvas_width" 
+						type="number" 
+						default="90"
+						min="0" max="99" step="1"
+						label="TPL_BUF_OFFCANVAS_WIDTH" 
+						description="TPL_BUF_OFFCANVAS_WIDTH_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field name="buf_offcanvas_width_desktop" 
+						type="number" 
+						default="90"
+						min="0" max="99" step="1"
+						label="TPL_BUF_OFFCANVAS_WIDTH_DESKTOP" 
+						description="TPL_BUF_OFFCANVAS_WIDTH_DESKTOP_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field name="buf_offcanvas_bg_color" 
+						type="color" 
+						default="#ffffff" 
+						format="rgba"
+						label="TPL_BUF_OFFCANVAS_BG_COLOR" 
+						description="TPL_BUF_OFFCANVAS_BG_COLOR_DESC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field name="buf_offcanvas_positions"
+						type="sql"
+						default="use_default"
+						label="TPL_BUF_OFFCANVAS_MODULES"
+						query="SELECT position as id, position as title FROM #__modules GROUP BY position"
+						description="TPL_BUF_OFFCANVAS_MODULES_DESC"
+						key_field="id"
+						value_field="title"
+						required="false"
+						multiple="true"
+						layout="joomla.form.field.list-fancy-select"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field
+						name="buf_offcanvas_loadmodules"
+						type="sql"
+						default=""
+						label="TPL_BUF_OFFCANVAS_LOAD_MODULES"
+						query="SELECT id, title FROM #__modules WHERE published = '1'"
+						key_field="id"
+						value_field="title"
+						required="false"
+						multiple="true"
+						layout="joomla.form.field.list-fancy-select"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+					<field name="buf_topbar_oc" type="subform"
+						formsource="templates/buf/subforms/oc_topbar.xml"
+						label="TPL_BUF_TOP_BAR_OC"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
 
-				<field name="buf_offcanvas" 
-					type="radio" 
-					default="0" 
-					class="btn-group" 
-					label="TPL_BUF_OFFCANVAS" 
-					description="TPL_BUF_OFFCANVAS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-					<option value="2">TPL_BUF_OFFCANVAS_MOBILE</option>
-				</field>
+				</fieldset>
 
-				<field name="buf_offcanvas_detection" 
-					type="radio" 
-					default="device" 
-					class="btn-group " 
-					label="TPL_BUF_OFFCANVAS_DETECTION"
-					description="TPL_BUF_OFFCANVAS_DETECTION_DESC"
-					showon="buf_offcanvas:2"
-					
-					>
-					<option value="device">TPL_BUF_DEVICE</option>
-					<option value="media">TPL_BUF_SIZE</option>
-<!-- 					<option value="mix">TPL_BUF_MIX</option> -->
-				</field>
-
-				<field name="buf_offcanvas_max_w" 
-					type="text" 
-					default="991" 
-					class="input" 
-					label="TPL_BUF_OFFCANVAS_MAX_W"
-					description="TPL_BUF_OFFCANVAS_MAX_W_DESC"
-					showon="buf_offcanvas:2[AND]buf_offcanvas_detection:media"
-				/>
-
-
-				<field name="buf_tablet_as_mobile" 
-					type="radio" 
-					default="1" 
-					class="btn-group " 
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_TABLET_AS_MOBILE"
-					showon="buf_offcanvas:2[AND]buf_offcanvas_detection:device"
-					>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field name="buf_offcanvas_speed" 
-					type="number" 
-					default="300"
-					min="0" max="5000" step="1"
-					label="TPL_BUF_OFFCANVAS_SPEED" 
-					description="TPL_BUF_OFFCANVAS_SPEED_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-	
-
-
-
-
-
-			<field type="spacer" name="buf_style_offcanvas_hr" hr="false"  class="text"
-					label="TPL_BUF_STYLE_BAR_HR" showon="buf_offcanvas:1[OR]buf_offcanvas:2"/>
-				
-
-				<field name="buf_offcanvas_position" 
-					type="radio" 
-					default="buf_off_pos_left" 
-					class="btn-group" 
-					label="TPL_BUF_OFFCANVAS_POSITION" 
-					description="TPL_BUF_OFFCANVAS_POSITION_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-					>
-					<option value="buf_off_pos_left">BUF_LEFT</option>
-					<option value="buf_off_pos_right">BUF_RIGHT</option>
-				</field>
-				
-				<field name="buf_offcanvas_style" 
-					type="list" 
-					default="buf_off_cover" 
-					class="btn-group" 
-					label="TPL_BUF_OFFCANVAS_STYLE" 
-					description="TPL_BUF_OFFCANVAS_STYLE_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-					>
-					<option value="buf_off_move">BUF_OFFCANVAS_STYLE_MOVE</option>
-					<option value="buf_off_cover">BUF_OFFCANVAS_STYLE_COVER</option>
-				</field>
-
-				<field name="buf_offcanvas_width" 
-					type="number" 
-					default="90"
-					min="0" max="99" step="1"
-					label="TPL_BUF_OFFCANVAS_WIDTH" 
-					description="TPL_BUF_OFFCANVAS_WIDTH_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-				<field name="buf_offcanvas_width_desktop" 
-					type="number" 
-					default="90"
-					min="0" max="99" step="1"
-					label="TPL_BUF_OFFCANVAS_WIDTH_DESKTOP" 
-					description="TPL_BUF_OFFCANVAS_WIDTH_DESKTOP_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-				<field name="buf_offcanvas_bg_color" 
-					type="color" 
-					default="#ffffff" 
-					format="rgba"
-					label="TPL_BUF_OFFCANVAS_BG_COLOR" 
-					description="TPL_BUF_OFFCANVAS_BG_COLOR_DESC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-				<field name="buf_offcanvas_positions"
-					type="sql"
-					label="TPL_BUF_OFFCANVAS_MODULES"
-					query="SELECT position as id, position as title FROM #__modules GROUP BY position"
-					description="TPL_BUF_OFFCANVAS_MODULES_DESC"
-					key_field="id"
-					value_field="title"
-					required="false"
-					multiple="true"
-					layout="joomla.form.field.list-fancy-select"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-				<field
-					name="buf_offcanvas_loadmodules"
-					type="sql"
-					default=""
-					label="TPL_BUF_OFFCANVAS_LOAD_MODULES"
-					query="SELECT id, title FROM #__modules WHERE published = '1'"
-					key_field="id"
-					value_field="title"
-					required="false"
-					multiple="true"
-					layout="joomla.form.field.list-fancy-select"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-
-				<field name="buf_topbar_oc" type="subform"
-				    formsource="templates/buf/subforms/oc_topbar.xml"
-				    label="TPL_BUF_TOP_BAR_OC"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-				<field type="spacer" name="buf_top_bar_hr" hr="true"  class="text"
-					label="TPL_BUF_TOP_BAR_HR"/>
-
-				<field name="buf_topbar" type="subform"
-				    formsource="templates/buf/subforms/oc_topbar.xml"
-				    label="TPL_BUF_TOP_BAR"
-				/>
-
-				<!--BS STYLES-->
+				<fieldset name="buf_top_bar_hr" label="TPL_BUF_TOP_BAR">
+					<field name="buf_topbar" type="subform" hiddenLabel="true"
+						formsource="templates/buf/subforms/oc_topbar.xml"
+						label="TPL_BUF_TOP_BAR"
+					/>
+				</fieldset>
+				<!--OC styles-->
 				<field type="spacer" name="buf_oc_button_spacer" hr="true"  class="text"
 					label="TPL_BUF_OC_BUTTON" showon="buf_offcanvas:1[OR]buf_offcanvas:2"/>
 
-
-				<field name="buf_oc_button" type="subform"
-				    formsource="templates/buf/subforms/oc_button.xml"
-				    label="TPL_BUF_OC_BUTTON"
-					showon="buf_offcanvas:1[OR]buf_offcanvas:2"
-				/>
-
-
+				<fieldset name="buf_oc_button_W" label="TPL_BUF_OC_BUTTON">
+					<field name="buf_oc_button" type="subform"
+					hiddenLabel="true"
+						formsource="templates/buf/subforms/oc_button.xml"
+						label="TPL_BUF_OC_BUTTON"
+						showon="buf_offcanvas:1[OR]buf_offcanvas:2"
+					/>
+				</fieldset>
 			</fieldset>
-
-
-
-<!--
-	***********************************
-	***********************************
-	**********   STYLE   **************
-	***********************************
-	***********************************
--->
+			<!--
+			***********************************
+			***********************************
+			**********   STYLE   **************
+			***********************************
+			***********************************
+			-->
 			<fieldset name="style">
 
+				<!-- FAVICON-->
+				<fieldset name="buf_favicon_w" label="TPL_BUF_FAVICON">
+					<field
+						type="media"
+						name="buf_favicon_svg"
+						label="TPL_BUF_FAVICON_SVG"
+						default=""
+						size="10"
+						accept=".svg"
+					/>
+					<field name="buf_favicon" 
+						type="media"
+						class="buf_favicon"
+						label="TPL_BUF_FAVICON" 
+						description="TPL_BUF_FAVICON_DESC" 
+						directory="images" 
+					/>
+					<field type="BufFavicons" />
+					<field name="buf_mscolor" 
+						type="color" 
+						default="#57616d"
+						label="TPL_BUF_MSCOLOR"
+						description="TPL_BUF_MSCOLOR_DESC" 
+					/>
+				</fieldset>
 
-				<field type="spacer" name="buf_style_bg_hr" hr="false"  class="text"
-					label="TPL_BUF_STYLE_BG_HR"/>
-
-				<field name="buf_bg" 
-					type="radio" 
-					default="0" 
-					class=" btn-group" 
-					label="TPL_BUF_BG" 
-					layout="joomla.form.field.radio.switcher"
-					description="TPL_BUF_BG_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-
-				<field name="buf_bg_img" 
-					type="media" 
-					label="TPL_BUF_BG_IMG" 
-					description="TPL_BUF_BG_IMG_DESC" 
-					directory="images"
-					showon="buf_bg:1" 
-				/>
-
-
-
-				<field type="spacer" name="buf_favicon_bg_hr" hr="false"  class="text"
-					label="TPL_BUF_STYLE_FAVICON_HR"/>
-				/>
-
-
-				<field
-					type="file"
-					name="buf_favicon_svg"
-					label="TPL_BUF_FAVICON_SVG"
-					default=""
-					size="10"
-					accept=".svg"
-					onchange="buf_favicon_svg()"
-				/>
-
-				<field name="buf_favicon" 
-					type="media"
-					class="buf_favicon"
-					label="TPL_BUF_FAVICON" 
-					description="TPL_BUF_FAVICON_DESC" 
-					directory="images" 
-				/>
-
-				<field type="buffavicons" />
-
-
-				<field name="buf_mscolor" 
-					type="color" 
-					default="#57616d"
-					label="TPL_BUF_MSCOLOR"
-					description="TPL_BUF_MSCOLOR_DESC" 
-				/>
-
-
+				<!-- BG IMAGE-->
+				<fieldset name="buf_bg_w" label="TPL_BUF_BG">
+					<field name="buf_bg" 
+						type="radio" 
+						default="0" 
+						class=" btn-group" 
+						label="JT_ACTIVE" 
+						layout="joomla.form.field.radio.switcher"
+						description="TPL_BUF_BG_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="buf_bg_img" 
+						type="media" 
+						label="TPL_BUF_BG_IMG" 
+						description="TPL_BUF_BG_IMG_DESC" 
+						directory="images"
+						showon="buf_bg:1" 
+					/>
+				</fieldset>
+				
 			</fieldset>
-
-
-
-
-<!--
-***********************************
-***********************************
-**********   BOOTSTRAP   **************
-***********************************
-***********************************
--->
+			<!--
+			***********************************
+			***********************************
+			**********   BOOTSTRAP   **************
+			***********************************
+			***********************************
+			-->
 			<fieldset name="bootstrapCustom">
 
-				<field name="buf_bs_on" 
-					type="radio" 
-					default="5" 
-					class="btn-group" 
-					label="TPL_BUF_BS_ON">
-					<option value="0"> JNO </option>
-					<!--<option value="4"><![CDATA[ 
-							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap4_logo32.png" style="height:16px;"/>
-							<span> Boostrap 4</span>
-					]]></option>-->
-					<option value="5"><![CDATA[ 
-							<img class="img-fluid img-responsive" src="../templates/buf/images/buf_logos/bootstrap5_logo32.png" style="height:16px;"/>
-							<span> Boostrap 5</span>
-					]]></option>
-				</field>
+				<fieldset name="bootstrap_w" label="TPL_BUF_BS_ON">
+					<field name="buf_bs_on" 
+						type="radio" 
+						default="5" 
+						class="btn-group" 
+						hiddenLabel="true"	
+						label="TPL_BUF_BS_ON">
+						<option value="0"> JNO </option>
+						<option value="5">
+							<![CDATA[
+							<div class="d-flex align-items-center">
+								<i class="fab fa-bootstrap me-1"></i>
+								<span> Boostrap 5</span>
+								</div>
+							]]>
+						</option>
+					</field>
+					<field name="buf_bs_exists" type="BufBSexists" file="bs"/>
+				</fieldset>	
 
-				<field name="buf_bs_exists" type="bufbsexists" file="bs"/>
+				<!--BS 5 SUBFORM-->
+				<fieldset name="bs5_w" label="TPL_BUF_BS" >
+					<field name="buf_bs_v5" type="subform" hiddenLabel="true"
+						formsource="templates/buf/subforms/bs_v5.xml"
+						label="TPL_BUF_BS_VERSION5"
+						showon="buf_bs_on:5"
+					/>
+				</fieldset>
 
-				
-				<!--BOOOOOOOOOOOOOOOOOO 4 SUBFORM-->
-				<!--
-				<field name="buf_bs_v4" type="subform"
-				    formsource="templates/buf/subforms/bs_v4.xml"
-				    label="TPL_BUF_BS_VERSION4"
-					showon="buf_bs_on:4"
-				/>
-				-->
+				<!--BS CONTAINER-->
+				<fieldset name="bs_container_w" label="TPL_BUF_CONTAINER" >
+					<field name="buf_container" 
+						type="list" 
+						default="0" 
+						class="btn-group" 
+						label="TPL_BUF_CONTAINER" 
+						parentclass="stack span-1-inline"
+						description="TPL_BUF_CONTAINER_DESC">
+						<option value="-1">None</option>
+						<option value="0">Static</option>
+						<option value="1">Fluid</option>
+					</field>
 
-				<!--BOOOOOOOOOOOOOOOOOO 5 SUBFORM-->
+					<field type="text" 
+						name="buf_bs_container_fluid_max" 
+						default="100%"
+						class="input-small input"
+						size="10"
+						label="TPL_BUF_BS4_CONTAINER_FLUID_MAX" 
+						description="TPL_BUF_BS4_CONTAINER_FLUID_MAX_DESC"
+						showon="buf_container:1"
+						parentclass="stack span-1-inline"
+					/>
 
-				<field name="buf_bs_v5" type="subform"
-				    formsource="templates/buf/subforms/bs_v5.xml"
-				    label="TPL_BUF_BS_VERSION5"
-					showon="buf_bs_on:5"
-				/>
+					<field type="text" 
+						name="buf_bs_container_max" 
+						default="1140"
+						class="input-small input"
+						size="10"
+						label="TPL_BUF_BS4_CONTAINER_MAX" 
+						description="TPL_BUF_BS4_CONTAINER_MAX_DESC"
+						showon="buf_container:0"
+						parentclass="stack span-1-inline"
+					/>
+					<field name="buf_content_container" 
+						type="list" 
+						default="0" 
+						class="btn-group" 
+						label="TPL_BUF_CONTENT_CONTAINER" 
+						description="TPL_BUF_CONTENT_CONTAINER_DESC"
+						parentclass="stack span-1-inline"
+						>
+						<option value="-1">None</option>
+						<option value="0">Static</option>
+						<option value="1">Fluid</option>
+					</field>
+					<field type="text" 
+						name="buf_bs_container_content_max" 
+						class="input-small input"
+						default="1140"
+						label="TPL_BUF_BS4_CONTAINER_CONTENT_MAX" 
+						description="TPL_BUF_BS4_CONTAINER_CONTENT_MAX_DESC"
+						showon="buf_content_container:0"
+						parentclass="stack span-1-inline"
+					/>
+				</fieldset>
 
-
-				
-				<field type="spacer" name="buf_style_container_hr" hr="false"  class="text"
-					label="TPL_BUF_STYLE_CONTAINER_HR"/>
-
-				<field name="buf_container" 
-					type="list" 
-					default="0" 
-					class="btn-group" 
-					label="TPL_BUF_CONTAINER" 
-					description="TPL_BUF_CONTAINER_DESC">
-					<option value="-1">None</option>
-					<option value="0">Static</option>
-					<option value="1">Fluid</option>
-				</field>
-
-				<field type="text" 
-					name="buf_bs_container_fluid_max" 
-					default="100%"
-					class="input-small input"
-					size="10"
-					label="TPL_BUF_BS4_CONTAINER_FLUID_MAX" 
-					description="TPL_BUF_BS4_CONTAINER_FLUID_MAX_DESC"
-					showon="buf_container:1"
-				/>
-
-				<field type="text" 
-					name="buf_bs_container_max" 
-					default="1140"
-					class="input-small input"
-					size="10"
-					label="TPL_BUF_BS4_CONTAINER_MAX" 
-					description="TPL_BUF_BS4_CONTAINER_MAX_DESC"
-					showon="buf_container:0"
-				/>
-
-				<field name="buf_content_container" 
-					type="list" 
-					default="0" 
-					class="btn-group" 
-					label="TPL_BUF_CONTENT_CONTAINER" 
-					description="TPL_BUF_CONTENT_CONTAINER_DESC">
-					<option value="-1">None</option>
-					<option value="0">Static</option>
-					<option value="1">Fluid</option>
-				</field>
-
-
-				<field type="text" 
-					name="buf_bs_container_content_max" 
-					class="input-small input"
-					default="1140"
-					label="TPL_BUF_BS4_CONTAINER_CONTENT_MAX" 
-					description="TPL_BUF_BS4_CONTAINER_CONTENT_MAX_DESC"
-				/>
-
-
-				<field type="spacer" name="buf_bs_breakpoint_hr" hr="false"  class="text"
-					label="TPL_BUF_BREAKPOINTS"/>
-
-				<field name="buf_bs_breakpoint_xs" label="xs" type="text" default="0"/>
-				<field name="buf_bs_breakpoint_sm" label="sm" type="text" default="576"/>
-				<field name="buf_bs_breakpoint_md" label="md" type="text" default="768"/>
-				<field name="buf_bs_breakpoint_lg" label="lg" type="text" default="992"/>
-				<field name="buf_bs_breakpoint_xl" label="xl" type="text" default="1200"/>
-				<field name="buf_bs_breakpoint_xxs" label="xxl" type="text" default="1400"/>
-
+				<!--BS BREAKPOINTS-->
+				<fieldset name="bs_breakpoints_w" label="TPL_BUF_BREAKPOINTS" >
+					<field name="buf_bs_breakpoint_xs" label="xs" type="text" default="0" parentclass="stack span-1-inline"/>
+					<field name="buf_bs_breakpoint_sm" label="sm" type="text" default="576" parentclass="stack span-1-inline"/>
+					<field name="buf_bs_breakpoint_md" label="md" type="text" default="768" parentclass="stack span-1-inline"/>
+					<field name="buf_bs_breakpoint_lg" label="lg" type="text" default="992" parentclass="stack span-1-inline"/>
+					<field name="buf_bs_breakpoint_xl" label="xl" type="text" default="1200" parentclass="stack span-1-inline"/>
+					<field name="buf_bs_breakpoint_xxs" label="xxl" type="text" default="1400" parentclass="stack span-1-inline"/>
+				</fieldset>
 
 				<!--BS GRID-->
-				<field type="spacer" name="buf_bs_layout" hr="true"  class="text"
-					label="TPL_BUF_BS4_LAYOUT_LEFT_RIGHT"/>
-
-
-				<field name="buf_bs_grid_selector" 
-					type="radio" 
-					default="0" 
-					class=" btn-group" 
-					label="TPL_BUF_BS_GRID_SELECTOR" 
-					layout="joomla.form.field.radio.switcher"
-					>
-					<option value="0">JDEFAULT</option>
-					<option value="1">JT_CUSTOM_PRO</option>
-				</field>
-
-				<field name="buf_bs_grid" type="subform"
-				    formsource="templates/buf/subforms/bs_grid.xml"
-				    label="TPL_BUF_BS4_LAYOUT_LEFT_RIGHT"
-					showon="buf_bs_grid_selector:1"
-				/>
-
-
+				<fieldset name="bs_grid_w" label="TPL_BUF_BS4_LAYOUT_LEFT_RIGHT" >
+					<field name="buf_bs_grid_selector" 
+						type="radio" 
+						default="0" 
+						hiddenLabel="true"	
+						label="TPL_BUF_BS_GRID_SELECTOR" 
+						layout="joomla.form.field.radio.switcher"
+						>
+						<option value="0">JDEFAULT</option>
+						<option value="1">JT_CUSTOM_PRO</option>
+					</field>
+					<field name="buf_bs_grid" type="subform"
+						hiddenLabel="true"	
+						formsource="templates/buf/subforms/bs_grid.xml"
+						label="TPL_BUF_BS4_LAYOUT_LEFT_RIGHT"
+						showon="buf_bs_grid_selector:1"
+					/>
+				</fieldset>					
 				<!--BS STYLES-->
-				<field type="spacer" name="buf_fa_spacer" hr="true"  class="text"
-					label="TPL_BUF_BS4_CUSTOM_HR" />
-
-				<field name="buf_bs_styles_selector" 
-					type="radio" 
-					default="0" 
-					class=" btn-group" 
-					label="TPL_BUF_BS_CUSTOM_SELECTOR" 
-					layout="joomla.form.field.radio.switcher"
-					>
-					<option value="0">JDEFAULT</option>
-					<option value="1">JT_CUSTOM_PRO</option>
-				</field>
-
-				<field name="buf_bs_styles" type="subform"
-				    formsource="templates/buf/subforms/bs_styles.xml"
-				    label="TPL_BUF_BS4_CUSTOM_HR"
-					showon="buf_bs_styles_selector:1"
-				/>
-
-
+				<fieldset name="bs_styles_w" label="TPL_BUF_BS4_CUSTOM_HR" >
+					<field name="buf_bs_styles_selector" 
+						type="radio" 
+						default="0" 
+						hiddenLabel="true"
+						label="TPL_BUF_BS_CUSTOM_SELECTOR" 
+						layout="joomla.form.field.radio.switcher"
+						>
+						<option value="0">JDEFAULT</option>
+						<option value="1">JT_CUSTOM_PRO</option>
+					</field>
+					<field name="buf_bs_styles" type="subform"
+						hiddenLabel="true"
+						parentclass="span-1-inline"
+						formsource="templates/buf/subforms/bs_styles.xml"
+						label="TPL_BUF_BS4_CUSTOM_HR"
+						showon="buf_bs_styles_selector:1"
+					/>
+				</fieldset>
 			</fieldset>
-
-
-
 			<!--
 				***********************************
 				***********************************
@@ -671,12 +573,9 @@
 				***********************************
 			-->
 			<fieldset name="Fonts">
-
 				<field type="spacer" name="buf_fa_title" hr="false"  class="text"
 					label="TPL_BUF_FONTS_FA_CONTAINER_HR"/>
-
 				<field name="buf_bs_exists" type="bufbsexists" file="fa"/>
-
 				<field name="buf_fa_selector" 
 					type="radio" 
 					default="jdefault" 
@@ -687,7 +586,6 @@
 					<option value="jdefault">TPL_BUF_FA_JOOMLA_DEFAULT</option>
 					<option value="6">Fa 6</option>
 				</field>
-
 				<field name="buf_fa_pro" 
 					type="radio" 
 					default="0" 
@@ -696,12 +594,9 @@
 					description="TPL_BUF_FONTAWESOME_PRO_DESC"
 					showon="buf_fa_selector:6"
 					>
-
 					<option value="0">TPL_BUF_FREE</option>
 					<option value="1">TPL_BUF_FA5_PRO</option>
 				</field>
-
-
 				<field name="buf_fa6_files" 
 					type="list" 
 					default="solid" 
@@ -719,7 +614,6 @@
 					<option showon="buf_fa_pro:1" value="duotone">Duotone(pro)</option>
 					<!--<option value="v4-shims">Fa4 fallback</option>-->
 				</field>
-
 				<field name="buf_fa_defer" 
 					type="radio" 
 					default="0" 
@@ -733,10 +627,8 @@
 					<option value="2">TPL_BUF_ASYNC</option>
 					<!--<option value="3">TPL_BUF_BOTH</option>-->
 				</field>
-
 				<field type="spacer" name="buf_fonts_title" hr="false"  class="text"
 					label="TPL_BUF_FONTS_GF_CONTAINER_HR"/>
-
 				<field name="buf_googlefonts" 
 					type="radio" 
 					default="0" 
@@ -748,7 +640,6 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
 				<field name="buf_googlefonts_name" 
 					type="text" 
 					multiple="true"
@@ -758,11 +649,7 @@
 					description="TPL_BUF_LOAD_GOOGLE_FONTS_NAMES_DESC"
 					showon="buf_googlefonts:1"
 					/>
-
-
 			</fieldset>
-
-
 			<!--
 				***********************************
 				***********************************
@@ -771,257 +658,227 @@
 				***********************************
 			-->
 			<fieldset name="Extras">
-
-				<field name="buf_extra_animatecss" type="subform"
-				    formsource="templates/buf/subforms/extras/animate.xml"
-				    label="TPL_BUF_EXTRAS_ANIMATE"
-				    description="TPL_BUF_EXTRAS_ANIMATE_DESC"
-				/>
-
-				<field name="buf_extra_custom_js"
-					   type="subform"
-					   layout="joomla.form.field.subform.repeatable-table"
-					   icon="list"
-					   label="TPL_BUF_LOAD_CUSTOM_JS"
-					   default=''
-					   multiple="true"
-					   formsource="templates/buf/subforms/extras/custom.xml"
-					>
-				</field>
-
+				<fieldset name="Extras_customjs_w" label="TPL_BUF_LOAD_CUSTOM_JS">
+					<field name="buf_extra_custom_js"
+						type="subform"
+						layout="joomla.form.field.subform.repeatable-table"
+						icon="list"
+						label="TPL_BUF_LOAD_CUSTOM_JS"
+						default=''
+						hiddenLabel="true"
+						multiple="true"
+						formsource="templates/buf/subforms/extras/custom.xml"
+						>
+					</field>
+				</fieldset>
+				<fieldset name="Extras_animate_w" label="TPL_BUF_EXTRAS_ANIMATE">
+					<field name="buf_extra_animatecss" type="subform"
+						hiddenLabel="true"
+						formsource="templates/buf/subforms/extras/animate.xml"
+						label="TPL_BUF_EXTRAS_ANIMATE"
+						description="TPL_BUF_EXTRAS_ANIMATE_DESC"
+					/>
+				</fieldset>
 			</fieldset>
 
+			<!--
+				***********************************
+				***********************************
+				**********   OPTIMIZE   **************
+				***********************************
+				***********************************
+			-->
 			
-
 			<fieldset name="Optimize">
 
-				<field type="spacer" name="buf_bs_jquery" hr="false"  class="text"
-					label="TPL_BUF_OPTIMIZE_JQUERY"/>
+				<!--JQUERY-->
+				<fieldset name="Optimize_jquery_w" label="TPL_BUF_OPTIMIZE_JQUERY">
 
-				<field name="buf_jquery" 
-					type="radio" 
-					default="2" 
-					class="btn-group" 
-					label="TPL_BUF_LOAD_JQUERY" 
-					description="TPL_BUF_LOAD_JQUERY_DESC">
-					<option value="0">None</option>
-					<option value="2">Joomla</option>
-					<option value="1">Custom</option>
-				</field>
-
-				<field name="buf_jquery_defer" 
-					type="radio" 
-					default="0" 
-					class="btn-group" 
-					label="TPL_BUF_LOAD_JQUERY_DEFER" 
-					description="TPL_BUF_LOAD_JQUERY_DEFER_DESC"
-					showon="buf_jquery:1[OR]buf_jquery:2"
-				>
-					<option value="0">None</option>
-					<option value="1">TPL_BUF_DEFER</option>
-					<option value="2">TPL_BUF_ASYNC</option>
-				</field>
-
-				<field name="buf_optimize_preload_jquery" 
-					type="radio" 
-					default="0" 
-					class="btn-group" 
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_OPTIMIZE_PRELOAD_JQUERY" 
-					showon="buf_jquery:1[OR]buf_jquery:2"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JT_JYES_PRO</option>
-				</field>
-
-
-				<field type="spacer" name="buf_optimize_separator" hr="false"  class="text"
-					label="TPL_BUF_OPTIMIZE_CSS"/>
-
-				<field name="buf_sass_compression" 
-					type="radio" 
-					default="COMPRESSED" 
-					label="TPL_BUF_SASS_COMPRESSION" 
-					class="btn-group"
-					layout="joomla.form.field.radio.switcher"
-					>
-				  
-				  	<option value="EXPANDED">Expanded</option>
-					<option value="COMPRESSED">Compressed</option>
+					<field name="buf_jquery" 
+						type="radio" 
+						default="2" 
+						class="btn-group" 
+						label="TPL_BUF_LOAD_JQUERY" 
 	
-				</field>
-
-
-
-				<field name="buf_scss_mix" 
-					type="radio" 
-					default="0" 
-					class="btn-group"
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_CSS_MIX" 
-					description="TPL_BUF_CSS_MIX_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-
-
-				<field name="buf_load_media_system_css" 
-					type="radio" 
-					default="0" 
-					class="btn-group"
-					layout="joomla.form.field.radio.switcher" 
-					label="TPL_BUF_CSS_SYSTEM_MEDIA" 
-					description="TPL_BUF_CSS_SYSTEM_MEDIA_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field name="buf_load_template_system_css" 
-					type="radio" 
-					default="0" 
-					class="btn-group"
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_CSS_SYSTEM_TEMPLATE" 
-					description="TPL_BUF_CSS_SYSTEM_TEMPLATE_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field name="buf_load_css_async" 
-					type="radio" 
-					default="1" 	
-					class="btn-group"
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_CSS_ASYNC" 
-					description="TPL_BUF_CSS_ASYNC_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-
-				<field name="buf_optimize_preload_buf" 
-					type="radio" 
-					default="0" 
-					class="btn-group " 
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_OPTIMIZE_PRELOAD_BUF_CSS"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JT_JYES_PRO</option>
-				</field>
-
-				<field name="buf_optimize_preload_own" 
-					type="radio" 
-					default="0" 
-					class="btn-group " 
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_OPTIMIZE_PRELOAD_OWN_CSS"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JT_JYES_PRO</option>
-				</field>
-
-
-				<field type="spacer" name="buf_optimize_js_separator" hr="false"  class="text"
-					label="TPL_BUF_OPTIMIZE_JS"/>
-
-
-				<field name="buf_js_defer" 
-					type="radio" 
-					default="1" 
-					class="btn-group" 
-					label="TPL_BUF_LOAD_JS_DEFER" 
-					description="TPL_BUF_LOAD_JS_DEFER_DESC">
-					<option value="0">None</option>
-					<option value="1">TPL_BUF_DEFER</option>
-					<option value="2">TPL_BUF_ASYNC</option>
-				</field>
-
-				<field name="buf_optimize_preload_logic_js" 
-					type="radio" 
-					default="0"
-					class="btn-group " 
-					layout="joomla.form.field.radio.switcher"
-					label="TPL_BUF_OPTIMIZE_PRELOAD_JS"
-				>
-					<option value="0">JNO</option>
-					<option value="1">JT_JYES_PRO</option>
-				</field>
-
-
-				<field type="spacer" name="buf_optimize_js_separator2" hr="true"/>
-
-				<field name="buf_unset" 
-					type="list" 
-					layout="joomla.form.field.list-fancy-select"
-					default="" 
-					multiple="true"
-					label="TPL_BUF_UNSET" 
-					description="TPL_BUF_UNSET_DESC"
-					showon="bufjversion:3"
-				>
-					<option value="media/jui/js/jquery.min.js">media/jui/js/jquery.min.js</option>
-					<option value="media/jui/js/jquery-noconflict.js">media/jui/js/jquery-noconflict.js</option>
-					<option value="media/jui/js/jquery-migrate.min.js">media/jui/js/jquery-migrate.min.js</option>
-					<option value="media/jui/js/bootstrap.min.js">media/jui/js/bootstrap.min.js</option>
-					<option value="media/system/js/caption.js">media/system/js/caption.js</option>
-					<option value="media/system/js/core.js">media/system/js/core.js</option>
-					<option value="media/system/js/tabs-state.js">media/system/js/tabs-state.js</option>
-					<option value="media/system/js/validate.js">media/system/js/validate.js</option>
-					<option value="media/jui/js/chosen.jquery.min.js">media/jui/js/chosen.jquery.min.js</option>
-				</field>
-
-
-
-				<field name="buf_custom_unset"
-					   type="subform"
-					   layout="joomla.form.field.subform.repeatable-table"
-					   icon="list"
-					   label="TPL_BUF_CUSTOM_UNSET"
-					   default=''
-					   multiple="true"
-				>
-					<form hidden="true" name="buf_custom_unset_modal" repeat="true">
-
-							<field name="buf_custom_unset_script"
-								label="TPL_BUF_CUSTOM_PATH"
-								type="text"
-							/>
-
-					</form>
-					
-				</field>
-
-     			<field name="buf_load_custom_js"
-					   type="subform"
-					   layout="joomla.form.field.subform.repeatable-table"
-					   icon="list"
-					   label="TPL_BUF_LOAD_CUSTOM_JS"
-					   description="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT_DESC"
-					   default=''
-					   multiple="true"
-					   formsource="templates/buf/subforms/extras/custom.xml"
+						parentclass="stack span-1-inline"
+						description="TPL_BUF_LOAD_JQUERY_DESC">
+						<option value="0">JNO</option>
+						<option value="2">JYES</option>
+						<!-- <option value="1">Custom</option> -->
+					</field>
+					<field name="buf_jquery_defer" 
+						type="radio" 
+						default="0" 
+						class="btn-group" 
+						parentclass="stack span-2-inline"
+						label="TPL_BUF_LOAD_JQUERY_DEFER" 
+						description="TPL_BUF_LOAD_JQUERY_DEFER_DESC"
+						showon="buf_jquery:1[OR]buf_jquery:2"
 					>
-				</field>
+						<option value="0">None</option>
+						<option value="1">TPL_BUF_DEFER</option>
+						<option value="2">TPL_BUF_ASYNC</option>
+					</field>
+					<field name="buf_optimize_preload_jquery" 
+						type="radio" 
+						default="0" 
+						class="btn-group" 
+						parentclass="stack span-1-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_OPTIMIZE_PRELOAD_JQUERY" 
+						showon="buf_jquery:1[OR]buf_jquery:2"
+					>
+						<option value="0">JNO</option>
+						<option value="1">JT_JYES_PRO</option>
+					</field>
+				</fieldset>
 
+				<!--CSS-->
+				<fieldset name="Optimize_css_w" label="TPL_BUF_OPTIMIZE_CSS">
 
+					<field name="buf_sass_compression" 
+						type="radio" 
+						default="COMPRESSED" 
+						label="TPL_BUF_SASS_COMPRESSION" 
+						class="btn-group"
+						layout="joomla.form.field.radio.switcher"
+						>
+						<option value="EXPANDED">Expanded</option>
+						<option value="COMPRESSED">Compressed</option>
+					</field>
+					<field name="buf_scss_mix" 
+						type="radio" 
+						default="0" 
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_CSS_MIX" 
+						description="TPL_BUF_CSS_MIX_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="buf_load_media_system_css" 
+						type="radio" 
+						default="0" 
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher" 
+						label="TPL_BUF_CSS_SYSTEM_MEDIA" 
+						description="TPL_BUF_CSS_SYSTEM_MEDIA_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="buf_load_template_system_css" 
+						type="radio" 
+						default="0" 
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_CSS_SYSTEM_TEMPLATE" 
+						description="TPL_BUF_CSS_SYSTEM_TEMPLATE_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="buf_load_css_async" 
+						type="radio" 
+						default="1" 	
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_CSS_ASYNC" 
+						description="TPL_BUF_CSS_ASYNC_DESC">
+						<option value="0">JNO</option>
+						<option value="1">JYES</option>
+					</field>
+					<field name="buf_optimize_preload_buf" 
+						type="radio" 
+						default="0" 
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_OPTIMIZE_PRELOAD_BUF_CSS"
+					>
+						<option value="0">JNO</option>
+						<option value="1">JT_JYES_PRO</option>
+					</field>
+					<field name="buf_optimize_preload_own" 
+						type="radio" 
+						default="0" 
+						parentclass="stack span-2-inline"
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_OPTIMIZE_PRELOAD_OWN_CSS"
+					>
+						<option value="0">JNO</option>
+						<option value="1">JT_JYES_PRO</option>
+					</field>
+				</fieldset>
 
+				<!--JS-->
+				<fieldset name="Optimize_js_w" label="TPL_BUF_OPTIMIZE_JS">
 
+					<field name="buf_js_defer" 
+						type="radio" 
+						default="1" 
+						class="btn-group" 
+						label="TPL_BUF_LOAD_JS_DEFER" 
+						description="TPL_BUF_LOAD_JS_DEFER_DESC">
+						<option value="0">None</option>
+						<option value="1">TPL_BUF_DEFER</option>
+						<option value="2">TPL_BUF_ASYNC</option>
+					</field>
+					<field name="buf_optimize_preload_logic_js" 
+						type="radio" 
+						default="0"
+						class="btn-group " 
+						layout="joomla.form.field.radio.switcher"
+						label="TPL_BUF_OPTIMIZE_PRELOAD_JS"
+					>
+						<option value="0">JNO</option>
+						<option value="1">JT_JYES_PRO</option>
+					</field>
+					<field name="buf_load_custom_js"
+						type="subform"
+						layout="joomla.form.field.subform.repeatable-table"
+						icon="list"
+						label="TPL_BUF_LOAD_CUSTOM_JS"
+						description="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT_DESC"
+						default=''
+						multiple="true"
+						formsource="templates/buf/subforms/extras/custom.xml"
+						>
+					</field>
+				</fieldset>
 
+				<!--JS-->
+				<fieldset name="Optimize_add_js_w" label="TPL_BUF_OPTIMIZE_JS_UNSET">
+
+					<field name="buf_custom_unset"
+						type="subform"
+						layout="joomla.form.field.subform.repeatable-table"
+						icon="list"
+						label="TPL_BUF_CUSTOM_UNSET"
+						default=''
+						multiple="true"
+					>
+						<form hidden="true" name="buf_custom_unset_modal" repeat="true">
+							<field name="buf_custom_unset_script"
+									label="TPL_BUF_CUSTOM_PATH"
+									type="text"
+								/>
+						</form>
+					</field>
+
+				</fieldset>
 
 			</fieldset>
 
+<!-- 
 			<fieldset name="advanced">
-
 				<field name="g_analytics" type="subform"
 				    formsource="templates/buf/subforms/g_analytics.xml"
 				    label="TPL_BUF_GOOGLE_ANALYTICS"
 				/>
-			 
 			</fieldset>
+ -->
+
 		</fields>
 	</config>
-	<!--<updateservers>
-        <server type="template" priority="1" name="buf">https://users.jtotal.org/SOFT/UPDATES/TEMPLATES/BUF/buf-update.xml</server>
-    </updateservers>-->
+	<updateservers>
+        <server type="template" priority="1" name="buf">https://users.jtotal.org/SOFT/UPDATES/TEMPLATES/BUF/buf-updatev4.xml</server>
+    </updateservers>
 </extension>

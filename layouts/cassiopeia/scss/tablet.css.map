@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,iCAAiC;AACjC,iCAAiC;AACjC,iCAAiC;AACjC,mCAAmC;AACnC,iCAAiC;AACjC,iCAAiC;AACjC,oCAAoC",
-    "sources": [
-        "tablet.scss"
-    ],
-    "names": [],
-    "file": "tablet.css"
-}

@@ -4,7 +4,10 @@
 /*******  custom js    *********/
 /*******************************/
 /*******************************/
-//V2.1.14
+//V4.5.0
+
+//with jQuery
+/*
 buf_custom_try();
 
 function buf_custom_try(){
@@ -29,3 +32,11 @@ function buf_custom_js_init(){
 
   });
 }
+*/
+
+//vanilla
+
+document.addEventListener('DOMContentLoaded', function() {
+    //console.log('The document is ready!');
+});
+

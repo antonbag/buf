@@ -14,9 +14,6 @@ Joomla = window.Joomla || {};
  
 
 
-
-
-
 var buf_params;
 var buf_vars = Array();
 var buf_oc;
@@ -51,7 +48,7 @@ function buf_js_init(){
 
 
 	//READY
-	jQuery(document).ready(function($) {
+	document.addEventListener('DOMContentLoaded', function() {
 		
 		//UNDEFINED
 		buf_vars.currentDevice = 'mobile';
@@ -59,27 +56,36 @@ function buf_js_init(){
 
 		buf_debug_n("buf_try: jQuery loaded!");
 
-
-		/* 		
-		2.3.63 DEPRECATED
-		if(bs_load == 'true'){
-			loadBS();
-		} */
-
-		if(jQuery('div.buf_dev_mode').length >= 1){
+/* 		if(jQuery('div.buf_dev_mode').length >= 1){
 			jQuery('a.buf_dev_mode_close').click(function(e){
 				e.stopPropagation();
 				jQuery('div.buf_dev_mode').hide('slow');
 			});
+		} */
+
+		const devModeDivs = document.querySelectorAll('div.buf_dev_mode');
+		if (devModeDivs.length >= 1) {
+		  const devModeCloseButtons = document.querySelectorAll('a.buf_dev_mode_close');
+		  devModeCloseButtons.forEach(button => {
+			button.addEventListener('click', function(e) {
+			  e.stopPropagation();
+			  devModeDivs.forEach(div => div.style.display = 'none');
+			});
+		  });
 		}
 
 	});
 }
 
 
-
+/********************************** */
+/********************************** */
+/****   DEP   ************* */
+/********************************** */
+/********************************** */
+/*
 function getBufParams(){
-
+	return;
 	var data = {
 	    action : action,
 	    tpath: tpath,
@@ -115,52 +121,8 @@ function getBufParams(){
 
 	return buf_params;
 }
+*/
 
-
-
-
-
-
-
-
-
-
-
-/**************************/
-/**************************/
-/****** BS4 script ********/
-/**************************/
-/**************************/
-
-/**
- *  j4. Use JTfunc::getPromiseScript([]);
- */
-//* DEPRECATED
-/* function loadBS(){
-
-	jQuery.loadScript = function (url, callback) {
-		    jQuery.ajax({
-		        url: url,
-		        dataType: 'script',
-		        success: callback,
-		        async: bs_load_async
-		    });
-		}
-	 
-
-		if(bs_version == 4){
-			jQuery.loadScript(buf_params.jtlibs_omedia+'/bootstrap4/js/bootstrap.bundle.min.js', function(){
-				if(buf_params.debug == 1) console.log('BS4 loaded from js. '+buf_params.jtlibs_omedia+'/bootstrap4/js/bootstrap.bundle.min.js Async: '+bs_load_async);
-			});
-		}
-
-		if(bs_version == 5){
-			jQuery.loadScript(buf_params.jtlibs_media+'/bootstrap/js/bootstrap.bundle.min.js', function(){
-				if(buf_params.debug == 1) console.log('BS5 loaded from js. Async: '+bs_load_async);
-			});
-		}
-
-} */
 
 
 /**************************/
@@ -185,13 +147,6 @@ function offcanvasClick(){
 		console.log(document.documentElement);
 		//SHOW
 		if(!ocbutton.classList.contains('is-active')){
-		//if(!jQuery(this).hasClass('is-active')){
-			
-			//jquery
-			/*jQuery(this).addClass('is-active');
-			jQuery('html').addClass('buff_canvas_on');
-			jQuery('body').addClass('offcanvas_show').removeClass('buf_offcanvas_hidden');*/
-
 			//vanilla
 			ocbutton.classList.add('is-active');
 			document.documentElement.classList.add('buff_canvas_on');
@@ -199,21 +154,7 @@ function offcanvasClick(){
 			document.body.classList.remove('buf_offcanvas_hidden');
 
 		}else{
-		//HIDE
-			//jquery
-			/*
-			jQuery('body').removeClass('offcanvas_show');
-			jQuery(this).removeClass('is-active');
-			jQuery('#buf_offcanvas').one(
-				"webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend",
-		    	function(event) {
-		    		if(!jQuery('body').hasClass('offcanvas_show')){
-		    			jQuery('body').addClass("buf_offcanvas_hidden");
-		    			jQuery('html').removeClass('buff_canvas_on');
-		    		}
-			});
-			*/
-
+			//HIDE
 			//vanilla
 			document.body.classList.remove('offcanvas_show');
 			ocbutton.classList.remove('is-active');
@@ -224,12 +165,7 @@ function offcanvasClick(){
 	    		}
 			};
 		}
-
-
 	});  
-
-
-
 
 };
 

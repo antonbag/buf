@@ -1,189 +1,185 @@
 <?php
 
-defined('_JEXEC') or die;
+/**
+ * @package     Joomla.Site
+ * @subpackage  Templates.cassiopeia
+ *
+ * @copyright   (C) 2017 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\AuthenticationHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
+/** @var Joomla\CMS\Document\HtmlDocument $this */
 
-$twofactormethods   = AuthenticationHelper::getTwoFactorMethods();
-$app                = Factory::getApplication();
-$doc                = Factory::getDocument();
+$extraButtons     = AuthenticationHelper::getLoginButtons('form-login');
+$app              = Factory::getApplication();
+$wa               = $this->getWebAssetManager();
 
-//echo '<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>';
+$fullWidth = 1;
 
+// Template path
+$templatePath = 'media/templates/site/cassiopeia';
 
-$doc->addScript('//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js',array(),array('async'=>'async'));
-$doc->addScript('//kit.fontawesome.com/567fc826d3.js',array(),array('async'=>'async', "crossorigin"=>"anonymous"));
-JHtml::_('stylesheet', '//maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', array('version' => 'auto'));
+// Color Theme
+$paramsColorName = $this->params->get('colorName', 'colors_standard');
+$assetColorName  = 'theme.' . $paramsColorName;
+$wa->registerAndUseStyle($assetColorName, $templatePath . '/css/global/' . $paramsColorName . '.css');
 
+// Use a font scheme if set in the template style options
+$paramsFontScheme = $this->params->get('useFontScheme', false);
+$fontStyles       = '';
 
+if ($paramsFontScheme) {
+    if (stripos($paramsFontScheme, 'https://') === 0) {
+        $this->getPreloadManager()->preconnect('https://fonts.googleapis.com/', ['crossorigin' => 'anonymous']);
+        $this->getPreloadManager()->preconnect('https://fonts.gstatic.com/', ['crossorigin' => 'anonymous']);
+        $this->getPreloadManager()->preload($paramsFontScheme, ['as' => 'style', 'crossorigin' => 'anonymous']);
+        $wa->registerAndUseStyle('fontscheme.current', $paramsFontScheme, [], ['media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\'', 'crossorigin' => 'anonymous']);
 
-
-
-/*
-// Output as HTML5
-$this->setHtml5(true);
-
-// Add html5 shiv
-JHtml::_('script', 'jui/html5.js', array('version' => 'auto', 'relative' => true, 'conditional' => 'lt IE 9'));
-
-// Styles
-JHtml::_('stylesheet', 'templates/system/css/offline.css', array('version' => 'auto'));
-
-if ($this->direction === 'rtl')
-{
-  JHtml::_('stylesheet', 'templates/system/css/offline_rtl.css', array('version' => 'auto'));
+        if (preg_match_all('/family=([^?:]*):/i', $paramsFontScheme, $matches) > 0) {
+            $fontStyles = '--cassiopeia-font-family-body: "' . str_replace('+', ' ', $matches[1][0]) . '", sans-serif;
+			--cassiopeia-font-family-headings: "' . str_replace('+', ' ', isset($matches[1][1]) ? $matches[1][1] : $matches[1][0]) . '", sans-serif;
+			--cassiopeia-font-weight-normal: 400;
+			--cassiopeia-font-weight-headings: 700;';
+        }
+    } else {
+        $wa->registerAndUseStyle('fontscheme.current', $paramsFontScheme, ['version' => 'auto'], ['media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\'']);
+        $this->getPreloadManager()->preload($wa->getAsset('style', 'fontscheme.current')->getUri() . '?' . $this->getMediaVersion(), ['as' => 'style']);
+    }
 }
 
-JHtml::_('stylesheet', 'templates/system/css/general.css', array('version' => 'auto'));
-*/
-// Add JavaScript Frameworks
-//JHtml::_('bootstrap.framework');
+// Enable assets
+$wa->usePreset('template.cassiopeia.' . ($this->direction === 'rtl' ? 'rtl' : 'ltr'))
+    ->useStyle('template.active.language')
+    ->useStyle('template.offline')
+    ->useStyle('template.user')
+    ->useScript('template.user')
+    ->addInlineStyle(":root {
+		--hue: 214;
+		--template-bg-light: #f0f4fb;
+		--template-text-dark: #495057;
+		--template-text-light: #ffffff;
+		--template-link-color: #2a69b8;
+		--template-special-color: #001B4C;
+		$fontStyles
+	}");
 
+// Override 'template.active' asset to set correct ltr/rtl dependency
+$wa->registerStyle('template.active', '', [], [], ['template.cassiopeia.' . ($this->direction === 'rtl' ? 'rtl' : 'ltr')]);
 
+// Logo file or site title param
+$sitename = htmlspecialchars($app->get('sitename'), ENT_QUOTES, 'UTF-8');
+
+// Browsers support SVG favicons
+$this->addHeadLink(HTMLHelper::_('image', 'joomla-favicon.svg', '', [], true, 1), 'icon', 'rel', ['type' => 'image/svg+xml']);
+$this->addHeadLink(HTMLHelper::_('image', 'favicon.ico', '', [], true, 1), 'alternate icon', 'rel', ['type' => 'image/vnd.microsoft.icon']);
+$this->addHeadLink(HTMLHelper::_('image', 'joomla-favicon-pinned.svg', '', [], true, 1), 'mask-icon', 'rel', ['color' => '#000']);
+
+if ($this->params->get('logoFile')) {
+    $logo = HTMLHelper::_('image', Uri::root(false) . htmlspecialchars($this->params->get('logoFile'), ENT_QUOTES), $sitename, ['loading' => 'eager', 'decoding' => 'async'], false, 0);
+} elseif ($this->params->get('siteTitle')) {
+    $logo = '<span title="' . $sitename . '">' . htmlspecialchars($this->params->get('siteTitle'), ENT_COMPAT, 'UTF-8') . '</span>';
+} else {
+    $logo = HTMLHelper::_('image', 'logo.svg', $sitename, ['class' => 'logo d-inline-block', 'loading' => 'eager', 'decoding' => 'async'], true, 0);
+}
+
+// Defer font awesome
+$wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <jdoc:include type="head" />
-
-
-
-<style>
-
-  body{
-      background-color: #e0e0e0;
-  }
-  div.card_wrapper{
-    display: flex; justify-content: center; align-items: center; width: 100%; height: 100vh;
-   
-  }
-  div.card{
-    max-width: 25rem; width: 100%; 
-    box-shadow: 0 0 50px rgba(51, 51, 51, 0.2);
-  );
-    border:none;
-    border-radius: 25px;
-  }
-  div#system-message{
-    position: fixed;
-    top: 0;
-    width: 100%;
-  }
-
-</style>
-
-
-<script>
-
-   function enableBtn(){
-     document.getElementById("button1").disabled = false;
-   }
-
-</script>
-
+    <jdoc:include type="metas" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <jdoc:include type="styles" />
+    <jdoc:include type="scripts" />
 </head>
-<body>
-  <jdoc:include type="message" />
-
-
-<div class="card_wrapper">
-
-  <div class="card mb-3">
-    
-
-    <?php if ($app->get('offline_image') && file_exists($app->get('offline_image'))) : ?>
-      <img class="card-img-top" src="<?php echo $app->get('offline_image'); ?>" alt="<?php echo htmlspecialchars($app->get('sitename'), ENT_COMPAT, 'UTF-8'); ?>" />
-     <?php endif; ?>
-
-
-      <article class="card-body">
-
-        <h1 class="card-title mb-4 mt-1">
-          <?php echo htmlspecialchars($app->get('sitename'), ENT_COMPAT, 'UTF-8'); ?>
-        </h1>
-        <?php if ($app->get('display_offline_message', 1) == 1 && str_replace(' ', '', $app->get('offline_message')) !== '') : ?>
-          <p>
-            <?php echo $app->get('offline_message'); ?>
-          </p>
-        <?php elseif ($app->get('display_offline_message', 1) == 2 && str_replace(' ', '', JText::_('JOFFLINE_MESSAGE')) !== '') : ?>
-          <p>
-            <?php echo JText::_('JOFFLINE_MESSAGE'); ?>
-          </p>
-        <?php endif; ?>
-
-        <hr>
-
-        <form action="<?php echo JRoute::_('index.php', true); ?>" method="post" id="form-login" class="form-validate" role="form">
-
-          <div class="input-group mb-3">
-
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="username"><i class="fas fa-user fa-fw"></i> </span>
+<body class="site">
+    <div class="outer">
+        <div class="offline-card">
+            <div class="header">
+            <?php if (!empty($logo)) : ?>
+                <h1><?php echo $logo; ?></h1>
+            <?php else : ?>
+                <h1><?php echo $sitename; ?></h1>
+            <?php endif; ?>
+            <?php if ($app->get('offline_image')) : ?>
+                <?php echo HTMLHelper::_('image', $app->get('offline_image'), $sitename, [], false, 0); ?>
+            <?php endif; ?>
+            <?php if ($app->get('display_offline_message', 1) == 1 && str_replace(' ', '', $app->get('offline_message')) != '') : ?>
+                <p><?php echo $app->get('offline_message'); ?></p>
+            <?php elseif ($app->get('display_offline_message', 1) == 2) : ?>
+                <p><?php echo Text::_('JOFFLINE_MESSAGE'); ?></p>
+            <?php endif; ?>
+            <div class="logo-icon">
+                <svg version="1.1" xmlns="https://www.w3.org/2000/svg" x="0px" y="0px"
+                     viewBox="0 0 74.8 74.8" enable-background="new 0 0 74.8 74.8" xml:space="preserve">
+                    <g id="brandmark">
+                        <path id="j-green" fill="#1C3D5C" d="M13.5,37.7L12,36.3c-4.5-4.5-5.8-10.8-4.2-16.5c-4.5-1-7.8-5-7.8-9.8c0-5.5,4.5-10,10-10 c5,0,9.1,3.6,9.9,8.4c5.4-1.3,11.3,0.2,15.5,4.4l0.6,0.6l-7.4,7.4l-0.6-0.6c-2.4-2.4-6.3-2.4-8.7,0c-2.4,2.4-2.4,6.3,0,8.7l1.4,1.4 l7.4,7.4l7.8,7.8l-7.4,7.4l-7.8-7.8L13.5,37.7L13.5,37.7z"/>
+                        <path id="j-orange" fill="#1C3D5C" d="M21.8,29.5l7.8-7.8l7.4-7.4l1.4-1.4C42.9,8.4,49.2,7,54.8,8.6C55.5,3.8,59.7,0,64.8,0 c5.5,0,10,4.5,10,10c0,5.1-3.8,9.3-8.7,9.9c1.6,5.6,0.2,11.9-4.2,16.3l-0.6,0.6l-7.4-7.4l0.6-0.6c2.4-2.4,2.4-6.3,0-8.7 c-2.4-2.4-6.3-2.4-8.7,0l-1.4,1.4L37,29l-7.8,7.8L21.8,29.5L21.8,29.5z"/>
+                        <path id="j-red" fill="#1C3D5C" d="M55,66.8c-5.7,1.7-12.1,0.4-16.6-4.1l-0.6-0.6l7.4-7.4l0.6,0.6c2.4,2.4,6.3,2.4,8.7,0 c2.4-2.4,2.4-6.3,0-8.7L53,45.1l-7.4-7.4l-7.8-7.8l7.4-7.4l7.8,7.8l7.4,7.4l1.5,1.5c4.2,4.2,5.7,10.2,4.4,15.7 c4.9,0.7,8.6,4.9,8.6,9.9c0,5.5-4.5,10-10,10C60,74.8,56,71.3,55,66.8L55,66.8z"/>
+                        <path id="j-blue" fill="#1C3D5C" d="M52.2,46l-7.8,7.8L37,61.2l-1.4,1.4c-4.3,4.3-10.3,5.7-15.7,4.4c-1,4.5-5,7.8-9.8,7.8 c-5.5,0-10-4.5-10-10C0,60,3.3,56.1,7.7,55C6.3,49.5,7.8,43.5,12,39.2l0.6-0.6L20,46l-0.6,0.6c-2.4,2.4-2.4,6.3,0,8.7 c2.4,2.4,6.3,2.4,8.7,0l1.4-1.4l7.4-7.4l7.8-7.8L52.2,46L52.2,46z"/>
+                    </g>
+                </svg>
             </div>
-            <input name="username" id="username" type="text" class="form-control" placeholder="<?php echo JText::_('JGLOBAL_USERNAME'); ?>" alt="<?php echo JText::_('JGLOBAL_USERNAME'); ?>" autocomplete="off" autocapitalize="none" />
-          </div>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="password"><i class="fas fa-unlock-alt fa-fw"></i> </span>
             </div>
-            <input type="password" name="password" class="form-control" placeholder="<?php echo JText::_('JGLOBAL_PASSWORD'); ?>" alt="<?php echo JText::_('JGLOBAL_PASSWORD'); ?>" id="passwd" />
-          </div>
+            <div class="login">
+                <jdoc:include type="message" />
+                <form action="<?php echo Route::_('index.php', true); ?>" method="post" id="form-login">
+                    <fieldset>
+                        <label for="username"><?php echo Text::_('JGLOBAL_USERNAME'); ?></label>
+                        <input name="username" class="form-control" id="username" type="text">
 
-          <?php if (count($twofactormethods) > 1) : ?>
+                        <label for="password"><?php echo Text::_('JGLOBAL_PASSWORD'); ?></label>
+                        <input name="password" class="form-control" id="password" type="password">
 
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="secret" ><i class="fas fa-key fa-fw"></i> </span>
-              </div>
-              <input type="text" name="secretkey" class="form-control" placeholder="<?php echo JText::_('JGLOBAL_SECRETKEY'); ?>" alt="<?php echo JText::_('JGLOBAL_SECRETKEY'); ?>" id="secretkey" />
+                        <?php foreach ($extraButtons as $button) :
+                            $dataAttributeKeys = array_filter(array_keys($button), function ($key) {
+                                return substr($key, 0, 5) == 'data-';
+                            });
+                            ?>
+                            <div class="mod-login__submit form-group">
+                                <button type="button"
+                                        class="btn btn-secondary w-100 mt-4 <?php echo $button['class'] ?? '' ?>"
+                                <?php foreach ($dataAttributeKeys as $key) : ?>
+                                    <?php echo $key ?>="<?php echo $button[$key] ?>"
+                                <?php endforeach; ?>
+                                <?php if ($button['onclick']) : ?>
+                                    onclick="<?php echo $button['onclick'] ?>"
+                                <?php endif; ?>
+                                title="<?php echo Text::_($button['label']) ?>"
+                                id="<?php echo $button['id'] ?>"
+                                >
+                                <?php if (!empty($button['icon'])) : ?>
+                                    <span class="<?php echo $button['icon'] ?>"></span>
+                                <?php elseif (!empty($button['image'])) : ?>
+                                    <?php echo $button['image']; ?>
+                                <?php elseif (!empty($button['svg'])) : ?>
+                                    <?php echo $button['svg']; ?>
+                                <?php endif; ?>
+                                <?php echo Text::_($button['label']) ?>
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <button type="submit" name="Submit" class="btn btn-primary"><?php echo Text::_('JLOGIN'); ?></button>
+
+                        <input type="hidden" name="option" value="com_users">
+                        <input type="hidden" name="task" value="user.login">
+                        <input type="hidden" name="return" value="<?php echo base64_encode(Uri::base()); ?>">
+                        <?php echo HTMLHelper::_('form.token'); ?>
+                    </fieldset>
+                </form>
             </div>
-
-          <?php endif; ?>
-
-
-          <?php
-
-      $reCaptchaName = 'recaptcha'; // the name of the captcha plugin - retrieved from the custom component's parameters
-
-      JPluginHelper::importPlugin('captcha', $reCaptchaName);
-      $id = 'jform_captcha';
-
-      $dispatcher = JEventDispatcher::getInstance();
-      $dispatcher->trigger('onInit', $id);
-      $output = $dispatcher->trigger('onDisplay', array($reCaptchaName, $id, "required"));
-      echo isset($output[0])? $output[0]:'';
-
-      ?>
-
-          <div class="form-group button_submit d-flex justify-content-center">
-              <input type="submit" name="Submit" class="button login btn btn-primary" value="<?php echo JText::_('JLOGIN'); ?>" />
-          </div>
-
-
-
-
-          <input type="hidden" name="option" value="com_users" />
-          <input type="hidden" name="task" value="user.login" />
-          <input type="hidden" name="return" value="<?php echo base64_encode(JUri::base()); ?>" />
-          <?php echo JHtml::_('form.token'); ?>
-
-        </form>
-
-
-
-
-      </article>
-  </div> <!-- card.// -->
-
-</div>
-
-
-
-
+        </div>
+    </div>
 </body>
 </html>

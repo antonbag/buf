@@ -7,6 +7,19 @@
 /* This is the main scss file */
 
 
+//DEV Visual menu
+.card.menu_elements_wrapper.active{
+    background: #7b0080;
+}
+#menu_principal{
+    li.nav-item.current.active{
+        a{
+            color:#691c28;
+        }
+    }
+}
+
+
 
 //TODO this in config file
 $grid-breakpoints: (
@@ -25,13 +38,35 @@ $grid-breakpoints: (
 //background-image:url(#{$img_path}yourimage.png);
 //LAYOUT IMAGES
 //background-image:url(#{$layout_img_path}yourimage.png);
-
+$layout_img_path:'/templates/buf/layouts/default/images' !default;
+$layout_opath:'/templates/buf/layouts/default' !default;
 //LAYOUT
 //background-image:url(#{$layout_opath}yourfile.css);
 
+/*
+@font-face {
+    font-family: 'Roboto Slab';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(#{$layout_opath}/fonts/RobotoSlab-Regular.woff2) format('woff2'),
+    url(#{$layout_opath}fonts/RobotoSlab-Regular.ttf)  format('truetype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+*/
 
+
+html{opacity: 1;}
+#contents{
+	opacity:1;
+}
 //VARIABLES
 $color: #57616d;
+
+:root{
+    --bs-link-color: #C53A4F;
+    --bs-link-hover-color: #691c28;
+  }
 
 //MIXINS
 @mixin vag(){
@@ -58,11 +93,15 @@ div.buf_left{
 	background:#d9ebeb;
 }
 
+
+
+
+
 /* YOUR CSS HERE */
 // ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ //
 //////////////MOBILE////////////////
 
-@media (max-width: 767px) {
+@media (max-width: map-get($grid-breakpoints, md)) {
 	@import 'mobile.scss';
 }
 
@@ -70,19 +109,19 @@ div.buf_left{
 //므 므 므 므 므 므 므 므 므 므 므 므 므 므//
 //////////////TABLET////////////////
 
-@media (min-width: 768px) {
+@media (min-width: map-get($grid-breakpoints, md)) {
     @import "tablet.scss";
 }
 
-@media (min-width: 992px) {
+@media (min-width: map-get($grid-breakpoints, lg)) {
     @import "laptop.scss";
 }
 
-@media (min-width: 1200px) {
+@media (min-width: map-get($grid-breakpoints, xl)) {
     @import "desktop.scss";
 }
 
-@media (min-width: 1400px) {
+@media (min-width: map-get($grid-breakpoints, xxl)) {
     @import "tv.scss";
 }
 

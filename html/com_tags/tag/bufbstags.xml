@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<layout title="BUF_bstags" option="COM_TAGS_TAG_VIEW_DEFAULT_OPTION">
+		<help
+			key="Menu_Item:_Tagged_Items"
+		/>
+		<message>
+			<![CDATA[COM_TAGS_TAG_VIEW_DEFAULT_DESC]]>
+		</message>
+	</layout>
+
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request">
+
+			<field
+				name="id"
+				type="tag"
+				label="COM_TAGS_FIELD_TAG_LABEL"
+				mode="nested"
+				required="true"
+				multiple="true"
+				custom="false"
+			/>
+
+			<field
+				name="types"
+				type="contenttype"
+				label="COM_TAGS_FIELD_TYPE_LABEL"
+				layout="joomla.form.field.list-fancy-select"
+				multiple="true"
+			/>
+
+			<field
+				name="tag_list_language_filter"
+				type="contentlanguage"
+				label="COM_TAGS_FIELD_LANGUAGE_FILTER_LABEL"
+				default=""
+				useglobal="true"
+				>
+				<option value="all">JALL</option>
+				<option value="current_language">JCURRENT</option>
+			</field>
+
+		</fieldset>
+	</fields>
+
+	<!-- Add fields to the parameters object for the layout. -->
+<fields name="params">
+	<fieldset name="basic" label="COM_TAGS_OPTIONS">
+
+			<field
+				name="show_tag_title"
+				type="list"
+				label="COM_TAGS_SHOW_TAG_TITLE_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="tag_list_show_tag_image"
+				type="list"
+				label="COM_TAGS_SHOW_TAG_IMAGE_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="tag_list_show_tag_description"
+				type="list"
+				label="COM_TAGS_SHOW_TAG_DESCRIPTION_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="tag_list_image"
+				type="media"
+				label="COM_TAGS_TAG_LIST_MEDIA_LABEL"
+			/>
+
+			<field
+				name="tag_list_image_alt"
+				type="text"
+				label="COM_TAGS_TAG_LIST_MEDIA_ALT_LABEL"
+			/>
+
+			<field
+				name="tag_list_image_alt_empty"
+				type="checkbox"
+				label="COM_TAGS_TAG_LIST_MEDIA_ALT_EMPTY_LABEL"
+				description="COM_TAGS_TAG_LIST_MEDIA_ALT_EMPTY_DESC"
+			/>
+
+			<field
+				name="tag_list_description"
+				type="textarea"
+				label="COM_TAGS_SHOW_TAG_LIST_DESCRIPTION_LABEL"
+				description="COM_TAGS_TAG_LIST_DESCRIPTION_DESC"
+				rows="3"
+				cols="30"
+				filter="safehtml"
+			/>
+
+			<field
+				name="tag_list_orderby"
+				type="list"
+				label="JGLOBAL_FIELD_FIELD_ORDERING_LABEL"
+				default=""
+				useglobal="true"
+				validate="options"
+				>
+				<option value="c.core_title">JGLOBAL_TITLE</option>
+				<option value="match_count">COM_TAGS_MATCH_COUNT</option>
+				<option value="c.core_created_time">JGLOBAL_CREATED_DATE</option>
+				<option value="c.core_modified_time">JGLOBAL_MODIFIED_DATE</option>
+				<option value="c.core_publish_up">JGLOBAL_PUBLISHED_DATE</option>
+			</field>
+
+			<field
+				name="tag_list_orderby_direction"
+				type="list"
+				label="JGLOBAL_ORDER_DIRECTION_LABEL"
+				useglobal="true"
+				validate="options"
+				>
+				<option value="ASC">JGLOBAL_ORDER_ASCENDING</option>
+				<option value="DESC">JGLOBAL_ORDER_DESCENDING</option>
+			</field>
+
+		</fieldset>
+
+		<fieldset name="buf" label="BUF cards">
+                
+<!-- 			<field
+				name="buf_trim"
+				type="radio"
+				label="Trim text"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field
+				name="buf_trim_chars"
+				type="text"
+				label="Num chars"
+				default="300"
+				showon="buf_trim:1"
+			/>
+ -->
+			
+
+				<field
+					name="buf_titles_h"
+					type="list" 
+					default="0"
+					label="BUF_TITLES_H">
+					<option	value="0">None</option>
+					<option	value="1">H1</option>
+					<option	value="2">H2</option>
+					<option	value="3">H3</option>
+					<option	value="4">H4</option>
+					<option	value="5">H5</option>
+					<option	value="6">H6</option>
+				</field>
+
+
+			<field
+				name="buf_before_display_content"
+				type="radio"
+				label="Before display content"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+		
+			<field
+				name="buf_after_display_content"
+				type="radio"
+				label="After display content"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="buf_show_readmore"
+				type="radio"
+				label="Readmore"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="buf_show_readmore_title"
+				type="radio"
+				label="JGLOBAL_SHOW_READMORE_TITLE_LABEL"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+				showon="buf_show_readmore:1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="buf_show_readmore_in_footer"
+				type="radio"
+				label="Footer"
+				class="btn-group"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+				showon="buf_show_readmore:1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="buf_intro_card_class" 
+				type="text" 
+				default="" 
+				hint="text-white bg-primary h-100"
+				parentclass="span-1"
+				label="Intro card class" 
+			/>
+
+			<field name="buf_intro_card_layout" 
+				type="list" 
+				default="grid" 
+				class="form-select-color-state"
+				parentclass="stack span-1"
+				label="grid" >
+				<option value="">JSELECT</option>
+				<option value="card-group">Card group</option>
+				<option value="grid">Grid</option>
+			</field>
+
+			<field name="buf_intro_bs_sm" 
+				type="list" 
+				default="1" 
+				class="btn-group" 
+				parentclass="stack span-2-inline"
+				label="COLS-SM" 
+				showon="buf_intro_card_layout:grid"
+				>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</field>
+
+			<field name="buf_intro_bs_md" 
+				type="list" 
+				default="1" 
+				class="btn-group" 
+				parentclass="stack span-2-inline"
+				label="COLS-MD" showon="buf_intro_card_layout:grid"
+				>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</field>
+
+			<field name="buf_intro_bs_lg" 
+				type="list" 
+				default="2" 
+				class="btn-group" 
+				parentclass="stack span-2-inline"
+				label="COLS-LG" showon="buf_intro_card_layout:grid"
+				>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</field>
+
+			<field name="buf_intro_bs_xl" 
+				type="list" 
+				default="2" 
+				class="btn-group" 
+				parentclass="stack span-2-inline"
+				label="COLS-XL" showon="buf_intro_card_layout:grid"
+				>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</field>
+			
+			<field name="buf_intro_bs_gutter" 
+				type="list" 
+				default="4" 
+				class="btn-group" 
+				parentclass="stack span-2-inline"
+				label="Gutter" showon="buf_intro_card_layout:grid"
+				>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</field>
+
+
+		</fieldset>
+
+		<fieldset name="advanced" label="COM_TAGS_ITEM_OPTIONS" description="COM_TAGS_SUBSLIDER_DRILL_TAG_LIST_LABEL">
+
+			<field
+				name="tag_list_show_item_image"
+				type="list"
+				label="COM_TAGS_TAG_LIST_SHOW_ITEM_IMAGE_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="tag_list_show_item_description"
+				type="list"
+				label="COM_TAGS_TAG_LIST_SHOW_ITEM_DESCRIPTION_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="tag_list_item_maximum_characters"
+				type="number"
+				label="COM_TAGS_LIST_MAX_CHARACTERS_LABEL"
+				filter="integer"
+				useglobal="true"
+			/>
+
+			<field
+				name="filter_field"
+				type="list"
+				label="JGLOBAL_FILTER_FIELD_LABEL"
+				default=""
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+
+		<fieldset name="pagination" label="COM_TAGS_PAGINATION_OPTIONS">
+
+			<field
+				name="show_pagination_limit"
+				type="list"
+				label="JGLOBAL_DISPLAY_SELECT_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_pagination"
+				type="list"
+				label="JGLOBAL_PAGINATION_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field
+				name="show_pagination_results"
+				type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+		</fieldset>
+
+		<fieldset name="selection" label="COM_TAGS_LIST_SELECTION_OPTIONS">
+
+			<field
+				name="return_any_or_all"
+				type="list"
+				label="COM_TAGS_SEARCH_TYPE_LABEL"
+				useglobal="true"
+				validate="options"
+				>
+				<option value="0">COM_TAGS_ALL</option>
+				<option value="1">COM_TAGS_ANY</option>
+			</field>
+
+			<field
+				name="include_children"
+				type="list"
+				label="COM_TAGS_INCLUDE_CHILDREN_LABEL"
+				default=""
+				useglobal="true"
+				validate="options"
+				>
+				<option value="0">COM_TAGS_EXCLUDE</option>
+				<option value="1">COM_TAGS_INCLUDE</option>
+			</field>
+
+		</fieldset>
+
+		<fieldset name="integration">
+
+			<field
+				name="show_feed_link"
+				type="list"
+				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+		</fieldset>
+	</fields>
+</metadata>

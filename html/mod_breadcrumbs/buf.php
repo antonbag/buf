@@ -1,12 +1,10 @@
 <?php
-
 /**
- * @package     Joomla.Site
- * @subpackage  mod_breadcrumbs
- *
- * @copyright   (C) 2006 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
+ * @author          jtotal <support@jtotal.org>
+ * @link            https://jtotal.org
+ * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
+*/
 
 defined('_JEXEC') or die;
 

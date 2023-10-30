@@ -1,39 +1,45 @@
-<?php defined( '_JEXEC' ) or die; 
+<?php
+/**
+ * @author          jtotal <support@jtotal.org>
+ * @link            https://jtotal.org
+ * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
+ */
+
+defined('_JEXEC') or die;
 
 /**********************/
 //FONTS
 /**********************/
 
-
 /**********************/
-if($jversion=='4'){
+if ($jversion == '4') {
     $gfont = $templateparams->get('buf_googlefonts_name', '');
 
-
-	
     $this->getPreloadManager()->dnsPrefetch('https://fonts.googleapis.com/', []);
     $this->getPreloadManager()->preconnect('https://fonts.googleapis.com/', []);
     $this->getPreloadManager()->preconnect('https://fonts.gstatic.com/', []);
-    $this->getPreloadManager()->preload($gfont.'&display=swap', ['as' => 'style']);
+    $this->getPreloadManager()->preload($gfont . '&display=swap', ['as' => 'style']);
     //$wa->registerAndUseStyle('fontscheme.current', $gfont.'&display=swap', [], ['media' => 'print', 'rel' => 'lazy-stylesheet', 'onload' => 'this.media=\'all\'']);
-    $wa->registerAndUseStyle('fontscheme.current', $gfont.'&display=swap', [], []);
+    $wa->registerAndUseStyle('fontscheme.current', $gfont . '&display=swap', [], []);
 }
 
-
 /**********************/
-if($jversion=='3'){
+if ($jversion == '3') {
+    $gfont = $templateparams->get('buf_googlefonts_name', '');
+    $gfont_array = explode('|', $gfont);
+    $gfont_families = '';
 
-	$gfont = $templateparams->get('buf_googlefonts_name', '');
-	$gfont_array = explode('|',$gfont);
-	$gfont_families = '';
+    foreach ($gfont_array as $key => $value) {
+        if (!$key == 0) {
+            $gfont_families .= ",";
+        }
 
-	foreach ($gfont_array as $key => $value) {
-		if(!$key==0) $gfont_families.=",";
-		$gfont_families.="'".$value."'";
-	}
+        $gfont_families .= "'" . $value . "'";
+    }
 
-	//option FETCH AND ALTER
-		echo "<script>
+    //option FETCH AND ALTER
+    echo "<script>
 
 			const loadGFont = (url) => {
 			  // the 'fetch' equivalent has caching issues
@@ -41,7 +47,7 @@ if($jversion=='3'){
 			  xhr.open('GET', url, true);
 			  xhr.onreadystatechange = () => {
 			    if (xhr.readyState == 4 && xhr.status == 200) {
-			      
+
 			      let css = xhr.responseText;
 
 			      const head = document.getElementsByTagName('head')[0];
@@ -53,10 +59,7 @@ if($jversion=='3'){
 			  xhr.send();
 			}
 
-			loadGFont('https://fonts.googleapis.com/css?family=".$gfont."&display=swap');
+			loadGFont('https://fonts.googleapis.com/css?family=" . $gfont . "&display=swap');
 
 		</script>";
-
 }
-
-?>

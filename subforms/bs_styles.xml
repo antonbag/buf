@@ -71,9 +71,9 @@
     description="TPL_BUF_BS4_CUSTOM_DARK_DESC" 
 />
 
-<field name="bs4_bufbs4custom" 
+<!-- <field name="bs4_bufbs4custom" 
     type="bufbs4custom" default=""
     description="TPL_BUF_BS4_CUSTOM_PRIMARY_DESC" 
-/>
+/> -->
 
 </form>

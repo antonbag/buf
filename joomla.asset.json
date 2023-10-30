@@ -6,26 +6,32 @@
     "license": "GPL-2.0-or-later",
     "assets": [
       {
-        "name": "fontawesome",
-        "type": "style",
-        "uri": "system/joomla-fontawesome.min.css"
-      },
-      {
         "name": "customjQuery",
         "type": "script",
         "uri": "media/jtlibs/jquery/jquery.min.js"
       },
       {
-        "name": "logic",
-        "type": "script",
-        "uri": "templates/buf/js/logic.js"
-      },
-      {
         "name": "jfontawesome",
         "type": "style",
         "uri": "system/joomla-fontawesome.min.css"
+      },
+      {
+        "name": "bufoc.js",
+        "type": "script",
+        "uri": "templates/buf/js/oc/bufoc.js",
+        "version": "4.5.8",
+        "attributes": {
+          "defer": true
+        }
+      },
+      {
+        "name": "buflogic.js",
+        "type": "script",
+        "uri": "templates/buf/js/logic.js",
+        "attributes": {
+          "async": true
+        }
       }
-      
     ]
   }
   

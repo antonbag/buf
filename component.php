@@ -1,15 +1,12 @@
 <?php
-
 /**
- * @package     Joomla.Site
- * @subpackage  Templates.buf
- *
- * @copyright   (C) 2022 JTOTAL. <https://www.jtotal.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author          jtotal <support@jtotal.org>
+ * @link            https://jtotal.org
+ * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
 defined('_JEXEC') or die;
-
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
@@ -24,13 +21,11 @@ $app  = Factory::getApplication();
 // generator tag
 $this->setGenerator(null);
 
-
 //LAYOUT COMPONENT
 if (file_exists($tpath_abs . '/layouts/' . $buf_layout . '/component.php')) {
     include_once JPATH_THEMES . '/' . $this->template . '/layouts/' . $buf_layout . '/component.php';
     return;
 }
-
 
 //load sheets and scripts
 if (File::exists($cachepath . 'print.css')) {
@@ -74,11 +69,11 @@ $app  = Factory::getApplication();
 $templateparams = $app->getTemplate(true)->params;
 
 //LOGIC
-if (!$templateparams->get('buf_edit_base', 0)){
+if (!$templateparams->get('buf_edit_base', 0)) {
     if (!$check_jtfw || $check_jtfw == '1.0.0' || !$check_jtlibs || $check_jtlibs == '1.0.0') {
         //
     } else {
-        include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_j' . $jversion . '.php';
+        include_once JPATH_THEMES . '/' . $this->template . '/logics/logic.php';
     }
 }
 ?>
