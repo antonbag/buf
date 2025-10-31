@@ -12,12 +12,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
-
-if($jversion->getShortVersion() >= "4.0"){
- include('j4/bufbscard_links.php');
- return;
-}
-
 ?>
 
 

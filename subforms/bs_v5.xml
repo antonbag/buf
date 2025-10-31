@@ -45,19 +45,6 @@
 		<option value="cdn">BUF_CDN</option>
 		<option value="custom">BUF_BTN_LOGO</option>
 	</field>
-<!-- 
-
-	<field name="buf_bs_selector" 
-		type="radio" default="recommended" class="btn-group" label="TPL_BUF_BS_SELECTOR" description="TPL_BUF_BS_SELECTOR_DESC" showon="buf_bootstrap_css:custom"
-		onClick="alert(this.value)"
-	>
-		<option value="none">None</option>
-		<option value="minimum">TPL_BUF_BS_MINIMUM</option>
-		<option value="recommended">TPL_BUF_BS_RECOMMENDED</option>
-		<option value="all">TPL_BUF_BS_ALL</option>
-		<option value="custom">TPL_BUF_BS_CUSTOM</option>
-	</field>
- -->
 
 	<field name="buf_bs_files_core" type="checkboxes" label="Core" default="functions,variables,maps,mixins,utilities" showon="buf_bootstrap_css:custom" >
 		<option value="functions">functions</option>

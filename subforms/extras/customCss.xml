@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<form hidden="true" name="buf_load_custom_css_modal" repeat="true" >
+    <field name="buf_load_custom_css"
+        label="TPL_BUF_LOAD_CUSTOM_CSS_PATH"
+        size="60"
+        class="input-xxlarge"
+        type="text"
+
+        placeholder="http://example.com/path/to/file.css"
+    />
+    <field name="buf_css_base" 
+        type="radio" 
+        default="1" 
+        label="TPL_BUF_LOAD_CSS_BASE" 
+    >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+    </field>
+
+    <field name="buf_css_attribs"
+        type="subform"
+        layout="joomla.form.field.subform.repeatable-table"
+        icon="list"
+        label="TPL_BUF_LOAD_CSS_ATTRIBS"
+        default=''
+        multiple="true"
+    >
+
+        <form hidden="true" name="buf_css_attribs_form" repeat="true">
+
+            <field name="buf_js_attrib_label"
+                label="TPL_BUF_LOAD_CSS_ATTRIB_LABEL"
+                class=""
+                type="text" 
+            />
+
+            <field name="buf_js_attrib_value"
+                label="TPL_BUF_LOAD_CSS_ATTRIB_VALUE"
+                class=""
+                type="text" 
+            />
+
+        </form>
+        
+    </field>
+
+
+</form>

@@ -1,37 +1,61 @@
 {
-    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
-    "name": "buf",
-    "version": "2.0.0",
-    "description": "This file contains details of the assets used by Buf. The template system by JTotal.",
-    "license": "GPL-2.0-or-later",
-    "assets": [
-      {
-        "name": "customjQuery",
-        "type": "script",
-        "uri": "media/jtlibs/jquery/jquery.min.js"
-      },
-      {
-        "name": "jfontawesome",
-        "type": "style",
-        "uri": "system/joomla-fontawesome.min.css"
-      },
-      {
-        "name": "bufoc.js",
-        "type": "script",
-        "uri": "templates/buf/js/oc/bufoc.js",
-        "version": "4.5.8",
-        "attributes": {
-          "defer": true
-        }
-      },
-      {
-        "name": "buflogic.js",
-        "type": "script",
-        "uri": "templates/buf/js/logic.js",
-        "attributes": {
-          "async": true
-        }
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "buf",
+  "version": "5.4.28",
+  "description": "This file contains details of the assets used by Buf. The template system by JTotal.",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "jfontawesome",
+      "type": "style",
+      "uri": "system/joomla-fontawesome.min.css"
+    },
+    {
+      "name": "customjQuery",
+      "type": "script",
+      "uri": "media/jtlibs/jquery/jquery.min.js"
+    },
+    {
+      "name": "bufoc.js",
+      "type": "script",
+      "uri": "media/templates/site/buf/js/oc/bufoc.js",
+      "version": "5.4.28",
+      "attributes": {
+        "defer": true
       }
-    ]
-  }
-  
+    },
+    {
+      "name": "bufocbs.js",
+      "type": "script",
+      "uri": "media/templates/site/buf/js/oc/bufocbs.js",
+      "version": "5.4.28",
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "buflogic.js",
+      "type": "script",
+      "uri": "media/templates/site/buf/js/logic.js",
+      "version": "5.4.28",
+      "attributes": {
+        "async": true
+      }
+    },
+    {
+      "name": "topbar.js",
+      "type": "script",
+      "uri": "media/templates/site/buf/js/topbar.js",
+      "version": "5.4.28",
+      "attributes": {
+        "async": true
+      }
+    },
+    {
+      "name": "template.offline",
+      "description": "The css file to be used when the site is offline and offline.php is being used.",
+      "type": "style",
+      "uri": "offline.css"
+    }
+  ]
+}

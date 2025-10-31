@@ -9,11 +9,11 @@
 defined('_JEXEC') or die;
 
 
-use Jtotal\BUF\BUFsass;
+use Jtotal\BUF\Site\Helper\BufSass;
 
 //include_once JPATH_SITE.'/templates/buf/src/bufsass.php';
 
 //CLASS BUFSASS
-$buffles = new BUFsass();
+$buffles = new BufSass();
 $runless = $buffles::runsass('', $templateparams, 'buf', $startmicro);
 $buf_debug += $runless;

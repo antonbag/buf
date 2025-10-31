@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+
+    <field name="buf_bs_root_variable" 
+        type="text" 
+        class="w-100"
+        hiddenLabel="true"
+        default="" 
+        label="TPL_BUF_ROOT_VARIABLE" 
+        hint="bs-blue"
+    />
+
+    <field name="buf_bs_root_value" 
+        type="text" 
+        class="w-100"
+        hiddenLabel="true"
+        default="" 
+        label="TPL_BUF_ROOT_VALUE" 
+        hint="#321654"
+    />
+
+</form>

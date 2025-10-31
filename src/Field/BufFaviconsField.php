@@ -90,12 +90,12 @@ class BufFaviconsField extends FormField
 
             if (file_exists(JPATH_SITE . '/' . $svg_image->url)) {
                 $favicons .= '<div class="buffavicons_thumbs buffavicons_thumbs_svg">';
-                $favicons .= '<strong>svg</strong><a class="btn btn_svg_destroy" onclick="buf_favicon_svg(\'true\')" style="float:right;">x</a>';
-                $favicons .= '<div class="buffavicons_thumbs_svg_img">';
+                  $favicons .= '<strong>svg</strong><a class="btn btn_svg_destroy" onclick="buf_favicon_svg(\'true\')" style="float:right;">x</a>';
+                  $favicons .= '<div class="buffavicons_thumbs_svg_img">';
 
-                $favicons .= LayoutHelper::render('joomla.html.image', ['src' => Uri::root(true) . '/' . $svg_image->url, 'alt' => 'logo favicon']);
+                    $favicons .= LayoutHelper::render('joomla.html.image', ['src' => Uri::root(true) . '/' . $svg_image->url, 'alt' => 'logo favicon']);
 
-                $favicons .= '</div>';
+                  $favicons .= '</div>';
                 $favicons .= '</div>';
             }
 
@@ -120,11 +120,15 @@ class BufFaviconsField extends FormField
         $favicons .= '<div class="buffavicons_messages">';
         $favicons .= '</div>';
 
+
+        $favicons .= '<a class="mt-2 btn btn-default bg-info text-light buf_favicon_btn_create" title="Create favicon" href="#"><i class="fa fa-magic"></i> Create favicons</a>';
+ 
+
         return $favicons;
     }
 
     public function getLabel()
     {
-        //return JText::_('TPL_BUF_CURRENT_FAVICON');
+        //return Text::_('TPL_BUF_CURRENT_FAVICON');
     }
 }

@@ -52,7 +52,7 @@ if ($this->show_image == 'tab' || $this->show_image == 'both') {
 
 // Adding slides
 if ($bufaccordion_mode == 'accordeon') {
-    echo HTMLHelper::_('bootstrap.addSlide',
+/*     echo HTMLHelper::_('bootstrap.addSlide',
         $this->current_accordion,
         $image_tab . ' <div class="buf_accordion_header_title p-2 align-self-center text-primary">
 			<h3>' . $this->item->title . '</h3>
@@ -60,7 +60,17 @@ if ($bufaccordion_mode == 'accordeon') {
 			</div>',
         $this->item->alias,
         'buf_accordion_item',
-    );
+    ); */
+    echo HTMLHelper::_('bootstrap.addSlide',
+    $this->current_accordion,
+    $image_tab . ' 
+    <div class="buf_accordion_header_title p-2 align-self-center text-primary" role="heading" aria-level="3">
+        <h3>' . htmlspecialchars($this->item->title) . '</h3>
+        <div role="contentinfo">' . $this->item->event->afterDisplayTitle . '</div>
+    </div>',
+    $this->item->alias,
+    'buf_accordion_item',
+);
 }
 
 // Adding collpses

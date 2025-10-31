@@ -9,15 +9,18 @@
 
 namespace Jtotal\BUF\Site\Field;
 
+//no direct access
+defined('_JEXEC') or die;
+
+use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
-use Jtotal\BUF\BufHelper;
+use Jtotal\BUF\Site\Helper\BufHelper;
 
-//no direct access
-defined('_JEXEC') or die;
+//JLoader::registerNamespace('Jtotal\\BUF', JPATH_SITE . '/templates/buf/src');
 
 //LOAD JTFW
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
@@ -35,9 +38,6 @@ class BufInitField extends FormField
 
     protected function getInput()
     {
-
-        include_once JPATH_SITE . '/templates/buf/src/bufhelper.php';
-
 
         $app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
 
@@ -79,13 +79,13 @@ class BufInitField extends FormField
         //$scriptDeclaration .= "var jversion = '4';";
 
         $wa = $doc->getWebAssetManager();
-        $wa->registerAndUseStyle('bufadmin4.css', 'templates/buf/backend/css/bufadmin4.css');
+        $wa->registerAndUseStyle('bufadmin4.css', 'media/templates/site/buf/css/backend/bufadmin4.css');
 
         
-        if ($jversion == 5) {
-            $wa->registerAndUseScript('bufadmin5.js', 'templates/buf/backend/js/bufadminv5.js', [], ['defer' => true], ['webcomponent.editor-codemirror']);
+        if ($jversion == 5 || $jversion == 6) {
+            $wa->registerAndUseScript('bufadmin5.js', 'media/templates/site/buf/js/backend/bufadminv5.js', [], ['defer' => true], ['webcomponent.editor-codemirror']);
         } else {
-            $wa->registerAndUseScript('bufadmin4.js', 'templates/buf/backend/js/bufadmin.js', [], ['defer' => true], []);
+            $wa->registerAndUseScript('bufadmin4.js', 'media/templates/site/buf/js/backend/bufadmin.js', [], ['defer' => true], []);
         }
 
 
@@ -105,7 +105,7 @@ class BufInitField extends FormField
         $ext_versions = '';
 
         $ext_versions .= '<div >';
-        $ext_versions .= '<img class="buf_minilogo_bar" src="../templates/buf/images/buf_logos/logo_buf_64.png" width="32" height="32"/>';
+        $ext_versions .= '<img class="buf_minilogo_bar" src="../media/templates/site/buf/images/buf_logos/logo_buf_64.png" width="32" height="32"/>';
 
         $ext_versions .= '<ul class="breadcrumb">';
 
@@ -214,16 +214,9 @@ class BufInitField extends FormField
 
     public function getLabel()
     {
-        /*
-        $content = '
-        <p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf ajax plugin:<p>
-        ';
-        $content .= '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> JT Libraries:<p>';
-        $content .= '<p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> JT Framework:<p>';
-         */
 
         $content = '
-      <p><img src="../templates/buf/images/buf_logos/logo_buf_init.png"/> Buf extensions:<p>
+      <p><img src="../media/templates/site/buf/images/buf_logos/logo_buf_init.png"/> Buf extensions:<p>
       ';
         return $content;
     }

@@ -3,7 +3,7 @@
 <form hidden="true" name="buf_load_custom_js_modal" repeat="true" >
     <field name="buf_load_custom_js_script"
         label="TPL_BUF_LOAD_CUSTOM_JS_SCRIPT"
-        size="60"
+        size="50"
         class="input-xxlarge"
         type="text"
 
@@ -13,10 +13,25 @@
         type="radio" 
         default="1" 
         label="TPL_BUF_LOAD_JS_DEFER" 
-        description="TPL_BUF_LOAD_JS_DEFER_DESC">
+        class="btn-group"
+        description="TPL_BUF_LOAD_JS_DEFER_DESC"
+        layout="joomla.form.field.radio.buttons"
+        >
         <option value="0">JNO</option>
         <option value="1">TPL_BUF_DEFER</option>
         <option value="2">TPL_BUF_ASYNC</option>
+    </field>
+
+    <!--PRECONNECT-->
+    <field name="buf_js_preconnect" 
+        type="radio" 
+        default="0" 
+        label="TPL_BUF_LOAD_JS_PRECONNECT" 
+        description="TPL_BUF_LOAD_JS_PRECONNECT_DESC"
+        layout="joomla.form.field.radio.switcher"
+        >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
     </field>
 
     <field name="buf_js_attribs"

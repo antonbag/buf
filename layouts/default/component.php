@@ -22,28 +22,28 @@ if (File::exists($cachepath . 'print.css')) {
 <html lang="<?php echo $this->language; ?>">
 
 <head>
-    <jdoc:include type="head" />
-    <style id="buf_style_base">
+<jdoc:include type="head" />
+<style id="buf_style_base">
 <?php
 //avoid error on load
 echo file_get_contents('cache/buf/base.css');
 //TEMPLATE BASE CSS
 ?>
-    </style>
+</style>
 </head>
 
 <body
-    class="<?php echo $browserType . ' ' . (($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')) . ' ' . $active->alias . ' ' . $pageclass . ' ' . $docalias; ?>"
-    role="document">
+class="<?php echo $browserType . ' ' . (($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')) . ' ' . $active->alias . ' ' . $pageclass . ' ' . $docalias; ?>"
+role="document">
 
-    <div class="contenidos wrapper row">
-        <article class="contenido buf_component">
-            <jdoc:include type="message" />
-            <jdoc:include type="component" />
-        </article>
-    </div>
+<div class="contenidos wrapper row">
+<article class="contenido buf_component">
+<jdoc:include type="message" />
+<jdoc:include type="component" />
+</article>
+</div>
 
-    <?php //if ($_GET['print'] == '1') echo '<script type="text/javascript">window.print();</script>'; ?>
+<?php //if ($_GET['print'] == '1') echo '<script type="text/javascript">window.print();</script>'; ?>
 
 </body>
 
@@ -56,7 +56,7 @@ if (!$templateparams->get('buf_edit_base', 0)) {
     if (!$check_jtfw || $check_jtfw == '1.0.0' || !$check_jtlibs || $check_jtlibs == '1.0.0') {
 
     } else {
-        include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_j' . $jversion . '.php';
+        include_once JPATH_THEMES . '/' . $this->template . '/logics/logic.php';
     }
 }
 ?>

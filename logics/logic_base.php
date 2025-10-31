@@ -6,87 +6,65 @@
  * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
+declare(strict_types=1);
+
 defined('_JEXEC') or die;
 
-//4.0.1
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
-use Jtotal\BUF\BufHelper;
+use Jtotal\BUF\Site\Helper\BufCheckPhp;
+use Jtotal\BUF\Site\Helper\BufHelper;
 
 ///////////////////////
-//INIT DEBUG
-///////////////////////
+$startmicro = microtime(true);
+$buf_debug = [];
+$buf_debug += BufHelper::addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
 
-$app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
+///////////////////////
+$app = $this->app ?? Factory::getApplication();
 $doc = $app->getDocument();
-$s = $app->getSession();
-$session = $s;
+$session = $app->getSession();
 $jinput = $app->input;
-$lang = Factory::getLanguage();
 
+
+
+
+/*
+
+/*
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
     require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
 } else {
     $app = Factory::getApplication();
     $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
 }
+*/
+//include_once JPATH_SITE . '/templates/buf/src/bufhelper.php';
+//include_once JPATH_SITE . '/templates/buf/src/Helper/bufoffcanvas.php';
+//include_once JPATH_SITE . '/templates/buf/src/Helper/buftopbar.php';
 
-include_once JPATH_SITE . '/templates/buf/src/bufhelper.php';
-
-$startmicro = microtime(true);
-$buf_debug = array();
-$buf_debug += BufHelper::addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
 
 $jversion = BufHelper::getJVersion();
-$tmplComponent = ($jinput->get('tmpl', '') == 'component') ? true : false;
 
-if ($jversion == '4') {
-    $wa = $this->getWebAssetManager();
-    // Add Asset registry files
-    $wr = $this->getWebAssetManager()->getRegistry();
-}
+$tmplComponent = ($jinput->get('tmpl', '') == 'component') ? true : false;
+$edit = ($jinput->getValue('layout') == 'edit') ? true : false;
+$edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
+
+
+$wa = $this->getWebAssetManager();
+$wr = $this->getWebAssetManager()->getRegistry();
+$wr->addRegistryFile(JPATH_THEMES . '/' . $this->template . '/joomla.asset.json');
 
 ///////////////////////
 //CHECK PHP VERSION
 ///////////////////////
-if ($jversion == '3') {
-    if (defined('PHP_VERSION')) {
-        $version = PHP_VERSION;
-    } elseif (function_exists('phpversion')) {
-        $version = phpversion();
-    } else {
-        ## No version info. I'll lie and hope for the best.
-        $version = '5.6.0';
-    }
+BufCheckPhp::checkPhpVersion();
 
-    // An old PHP versIon is installed.
-    if (!version_compare($version, '5.6.0', '>=')) {
-        echo Text::_('You are using an old PHP version. Please upgrade to a newer version');
-    }
-}
 
-if ($jversion == '4') {
-    if (defined('PHP_VERSION')) {
-        $version = PHP_VERSION;
-    } elseif (function_exists('phpversion')) {
-        $version = phpversion();
-    } else {
-        ## No version info. I'll lie and hope for the best.
-        $version = '7.3.0';
-    }
-
-    // An old PHP versIon is installed.
-    if (!version_compare($version, '7.3.0', '>=')) {
-        echo Text::_('You are using an old PHP version. Please upgrade to a newer version');
-    }
-}
 
 //2.2.0
 ///////////////////////
@@ -112,7 +90,7 @@ $check_jtlibs = BufHelper::getExtensionVersion('jtlibs', '');
 if (!$check_jtlibs || $check_jtlibs == '1.0.0') {
     $app->enqueueMessage('
     <strong>JT libs required.</strong>
-    Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a>
+    Please, <a href="'.JPATH_ADMINISTRATOR.'/index.php?option=com_installer&view=update" class="btn btn-default">update</a>
     or
     <a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download</a> </span>
     ', 'error');
@@ -139,55 +117,42 @@ $pageclass = $params->get('pageclass_sfx', '');
 
 $bs_version = $templateparams->get("buf_bs_on", 5);
 
-if ($bs_version == 4 || $bs_version == 3) {
-    $app->enqueueMessage('
-    <strong>Wrong BS selected. (v.' . $bs_version . ') </strong>
-    Please, select a correct BS version in template settings.
-    ', 'error');
-}
-
 //LAYOUTS
 ///////////////////////
 $buf_layout = $templateparams->get('buf_layout', 'default');
 $buf_load_layout_js = $templateparams->get('buf_load_layout_js', 1);
 
-$edit = ($jinput->getValue('layout') == 'edit') ? true : false;
-$edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
+
 
 //PATHS
 ///////////////////////
 $tpath = $this->baseurl . '/templates/' . $this->template; //
 $opath = uri::base() . 'templates/' . $this->template;
 $tpath_abs = JPATH_SITE . '/templates/buf';
+$tpath_media_abs = JPATH_SITE . '/media/templates/site/buf';
+$opath_media = uri::base() . 'media/templates/site/' . $this->template;
 $layoutpath = JPATH_SITE . '/templates/buf/layouts/' . $buf_layout;
 $cachepath = JPATH_SITE . '/cache/buf_' . $buf_layout . '/';
 $cache_opath = 'cache/buf_' . $buf_layout . '/';
 $cache_tpath = $this->baseurl . '/cache/buf_' . $buf_layout . '/';
-$libspath = JPATH_SITE . '/templates/buf/libs';
+$libspath = JPATH_SITE . '/media/templates/site/buf/libs';
 $jtfw_libspath = JPATH_LIBRARIES . '/jtlibs';
 $libs_media_tpath = $this->baseurl . '/media/jtlibs';
 $libs_media_opath = uri::base() . 'media/jtlibs';
 $jconfig = Factory::getConfig();
 
+
 //GET BROWSER
 //JOOMLA WAY
 
-//jimport('joomla.environment.browser');
 $browser = Browser::getInstance();
 $browserType = $browser->getBrowser();
-
-//$appWeb      = new JApplicationWebClient;
-/*
-$appWeb      = new WebClient;
-$ismobile = $appWeb->mobile;
- */
 
 ///////////////////////
 //  DETEC MOBILE
 ///////////////////////
 $ismobile = false;
 $detection = $templateparams->get('buf_offcanvas_detection', 'media');
-
 
 //DEVICE
 $body_mobile = ($ismobile ? 'device_mobile' : 'device_not_mobile');
@@ -196,30 +161,58 @@ $body_mobile .= ' detecion_mode_' . $detection;
 $buf_debug_param = $templateparams->get('buf_debug', 0);
 $buf_anal_url = Uri::base() . 'templates/buf/js/analytics/buf_anal.js';
 
+
+$webapp_capable = $templateparams->get('webapp_capable', '0');
+
 //STYLE
 ///////////////////////
 //CONTAINER
-if ($templateparams->get('buf_container', '0') == '-1') {
-    $container = '';
-} elseif ($templateparams->get('buf_container', '0') == '0') {
-    $container = 'container';
-} else {
-    $container = 'container-fluid';
-}
+$containerSetting = (string) $templateparams->get('buf_container', '0');
+$container = match ($containerSetting) {
+    '-1' => '',
+    '0' => 'container',
+    default => 'container-fluid',
+};
 
 //CONTENT CONTAINER
-if ($templateparams->get('buf_content_container', '0') == '-1') {
-    $content_container = '';
-} elseif ($templateparams->get('buf_content_container', '0') == '0') {
-    $content_container = 'container';
-} else {
-    $content_container = 'container-fluid';
-}
+$content_container = match ((string) $templateparams->get('buf_content_container', '0')) {
+    '-1' => '',
+    '0' => 'container',
+    default => 'container-fluid',
+};
+
 
 //OFFCANVAS
+$bs_styles = new Registry;
+$bs_styles->loadString(json_encode($templateparams->get('buf_bs_styles')));
+$grid_breakpoints = array(
+    //breakpoints
+    'xs' => $bs_styles->get('buf_bs_breakpoint_xs', '0'),
+    'sm' => $bs_styles->get('buf_bs_breakpoint_sm', '576'),
+    'md' => $bs_styles->get('buf_bs_breakpoint_md', '768'),
+    'lg' => $bs_styles->get('buf_bs_breakpoint_lg', '992'),
+    'xl' => $bs_styles->get('buf_bs_breakpoint_xl', '1200'),
+    'xxl' => $bs_styles->get('buf_bs_breakpoint_xxl', '1400'),
+);
+
+$allowedBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
+$requestedBreakpoint = $templateparams->get('buf_offcanvas_max_w', 'lg');
+$check_breakpoint = in_array($requestedBreakpoint, $allowedBreakpoints, true)
+    ? $requestedBreakpoint
+    : 'lg';
+
+$buf_offcanvas_max_w = $grid_breakpoints[$check_breakpoint];
+
+
 $buf_offcanvas = false;
 
-$buf_offcanvas_max_w = $templateparams->get('buf_offcanvas_max_w', 991);
+//offcanvas max width match with breakpoint
+$buf_offcanvas_max_w = $grid_breakpoints[$check_breakpoint];
+
+$buf_offcanvas_style = $templateparams->get('buf_offcanvas_style', 'buf_off_move');
+$buf_offcanvas_position = $templateparams->get('buf_offcanvas_position', 'buf_off_pos_left');
+
+$buf_offcanvas_selector = $templateparams->get('buf_offcanvas_selector', 'buf_offcanvas_default');
 
 //activated
 if ($templateparams->get('buf_offcanvas', 0) == 1) {
@@ -240,55 +233,15 @@ if ($templateparams->get('buf_offcanvas', 0) == 1) {
 //TOPBAR
 ///////////////////////
 $buf_topbar = new Registry;
-
 $buf_topbar->loadString(json_encode($templateparams->get('buf_topbar')));
-
-$buf_topbar_on = $buf_topbar->get('buf_topbar_on', 0);
-$buf_topbar_logo_img = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo', ''));
-$buf_topbar_logo_fallback = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo_fallback', ''));
-$buf_topbar_logo_alt = $buf_topbar->get('buf_topbar_logo_alt', 'logo');
-$buf_topbar_logo_pos = $buf_topbar->get('buf_topbar_logo_pos', "l");
 $buf_topbar_height = $buf_topbar->get('buf_topbar_height', '54');
-$buf_topbar_color = $buf_topbar->get('buf_topbar_color', '#fff');
-$buf_topbar_module = $buf_topbar->get('buf_topbar_module', '');
-
-$buf_topbar_classes = '';
-$buf_topbar_logo = '';
-
-if ($buf_topbar_on) {
-    $buf_topbar_classes .= 'buf_topbar_on';
-}
-
-//logo show
-if ($buf_topbar->get('buf_topbar_image_show', '0')) {
-    $buf_topbar_logo = getTopBarImages($buf_topbar);
-}
 
 //TOPBAR IN OFFCANVAS
 ///////////////////////
 $buf_topbar_oc = new Registry;
 $buf_topbar_oc->loadString(json_encode($templateparams->get('buf_topbar_oc')));
-
-$buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-$buf_topbar_oc_logo_img = $buf_topbar_oc->get('buf_topbar_logo', '');
-$buf_topbar_oc_logo_fallback = $buf_topbar_oc->get('buf_topbar_logo_fallback', '');
-$buf_topbar_oc_logo_alt = $buf_topbar_oc->get('buf_topbar_logo_alt', 'logo');
-$buf_topbar_oc_logo_pos = $buf_topbar_oc->get('buf_topbar_logo_pos', "l");
 $buf_topbar_oc_height = $buf_topbar_oc->get('buf_topbar_height', '90');
-$buf_topbar_oc_color = $buf_topbar_oc->get('buf_topbar_color', '#fff');
-$buf_topbar_oc_module = $buf_topbar_oc->get('buf_topbar_module', '');
 
-$buf_topbar_oc_classes = '';
-$buf_topbar_oc_logo = '';
-
-if ($buf_topbar_oc_on) {
-    $buf_topbar_oc_classes .= 'buf_topbar_oc_on';
-}
-
-//logo show
-if ($buf_topbar_oc->get('buf_topbar_image_show', '0')) {
-    $buf_topbar_oc_logo = getTopBarImages($buf_topbar_oc);
-}
 
 ///////////////////////
 //OFFCANVAS BUTTON
@@ -299,9 +252,10 @@ $oc_button->loadString(json_encode($templateparams->get('buf_oc_button')));
 
 $buf_oc_button_style = $oc_button->get('buf_oc_button_style', '3dx');
 $buf_oc_button_reverse = $oc_button->get('buf_oc_button_reverse', 'l');
-$buf_reverse = ($buf_oc_button_reverse == 'r') ? '-r' : '';
+$buf_oc_reverse = ($buf_oc_button_reverse == 'r') ? '-r' : '';
 $buf_oc_button_vpos = $oc_button->get('buf_oc_button_vpos', 'left');
 $buf_oc_button_hpos = $oc_button->get('buf_oc_button_hpos', 'top');
+
 
 //JS VARIABLES
 $js_params = array();
@@ -314,6 +268,7 @@ $js_params['ismobile'] = $ismobile;
 $js_params['layout'] = $buf_layout;
 $js_params['detection'] = $detection;
 $js_params['offcanvas'] = $buf_offcanvas;
+$js_params['buf_offcanvas_selector'] = $buf_offcanvas_selector;
 $js_params['media_w'] = $templateparams->get('buf_offcanvas_max_w', 900);
 $js_params['offspeed'] = $templateparams->get('buf_offcanvas_speed', 300);
 $js_params['oc_width'] = $templateparams->get('buf_offcanvas_width', 90);
@@ -321,50 +276,6 @@ $js_params['oc_width_desktop'] = $templateparams->get('buf_offcanvas_width_deskt
 $js_params['oc_style'] = $templateparams->get('buf_offcanvas_style', 'buf_off_cover');
 $js_params['oc_position'] = $templateparams->get('buf_offcanvas_position', 'buf_off_pos_left');
 
-/**********************LOAD OFFCANVAS POSITIONS**************************************/
-
-$buf_offcanvas_position = $templateparams->get('buf_offcanvas_position', 'buf_off_pos_left');
-$buf_offcanvas_style = $templateparams->get('buf_offcanvas_style', 'buf_off_move');
-
-$buf_offcanvas_positions = $templateparams->get('buf_offcanvas_positions', array());
-
-$buf_offcanvas_positions_array = $buf_offcanvas_positions;
-//old versions of buf
-if (!is_array($buf_offcanvas_positions)) {
-    $buf_offcanvas_positions_array = explode(',', $buf_offcanvas_positions);
-}
-
-/**********************LOAD OFFCANVAS MODULES**************************************/
-
-$buf_offcanvas_loadmodules = $templateparams->get('buf_offcanvas_loadmodules', array());
-
-/****************************************************/
-/******** CUSTOM MODULES IN CANVAS  *****************/
-$buf_offcanvas_modules = '';
-if (!empty($buf_offcanvas_positions || !empty($buf_offcanvas_loadmodules))) {
-    $buf_offcanvas_modules .= '<div class="offcanvas_module_in">';
-
-    //$buf_offcanvas_positions = 'menu_portada';
-
-    if (!empty($buf_offcanvas_positions)) {
-        foreach ($buf_offcanvas_positions_array as $b_off) {
-            $modules = ModuleHelper::getModules($b_off);
-
-            foreach ($modules as $module) {
-                $buf_offcanvas_modules .= ModuleHelper::renderModule($module, array('buf_offcanvas' => true));
-            }
-        }
-    }
-
-    if (!empty($buf_offcanvas_loadmodules)) {
-        foreach ($buf_offcanvas_loadmodules as $moduleid) {
-            $module = ModuleHelper::getModuleById($moduleid);
-            $buf_offcanvas_modules .= ModuleHelper::renderModule($module, array('buf_offcanvas' => true));
-        }
-    }
-
-    $buf_offcanvas_modules .= '</div>';
-}
 
 //IMAGE
 $buf_bg_img = $templateparams->get('buf_bg_img', false);
@@ -377,8 +288,6 @@ $buf_bs_on = $templateparams->get('buf_bs_on', 4);
 //BS LEFT + RIGHT CALCULATIONS
 $bs_grid = new Registry;
 $bs_grid->loadString(json_encode($templateparams->get('buf_bs_grid')));
-
-$bs_left_pos = $bs_grid->get('buf_bs_left_pos', 'buf_left');
 
 $bs_left_pos = $bs_grid->get('buf_bs_left_pos', 'buf_left');
 $bs_left_sm = $bs_grid->get('buf_bs_left_sm', 3);
@@ -455,6 +364,40 @@ $runless = $templateparams->get('runless', '2');
 $buf_edit_base = $templateparams->get('buf_edit_base', '0');
 $css_mix = $templateparams->get('buf_scss_mix', '0');
 
+$buf_load_css_async = $templateparams->get('buf_load_css_async', '0');
+
+//COUNTER FOR RUNLESS MODE
+$remaining_minutes = 0;
+if ($runless == '1') {
+    $session_key = 'buf_runless_timestamp';
+    $runless_timestamp = $session->get($session_key);
+    $current_time = time();
+
+    $remaining_time = 1800 - ($current_time - $runless_timestamp);
+    $remaining_minutes = ceil($remaining_time / 60);
+    
+    if (!$runless_timestamp) {
+        $session->set($session_key, $current_time);
+    } elseif (($current_time - $runless_timestamp) >= 1800) {
+        // Update runless to 2 in database
+        $db = Factory::getContainer()->get('DatabaseDriver');
+        $paramsArray = $templateparams->toArray();
+        $paramsArray['runless'] = '2';
+        $query = $db->getQuery(true)
+            ->update($db->quoteName('#__template_styles'))
+            ->set($db->quoteName('params') . ' = ' . $db->quote(
+                json_encode($paramsArray)
+            ))
+            ->where($db->quoteName('template') . ' = ' . $db->quote('buf'));
+        $db->setQuery($query)->execute();
+        
+        $session->set($session_key, null);
+        $runless = '2';
+    }
+}
+
+
+
 /***************************************/
 //RUN BASE SASS
 /***TODO: configure bs4 files in base
@@ -468,8 +411,7 @@ if ($runless == '1' || $buf_edit_base == 1 || $base_css_exists == false || $edit
 /***************************************/
 //PARAMS TO JS
 /***************************************/
-$params_to_js = json_encode(array('params' => $js_params));
-$doc->addScriptDeclaration("var php_buf_params = '{$params_to_js}';");
+$this->addScriptOptions('buf.config', ['params' => $js_params]);
 
 $hasClass = '';
 
@@ -513,7 +455,6 @@ if ($templateparams->get('buf_googlefonts', 1) && $templateparams->get('buf_goog
 /***************************/
 if ($templateparams->get('force_recache', 0)) {
     //true
-    $session = Factory::getSession();
     $current_css = $session->get('buf_template_sha');
     if ($css_mix) {
         $css_path = $cache_opath . $current_css . '_mix.css';
@@ -528,10 +469,6 @@ if ($templateparams->get('force_recache', 0)) {
     }
 }
 
-/***************************/
-/*******  UNSET J4 DEP **********/
-/***************************/
-//$unset_js = $templateparams->get('buf_unset', array());
 
 /***************************/
 /*******  preload  **********/
@@ -543,14 +480,39 @@ if ($css_mix) {
     $preload_buf_css = false;
 }
 
-$buf_debug += BufHelper::addDebug('PRELOAD css BUF', 'code', '<strong>Preload</strong> <small>' . var_export($preload_buf_css, true) . '</small>', $startmicro, 'table-info', 'logic_base.php');
+$buf_debug += BufHelper::addDebug(
+    'PRELOAD css BUF',
+    'code',
+    sprintf('<strong>Preload:</strong> %s', $preload_buf_css ? 'enabled' : 'disabled'),
+    $startmicro,
+    'table-info',
+    'logic_base.php'
+);
 
 //OWN CSS
 $preload_own_css = $templateparams->get('buf_optimize_preload_own', '0');
-$buf_debug += BufHelper::addDebug('PRELOAD CSS OWN', 'code', '<strong>Preload</strong> <small>' . var_export($preload_own_css, true) . '</small>', $startmicro, 'table-info', 'logic_base.php');
+$buf_debug += BufHelper::addDebug(
+    'PRELOAD css OWN',
+    'code',
+    sprintf('<strong>Preload:</strong> %s', $preload_own_css ? 'enabled' : 'disabled'),
+    $startmicro,
+    'table-info',
+    'logic_base.php'
+);
+
+
+
 
 //JQUERY
 $preload_jquery_js = $templateparams->get('buf_optimize_preload_jquery', '0');
+
+
+
+
+
+
+
+
 
 /***************************/
 /***************************/
@@ -562,7 +524,6 @@ $jquery_path = '';
 
 //$buf_jquery == 1 = depcrated custom jquery
 if ($buf_jquery == 2 || $edit || $buf_jquery == 1) {
-    $wa = $this->getWebAssetManager();
     $wa->getAsset('script', 'jquery');
 
     //defer
@@ -571,6 +532,7 @@ if ($buf_jquery == 2 || $edit || $buf_jquery == 1) {
         //rel="defer" or rel="async"
         $wa->getAsset('script', 'jquery')->setAttribute('rel', $v);
     }
+
     $jquery_path = $wa->getAsset('script', 'jquery')->getUri() . '?' . $wa->getAsset('script', 'jquery')->getVersion();
 
     // PRELOAD JQUERY JS
@@ -591,16 +553,12 @@ if ($buf_jquery == 2 || $edit || $buf_jquery == 1) {
 /***************************/
 $defer = BufHelper::check_defer_v4($templateparams->get('buf_js_defer', 1));
 $preload_logic_and_bufoc_js = $templateparams->get('buf_optimize_preload_logic_js', '0');
-//$wa->getAsset('script', 'buflogic.js');
 
-foreach ($defer as $key => $v) {
-    //rel="defer" or rel="async"
-    $wa->getAsset('script', 'buflogic.js')->setAttribute('rel', $v);
-}
+
+
 if ((bool) $preload_logic_and_bufoc_js) {
     $this->getPreloadManager()->preload($wa->getAsset('script', 'buflogic.js')->getUri() . '?' . $this->getMediaVersion(), ['as' => 'script']);
 }
-
 $wa->useScript('buflogic.js');
 
 $logic_path = $tpath . '/js/logic.min.js';
@@ -615,82 +573,87 @@ if ((bool) $preload_logic_and_bufoc_js) {
 /***************************/
 $head_preload = '';
 
-if ($jversion == '3' || $jversion == '4' || $jversion == '5') {
-    if ($preload_buf_css) {
-        $head_preload .= '<link rel="preload" href="' . $cache_opath . 'buf.css?' . $doc->getMediaVersion() . '" as="style">';
-    }
-
-    if ($preload_own_css) {
-        $head_preload .= '<link rel="preload" href="' . $css_path . '?' . $doc->getMediaVersion() . '" as="style">';
-    }
+if ($preload_buf_css) {
+    $head_preload .= '<link rel="preload" href="' . $cache_opath . 'buf.css?' . $doc->getMediaVersion() . '" as="style">';
 }
 
-$buf_topbar_logo_alt = $buf_topbar->get('buf_topbar_logo_alt', 'logo');
-$buf_topbar_logo_pos = $buf_topbar->get('buf_topbar_logo_pos', "l");
-$buf_topbar_height = $buf_topbar->get('buf_topbar_height', '54');
-$buf_topbar_color = $buf_topbar->get('buf_topbar_color', '#fff');
-$buf_topbar_module = $buf_topbar->get('buf_topbar_module', '');
+if ($preload_own_css) {
+    $head_preload .= '<link rel="preload" href="' . $css_path . '?' . $doc->getMediaVersion() . '" as="style">';
+}
 
-function getTopBarImages($buf_topbar)
-{
 
-    $buf_topbar_classes = '';
-    $buf_topbar_logo = '';
 
-    //logo
-    if ($buf_topbar->get('buf_topbar_logo', '') == '' && $buf_topbar->get('buf_topbar_logo_fallback', '') == '') {
-        return;
+//CUSTOM CSS FILES
+$buf_extra_custom_css = $templateparams->get('buf_extra_custom_css', array());
+
+foreach ($buf_extra_custom_css as $key => $value) {
+    $wa->registerAndUseStyle(
+        'buf.custom.' . $key,
+        $value->buf_load_custom_css,
+        ['version' => 'auto'],
+        ['media' => 'print', 'onload' => "this.media='all'"]
+    );
+}
+
+//* CUSTOM JS
+$buf_extra_custom_js = new Registry($templateparams->get('buf_extra_custom_js'));
+$defer_custom_js = array();
+foreach ($buf_extra_custom_js as $key => $cus_js) {
+    if ($cus_js->buf_load_custom_js_script == '') {
+        continue;
     }
 
-    $buf_topbar_logo_img = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo', ''));
-    $buf_topbar_logo_fallback = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo_fallback', ''));
+    $wa->registerScript('buf_extra_custom' . $key, $cus_js->buf_load_custom_js_script, [], []);
 
-    //check path
-    if ($buf_topbar->get('buf_topbar_logo', '') != '') {
-        if (!File::exists($buf_topbar_logo_img->url)) {
-            return;
+    //DEFER ASYNC
+    if ($cus_js->buf_js_defer == 1) {
+        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('defer', true);
+    } elseif ($cus_js->buf_js_defer == 2) {
+        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('async', true);
+    }
+
+    //PRECONNECT (only for external domains)
+    if ($cus_js->buf_js_preconnect) {
+        $parsed_url = parse_url($cus_js->buf_load_custom_js_script);
+        if (isset($parsed_url['host']) && $parsed_url['host'] !== Uri::getInstance()->getHost()) {
+            $origin = ($parsed_url['scheme'] ?? 'https') . '://' . $parsed_url['host'];
+            $this->getPreloadManager()->preconnect($origin, ['crossorigin' => 'anonymous']);
         }
     }
 
-    if ($buf_topbar->get('buf_topbar_logo_fallback', '') != '') {
-        if (!File::exists($buf_topbar_logo_fallback->url)) {
-            return;
+    //CUSTOM ATTRIBS
+    if ($cus_js->buf_js_attribs != '') {
+        foreach ($cus_js->buf_js_attribs as $akey => $att) {
+            $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute($att->buf_js_attrib_label, $att->buf_js_attrib_value);
+            //to show in debug
+            $defer_custom_js[$att->buf_js_attrib_label] = $att->buf_js_attrib_value;
         }
     }
 
-    $buf_topbar_logo .= '<div class="buf_topbar_logo pos_' . $buf_topbar->get('buf_topbar_logo_pos', "l") . ' ' . (($buf_topbar->get('buf_topbar_module', '') == "" ? "w100" : "")) . '">';
-    $buf_topbar_logo .= '<a href="index.php">';
+    $wa->useScript('buf_extra_custom' . $key);
 
-    $buf_topbar_logo .= '<picture>';
+    $buf_debug += BufHelper::addDebug($key, 'code', '<strong>' . $cus_js->buf_load_custom_js_script . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
+}
 
-    //svg
-    if ($buf_topbar_logo_img->url != '' && $buf_topbar_logo_fallback->url != '') {
-        $buf_topbar_logo .= '<source type="' . mime_content_type($buf_topbar_logo_img->url) . '" srcset="' . $buf_topbar_logo_img->url . '">';
+/*PRELOAD resources from custom js files */
+
+$buf_load_resources = $templateparams->get('buf_load_resources', '');
+
+
+//CACHE CONTROL
+$buf_cache_control_enable = $templateparams->get('buf_cache_control_enable', 1);
+$buf_cache_control = $templateparams->get('buf_cache_control', 'public, max-age=31536000');
+
+if ($buf_cache_control_enable) {
+    $cacheValue = $templateparams->get('buf_cache_control', 'public, max-age=31536000');
+    
+    // Enviar header HTTP real
+    if (!headers_sent()) {
+        header('Cache-Control: ' . $cacheValue);
     }
-
-    //fallback
-    if ($buf_topbar_logo_fallback->url == '' && $buf_topbar_logo_img->url != '') {
-        $buf_topbar_logo .= '<img class="img-fluid" type="' . mime_content_type($buf_topbar_logo_img->url) . '" src=' . $buf_topbar_logo_img->url . ' alt="' . $buf_topbar->get('buf_topbar_logo_alt', 'logo') . '"';
-        if (mime_content_type($buf_topbar_logo_img->url) != 'image/svg+xml') {
-            $buf_topbar_logo .= 'width="' . $buf_topbar_logo_img->attributes['width'] . '"
-                    height="' . $buf_topbar_logo_img->attributes['height'] . '"';
-        }
-        $buf_topbar_logo .= '/>';
-    } else if ($buf_topbar_logo_fallback->url != '') {
-        $buf_topbar_logo .= '<img
-                    class="img-fluid"
-                    type="' . mime_content_type($buf_topbar_logo_fallback->url) . '"
-                    src=' . $buf_topbar_logo_fallback->url . '
-                    alt="' . $buf_topbar->get('buf_topbar_logo_alt', 'logo') . '"
-                    width="' . $buf_topbar_logo_fallback->attributes['width'] . '"
-                    height="' . $buf_topbar_logo_fallback->attributes['height'] . '"
-                />';
-    }
-
-    $buf_topbar_logo .= '</picture>';
-
-    $buf_topbar_logo .= '</a>';
-    $buf_topbar_logo .= '</div>';
-
-    return $buf_topbar_logo;
+    
+    // Meta tag como fallback (opcional)
+    $buf_cache_control = '<meta http-equiv="Cache-Control" content="' . htmlspecialchars($cacheValue, ENT_QUOTES, 'UTF-8') . '">';
+} else {
+    $buf_cache_control = '';
 }

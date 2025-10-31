@@ -12,6 +12,30 @@
         <option value="1">JYES</option>
     </field>
 
+    <field name="buf_show_on_scroll" 
+        type="radio" 
+        default="0" 
+        class="btn-group"
+        layout="joomla.form.field.radio.switcher"
+        label="TPL_BUF_TOPBAR_SHOW_ON_SCROLL"
+        showon="buf_topbar_on:1"
+        >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+    </field>
+
+    <field name="buf_show_on_scroll_onlymobile" 
+        type="radio" 
+        default="0" 
+        class="btn-group"
+        layout="joomla.form.field.radio.switcher"
+        label="TPL_BUF_TOPBAR_SHOW_ON_SCROLL_ONLYMOBILE"
+        showon="buf_topbar_on:1[AND]buf_show_on_scroll:1"
+        >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+    </field>
+
     <field name="buf_topbar_image_show" 
         type="radio" 
         default="0" 
@@ -30,6 +54,7 @@
         type="media" 
         directory="" 
         default="" 
+        parentclass="span-2-inline"
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
@@ -40,6 +65,7 @@
         default="" 
         type="media" 
         directory="" 
+        parentclass="span-2-inline"
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
@@ -48,12 +74,14 @@
         label="TPL_BUF_TOPBAR_LOGO_ALT" 
         default="logo" 
         type="text" 
+        parentclass="span-2-inline"
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     />
 
     <field name="buf_topbar_logo_pos" 
         type="radio" default="l"
         class="btn-group" 
+        parentclass="span-2-inline"
         label="TPL_BUF_TOPBAR_LOGO_POSITION" 
         showon="buf_topbar_on:1[AND]buf_topbar_image_show:1"
     >
@@ -84,7 +112,21 @@
         label="TPL_BUF_TOPBAR_MODULEPOSITION" 
         description="TPL_BUF_TOPBAR_MODULEPOSITION_DESC" 
         showon="buf_topbar_on:1"
-    />
+    /> 
+
+<!--      <field name="buf_topbar_module"
+        type="sql"
+        default=""
+        label="TPL_BUF_TOPBAR_MODULEPOSITION"
+        query="SELECT position as id, position as title FROM #__modules GROUP BY position"
+        description="TPL_BUF_TOPBAR_MODULEPOSITION_DESC"
+        key_field="id"
+        value_field="title"
+        required="false"
+        multiple="true"
+        layout="joomla.form.field.list-fancy-select"
+        showon="buf_topbar_on:1"
+    />  -->
 
 
 </form>

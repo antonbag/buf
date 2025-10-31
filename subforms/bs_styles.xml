@@ -6,6 +6,7 @@
     label="TPL_BUF_BS4_CUSTOM_BODY_BG"
     format="rgba"
     description="TPL_BUF_BS4_CUSTOM_BODY_BG_DESC" 
+    parentclass="span-2-inline"
 />
 
 <field name="bs_custom_body_color" 
@@ -13,6 +14,7 @@
     label="TPL_BUF_BS4_CUSTOM_BODY_COLOR"
     format="rgba"
     description="TPL_BUF_BS4_CUSTOM_BODY_COLOR_DESC" 
+    parentclass="span-2-inline"
 />
 
 <field name="bs_custom_primary" 
@@ -71,9 +73,24 @@
     description="TPL_BUF_BS4_CUSTOM_DARK_DESC" 
 />
 
-<!-- <field name="bs4_bufbs4custom" 
-    type="bufbs4custom" default=""
-    description="TPL_BUF_BS4_CUSTOM_PRIMARY_DESC" 
-/> -->
+<field name="bs_custom_design_rounded" 
+    type="radio" 
+    default="1" 
+    class="btn-group" 
+    label="TPL_BUF_BS_DESIGN_ROUNDED" 
+>
+    <option value="0">JNO</option>
+    <option value="1">JYES</option>
+</field>
+
+<field name="bs_custom_design_gradients" 
+    type="radio" 
+    default="1" 
+    class="btn-group" 
+    label="TPL_BUF_BS_DESIGN_GRADIENTS" 
+>
+    <option value="0">JNO</option>
+    <option value="1">JYES</option>
+</field>
 
 </form>

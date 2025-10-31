@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -11,20 +12,10 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
-use Jtotal\BUF\BufHelper;
-use Jtotal\BUF\BUFsass;
+use Jtotal\BUF\Site\Helper\BufHelper;
+use Jtotal\BUF\Site\Helper\BufSass;
 
 $buf_debug += BufHelper::addDebug('COMPONENTS | loaded', 'joomla fab', 'INIT logic stuff', $startmicro, 'table-success', 'logic.php');
-
-// variables (defined in login_base)
-//$app = JFactory::getApplication();
-//$doc = JFactory::getDocument();
-//$menu = $app->getMenu();
-//$active = $app->getMenu()->getActive();
-//$params = $app->getParams();
-//$pageclass = $params->get('pageclass_sfx');
-//$tpath = $this->baseurl.'/templates/'.$this->template;
-//$templateparams    = $app->getTemplate(true)->params;
 
 if ($buf_bs_on) {
 
@@ -52,7 +43,8 @@ if ($buf_bs_on) {
             $wa->registerScript('bootstrap.js', $bsCdnUrl, [], [
                 'crossorigin' => 'anonymous',
                 'integrity' => $intgrity,
-                'referrerpolicy' => 'no-referrer']);
+                'referrerpolicy' => 'no-referrer'
+            ]);
 
             $wa->getAsset('script', 'bootstrap.js')->setAttribute('defer', true);
 
@@ -114,6 +106,7 @@ if ($buf_bs_on) {
 
             $this->getPreloadManager()->preconnect('https://cdnjs.cloudflare.com/', []);
             $this->getPreloadManager()->preload($bsCdnUrl, ['as' => 'style']);
+
             $wa->registerStyle(
                 'bootstrap.css',
                 $bsCdnUrl,
@@ -121,7 +114,9 @@ if ($buf_bs_on) {
                 ['crossorigin' => 'anonymous', 'referrerpolicy' => 'no-referrer']
             );
 
-            $wa->getAsset('style', 'bootstrap.css')->setAttribute('rel', 'lazy-stylesheet');
+            if ($buf_load_css_async) {
+                $wa->getAsset('style', 'bootstrap.css')->setAttribute('rel', 'lazy-stylesheet');
+            }
 
             $wa->useStyle('bootstrap.css');
         }
@@ -164,26 +159,28 @@ foreach ($buf_load_custom_js as $key => $cus_js) {
         continue;
     }
 
-    $wa->registerScript('buf_load_custom_js' . $key, $opath . '/layouts/' . $buf_layout . '/js/' . $cus_js->buf_load_custom_js_script, [], []);
+    $assetName = 'buf.load.custom.js.' . $key;
+    $wa->registerScript($assetName, $opath . '/layouts/' . $buf_layout . '/js/' . $cus_js->buf_load_custom_js_script);
 
-    //DEFER ASYNC
-    if ($cus_js->buf_js_defer == 1) {
-        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('defer', true);
-    } elseif ($cus_js->buf_js_defer == 2) {
-        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('async', true);
+
+    // Configurar defer/async
+    if ((int) $cus_js->buf_js_defer === 1) {
+        $wa->getAsset('script', $assetName)->setAttribute('defer', true);
+    } elseif ((int) $cus_js->buf_js_defer === 2) {
+        $wa->getAsset('script', $assetName)->setAttribute('async', true);
     }
 
-    //CUSTOM ATTRIBS
-    if ($cus_js->buf_js_attribs != '') {
-        foreach ($cus_js->buf_js_attribs as $akey => $att) {
-            $wa->getAsset('script', 'buf_load_custom_js' . $key)->setAttribute($att->buf_js_attrib_label, $att->buf_js_attrib_value);
-            //to show in debug
-            $defer_custom_js[$att->buf_js_attrib_label] = $att->buf_js_attrib_value;
+    // Atributos personalizados
+    if (!empty($cus_js->buf_js_attribs)) {
+        foreach ($cus_js->buf_js_attribs as $att) {
+            $wa->getAsset('script', $assetName)->setAttribute(
+                $att->buf_js_attrib_label,
+                $att->buf_js_attrib_value
+            );
         }
     }
 
-    //$wa->getAsset('script','buf_load_custom_js');
-    $wa->useScript('buf_load_custom_js' . $key);
+    $wa->useScript($assetName);
 
     //$doc->addScript($tpath.'/layouts/'.$buf_layout.'/js/'.$cus_js->buf_load_custom_js_script,array($cus_js->buf_js_attribs), $defer_custom_js);
     $buf_debug += BufHelper::addDebug('LOAD custom script |' . $key, 'code', $buf_layout . '/js/' . '<strong>' . $cus_js->buf_load_custom_js_script . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
@@ -202,7 +199,8 @@ if ((bool) $templateparams->get('buf_custom_unset', '')) {
             }
 
             $defer_cus_js = trim($defer_cus_js->buf_custom_unset_script);
-            unset($doc->_scripts[$this->baseurl . '/' . $defer_cus_js]);
+            //unset($doc->_scripts[$this->baseurl . '/' . $defer_cus_js]);
+            $wa->disableScript($defer_cus_js);
 
             //$doc->addScript($defer_cus_js,array(), $defer);
             $buf_debug += BufHelper::addDebug('CUSTOM UNSET| ' . $key, 'trash', '<strong>' . $defer_cus_js . '</strong>', $startmicro, 'table-danger', 'logic.php');
@@ -221,6 +219,7 @@ if ((bool) $templateparams->get('buf_custom_unset', '')) {
 
 $buf_fa_run_webfont = false;
 
+/*
 if ($buf_fa_selector && $buf_fa5_tech == 2 && $buf_fa_selector != 'jdefault') {
     $fa5pro_exists = file_exists($libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true : false;
 
@@ -240,6 +239,7 @@ if ($buf_fa_selector && $buf_fa5_tech == 2 && $buf_fa_selector != 'jdefault') {
         }
     }
 }
+*/
 
 //TRUE or FALSE
 $buf_bs_css_exist = file_exists($cachepath . '/buf_bs.css');
@@ -258,9 +258,9 @@ if (!$buf_bs_css_exist ||
         'CHECK CACHE FILES',
         'cog',
         'bs:' . var_export($buf_bs_css_exist, true) .
-        ' fa:' . var_export($buf_fa_css, true) .
-        ' buf:' . var_export($buf_fa_css, true) .
-        ' fa_wf:' . var_export($buf_fa_run_webfont, true),
+            ' fa:' . var_export($buf_fa_css, true) .
+            ' buf:' . var_export($buf_fa_css, true) .
+            ' fa_wf:' . var_export($buf_fa_run_webfont, true),
         $startmicro,
         'table-primary',
         'logic.php'
@@ -270,14 +270,9 @@ if (!$buf_bs_css_exist ||
 }
 
 if ($templateparams->get('runless', 0) != 2 || !$buf_check_files) {
-    //include_once JPATH_THEMES.'/'.$this->template.'/logics/runsass.php';
-    include_once JPATH_SITE . '/templates/buf/src/bufsass.php';
-
-    //CLASS BUFSASS
-    $buffles = new BUFsass();
-
+    //CLASS BufSass
+    $buffles = new BufSass();
     $runless = $buffles::runsass('', $templateparams, 'buf', $startmicro);
-
     $buf_debug += $runless;
 }
 
@@ -287,15 +282,16 @@ if ($templateparams->get('runless', 0) != 2 || !$buf_check_files) {
 /***************************/
 /***************************/
 
-//*******  BUF.css **********/
-//$this->getPreloadManager()->preconnect($cache_opath, []);
-//$this->getPreloadManager()->preload($cache_opath.'/buf.css', ['as' => 'style']);
 $wa->registerStyle(
     'buf.css',
     $cache_opath . 'buf.css',
     [],
-    ['rel' => 'lazy-stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\'']
+    ($buf_load_css_async) ? ['rel' => 'stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\''] : []
 );
+
+
+//alert as lazy
+$wa->getAsset('style', 'webcomponent.joomla-alert')->setAttribute('rel', 'lazy-stylesheet');
 
 //use buf if not mix
 if (!$css_mix) {
@@ -305,17 +301,21 @@ if (!$css_mix) {
 
 //*******  template.css **********/
 $wa->registerStyle(
-    'ownBuf.css',
+    'ownTemplate.css',
     $css_path,
     [],
-    ['rel' => 'lazy-stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\'']
+    ($buf_load_css_async) ? ['rel' => 'stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\''] : []
 );
 
-$wa->useStyle('ownBuf.css');
+if ($templateparams->get('buf_debug_maincss', 0) == 0) {
+    $wa->useStyle('ownTemplate.css');
+    $buf_debug += BufHelper::addDebug('Template css', 'thumbs-up', 'LOADED', $startmicro, 'table-success');
+}
 
 //JOOMLA DEFAULT FA
 if ($buf_fa_selector == 'jdefault') {
-    $wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
+    $wa->getAsset('style', 'fontawesome')->setAttribute('media', 'print');
+    $wa->getAsset('style', 'fontawesome')->setAttribute('onload', 'this.media=\'all\'');
     $wa->useStyle('fontawesome');
     $buf_debug += BufHelper::addDebug('FA css JDEFAULT', 'thumbs-up', 'LOADED', $startmicro, 'table-success');
 }
@@ -328,7 +328,7 @@ if ($buf_fa_selector == 'jdefault') {
 
 //FA6
 if ((int) $buf_fa_selector == 6) {
-    $fa6pro_exists = file_exists(JPATH_THEMES . '/' . $this->template . '/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
+    $fa6pro_exists = file_exists(JPATH_SITE . '/media/templates/site/' . $this->template . '/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js');
 
     $deferfa = false;
     if ($templateparams->get('buf_fa_defer', 0) >= 1) {
@@ -340,7 +340,7 @@ if ((int) $buf_fa_selector == 6) {
     if ($fa6pro_exists && $buf_fa_pro) {
         //fa6PRO
         foreach ($buf_fa6_files as $key => $value) {
-            $wa->registerScript($value . '.min.js', $opath . '/libs/font-awesome/fontawesome6pro/js/' . $value . '.min.js', [], []);
+            $wa->registerScript($value . '.min.js', $opath_media . '/libs/font-awesome/fontawesome6pro/js/' . $value . '.min.js', [], []);
             if ($deferfa) {
                 $wa->getAsset('script', $value . '.min.js')->setAttribute($deferfa, true);
             }
@@ -350,7 +350,7 @@ if ((int) $buf_fa_selector == 6) {
             $buf_debug += BufHelper::addDebug($key . ' FA6pro', 'font-awesome fab', '/fontawesome6pro/js/' . $value . '.min.js, ' . var_export($deferfa, true), $startmicro, 'table-info', 'logic.php');
         }
 
-        $wa->registerScript('fontawesome.min.js', $opath . '/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
+        $wa->registerScript('fontawesome.min.js', $opath_media . '/libs/font-awesome/fontawesome6pro/js/fontawesome.min.js', [], []);
         if ($deferfa) {
             $wa->getAsset('script', 'fontawesome.min.js')->setAttribute($deferfa, true);
         }
@@ -365,7 +365,7 @@ if ((int) $buf_fa_selector == 6) {
 
         //fa6FREE
         foreach ($buf_fa6_files as $key => $value) {
-            $wa->registerScript($value . '.min.js', $opath . '/libs/font-awesome/fontawesome6/js/' . $value . '.min.js', [], []);
+            $wa->registerScript($value . '.min.js', $opath_media . '/libs/font-awesome/fontawesome6/js/' . $value . '.min.js', [], []);
             if ($deferfa) {
                 $wa->getAsset('script', $value . '.min.js')->setAttribute($deferfa, true);
             }
@@ -376,7 +376,7 @@ if ((int) $buf_fa_selector == 6) {
 
         //$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
 
-        $wa->registerScript('fontawesome.min.js', $opath . '/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
+        $wa->registerScript('fontawesome.min.js', $opath_media . '/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
         if ($deferfa) {
             $wa->getAsset('script', 'fontawesome.min.js')->setAttribute($deferfa, true);
         }
@@ -386,6 +386,8 @@ if ((int) $buf_fa_selector == 6) {
         $buf_debug += BufHelper::addDebug(' FA6 gen', 'font-awesome fab', '/fontawesome6/js/fontawesome.min.js, ' . var_export($deferfa, true), $startmicro, 'table-info', 'logic.php');
     }
 }
+
+
 
 /***************************/
 /***************************/
@@ -400,46 +402,16 @@ $buf_extras_animate->loadString(json_encode($templateparams->get('buf_extra_anim
 if ($buf_extras_animate->get('animate_on', '0') == '1') {
     $wa->registerStyle(
         'animatecss',
-        'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
+        'https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css',
         [],
-        ['rel' => 'lazy-stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\'']
+        ($buf_load_css_async) ? ['rel' => 'lazy-stylesheet', 'media' => 'print', 'onload' => 'this.media=\'all\''] : []
     );
     $wa->useStyle('animatecss');
 
     $buf_debug += BufHelper::addDebug('ANIMATE', 'helicopter', 'LOADED', $startmicro, 'table-info', 'logic.php');
 }
 
-//* CUSTOM JS
-$buf_extra_custom_js = new Registry;
-$buf_extra_custom_js->loadString(json_encode($templateparams->get('buf_extra_custom_js')));
 
-foreach ($buf_extra_custom_js as $key => $cus_js) {
-    if ($cus_js->buf_load_custom_js_script == '') {
-        continue;
-    }
-
-    $wa->registerScript('buf_extra_custom' . $key, $cus_js->buf_load_custom_js_script, [], []);
-
-    //DEFER ASYNC
-    if ($cus_js->buf_js_defer == 1) {
-        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('defer', true);
-    } elseif ($cus_js->buf_js_defer == 2) {
-        $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('async', true);
-    }
-
-    //CUSTOM ATTRIBS
-    if ($cus_js->buf_js_attribs != '') {
-        foreach ($cus_js->buf_js_attribs as $akey => $att) {
-            $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute($att->buf_js_attrib_label, $att->buf_js_attrib_value);
-            //to show in debug
-            $defer_custom_js[$att->buf_js_attrib_label] = $att->buf_js_attrib_value;
-        }
-    }
-
-    $wa->useScript('buf_extra_custom' . $key);
-
-    $buf_debug += BufHelper::addDebug($key, 'code', '<strong>' . $cus_js->buf_load_custom_js_script . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
-}
 
 /***************************************/
 /*****************DEBUG*****************/
@@ -465,16 +437,25 @@ if ($buf_debug_param) {
 
 if ($templateparams->get('runless', 1) != 2) {
     $uri = Uri::getInstance();
-    $uri_base = $uri->toString() . '&edit_base=true';
-
-    echo '<div class="buf_dev_mode">
-	  		<div class="buf_dev_msg">
-	  			<i class="fas fa-cogs"></i>
-	  			<span>BUF template in development mode. Please use Production for better load times.</span>
-	  		</div>
-	  		<a class="buf_dev_mode_edit_base" href="' . $uri_base . '"><i class="fas fa-box-open"></i> Base </a>
-  			<a class="buf_dev_mode_close" href="#"><i class="fas fa-times-circle"></i> Close</a>
-  	</div>';
+    $uri_base = htmlspecialchars($uri->toString() . '&edit_base=true', ENT_QUOTES, 'UTF-8');
+    
+    
+    echo sprintf(
+        '<div class="buf_dev_mode" style="position:fixed;bottom:0;left:0;width:100%%;background:#f0ad4e;padding:12px;z-index:9999;color:#fff;">
+            <div class="buf_dev_msg">
+                <i class="fas fa-cogs"></i>
+                <span>BUF template in development mode (%d min left on dev mode)</span>
+            </div>
+            <a class="buf_dev_mode_edit_base" href="%s" style="color:#fff;text-decoration:underline;">
+                <i class="fas fa-box-open"></i> Edit Base
+            </a>
+            <a class="buf_dev_mode_close" href="#" style="color:#fff;text-decoration:underline;">
+                <i class="fas fa-times-circle"></i> Close
+            </a>
+        </div>',
+        $remaining_minutes,
+        $uri_base
+    );
 }
 
 /***************************/
@@ -482,9 +463,12 @@ if ($templateparams->get('runless', 1) != 2) {
 /*******  BUF OffCanvas **********/
 /***************************/
 /***************************/
-
 if (($templateparams->get('buf_offcanvas', 1) != 0) && !$tmplComponent) {
-    $wa->useScript('bufoc.js');
-
-    $buf_debug += BufHelper::addDebug('bufoc.js', 'code', '<strong>OFFCANVAS bufoc.js</strong> <small>' . var_export($defer, true) . '</small>', $startmicro, 'table-info', 'logic.php');
+    if ($templateparams->get('buf_offcanvas_selector', 'buf_offcanvas_default') == 'buf_offcanvas_default') {
+        $wa->useScript('bufoc.js');
+        $buf_debug += BufHelper::addDebug('bufoc.js', 'code', '<strong>OFFCANVAS bufoc.js</strong> <small>' . var_export($defer, true) . '</small>', $startmicro, 'table-info', 'logic.php');
+    } else {
+        $wa->useScript('bufocbs.js');
+        $buf_debug += BufHelper::addDebug('bufocbs.js', 'code', '<strong>OFFCANVAS BOOTSTRAP bufocbs.js</strong> <small>' . var_export($defer, true) . '</small>', $startmicro, 'table-info', 'logic.php');
+    }
 }

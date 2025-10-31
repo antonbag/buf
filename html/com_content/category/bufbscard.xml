@@ -31,6 +31,7 @@
 				label="JTAG"
 				multiple="true"
 				mode="nested"
+				custom="deny"
 			/>
 		</fieldset>
 	</fields>
@@ -171,8 +172,6 @@
 
 		</fieldset>
 
-
-
 		<fieldset name="advanced" label="JGLOBAL_BLOG_LAYOUT_OPTIONS" description="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL">
 
 				<field
@@ -180,6 +179,8 @@
 				type="number"
 				label="JGLOBAL_NUM_LEADING_ARTICLES_LABEL"
 				filter="integer"
+				validate="number"
+				min="0"
 				useglobal="true"
 				parentclass="stack span-1"
 			/>
@@ -198,6 +199,8 @@
 				type="number"
 				label="JGLOBAL_NUM_INTRO_ARTICLES_LABEL"
 				filter="integer"
+				validate="number"
+				min="0"
 				useglobal="true"
 				parentclass="stack span-1"
 			/>
@@ -211,33 +214,35 @@
 				useglobal="true"
 				validate="CssIdentifier"
 			/>
-			<!--
-						<field
-							name="num_columns"
-							type="number"
-							label="JGLOBAL_NUM_COLUMNS_LABEL"
-							filter="integer"
-							parentclass="stack span-1-inline"
-							useglobal="true"
-						/>
+				<!-- necessary for articles in subcategories-->
+					<field
+						name="num_columns"
+						type="number"
+						label="JGLOBAL_NUM_COLUMNS_LABEL"
+						filter="integer"
+						parentclass="stack span-1-inline"
+						useglobal="true"
+					/>
 
-						<field
-							name="multi_column_order"
-							type="list"
-							label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
-							parentclass="stack span-2-inline"
-							useglobal="true"
-							validate="options"
-							>
-							<option value="0">JGLOBAL_BLOG_DOWN_OPTION</option>
-							<option value="1">JGLOBAL_BLOG_ACROSS_OPTION</option>
-						</field>
-			-->
+					<field
+						name="multi_column_order"
+						type="list"
+						label="JGLOBAL_MULTI_COLUMN_ORDER_LABEL"
+						parentclass="stack span-2-inline"
+						useglobal="true"
+						validate="options"
+						>
+						<option value="0">JGLOBAL_BLOG_DOWN_OPTION</option>
+						<option value="1">JGLOBAL_BLOG_ACROSS_OPTION</option>
+					</field>
+	
 			<field
 				name="num_links"
 				type="number"
 				label="JGLOBAL_NUM_LINKS_LABEL"
 				filter="integer"
+				validate="number"
+				min="0"
 				parentclass="stack span-1"
 				useglobal="false"
 				default="0"
@@ -286,6 +291,20 @@
 				<option value="4">J4</option>
 				<option value="5">J5</option>
 			</field>
+
+			<field
+				name="bufbs_subcategory_as_item"
+				type="list"
+				label="BUF_SUBCATEGORY_AS_ITEM"
+				parentclass="stack span-1-inline"
+				layout="joomla.form.field.radio.switcher"
+				default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+
 			<field
 				name="orderby_pri"
 				type="list"
@@ -370,7 +389,6 @@
 
 
 		<fieldset name="buf" label="BUF card">
-                
 			<field
 				name="buf_trim"
 				type="radio"
@@ -392,304 +410,366 @@
 			/>
 
 			<!-- ************************LEADING************************* -->
+			<fieldset name="buf_bs_leading_articles" label="Leading">
+				
 
-			<field type="note" label="Leading articles"/>
-			
-			<field
-				name="buf_leading_before_display_content"
-				type="radio"
-				label="Before display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-
-			<field
-				name="buf_leading_display_content"
-				type="radio"
-				label="Display content"
-				class="btn-group"
-				default="1"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field
-				name="buf_leading_after_display_content"
-				type="radio"
-				label="After display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="buf_leading_card_class" 
-				type="text" 
-				default="" 
-				hint="text-white bg-primary h-100"
-				parentclass="span-1"
-				label="Leading card class" 
-			/>
-
-			<field name="buf_leading_card_layout" 
-				type="list" 
-				default="card-group" 
-				class="form-select-color-state"
-				parentclass="stack span-1"
-				label="Card Layout" >
-				<option value="">JSELECT</option>
-				<option value="card-group">Card group</option>
-				<option value="grid">Grid</option>
-			</field>
-
-			<field name="buf_leading_bs_sm" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-1-inline"
-				label="COLS-SM" 
-				showon="buf_leading_card_layout:grid"
+				<field
+					name="bs_leading_show_publish_date"
+					type="radio"
+					label="Show date"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</field>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 
-			<field name="buf_leading_bs_md" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-MD" showon="buf_leading_card_layout:grid"
+				<field
+					name="buf_leading_before_display_content"
+					type="radio"
+					label="Before display content"
+					class="btn-group"
+					default="0"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
 
-			<field name="buf_leading_bs_lg" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-LG" showon="buf_leading_card_layout:grid"
+
+				<field
+					name="buf_leading_display_content"
+					type="radio"
+					label="Display content"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
-
-			<field name="buf_leading_bs_xl" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-XL" showon="buf_leading_card_layout:grid"
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
+				<field
+					name="buf_leading_after_display_content"
+					type="radio"
+					label="After display content"
+					class="btn-group"
+					default="0"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-4-inline"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
-			
-			<field name="buf_leading_bs_gutter" 
-				type="list" 
-				default="4" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="Gutter" showon="buf_leading_card_layout:grid"
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+
+				<field
+					name="buf_leading_img_pos"
+					type="radio"
+					label="Image position"
+					class="btn-group"
+					default="top"
+					parentclass="stack span-1"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
+					<option value="top">JGLOBAL_TOP</option>
+					<option value="left">JGLOBAL_LEFT</option>
+					<option value="right">JGLOBAL_RIGHT</option>
+				</field>
 
-
-			<!-- ************************INTRO************************* -->
-
-			<field type="note" label="Intro articles" parentclass="stack"/>
-			
-			<field
-				name="buf_before_display_content"
-				type="radio"
-				label="Before display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-
-			<field
-				name="buf_display_content"
-				type="radio"
-				label="Display content"
-				class="btn-group"
-				default="1"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field
-				name="buf_after_display_content"
-				type="radio"
-				label="After display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-
-			<field
-				name="buf_before_display_content"
-				type="radio"
-				label="Before display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-
-			<field
-				name="buf_display_content"
-				type="radio"
-				label="Display content"
-				class="btn-group"
-				default="1"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			
-			<field
-				name="buf_after_display_content"
-				type="radio"
-				label="After display content"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="buf_intro_card_class" 
-				type="text" 
-				default="" 
-				hint="text-white bg-primary h-100"
-				parentclass="span-1"
-				label="Intro card class" 
-			/>
-
-			<field name="buf_intro_card_layout" 
-				type="list" 
-				default="grid" 
-				class="form-select-color-state"
-				parentclass="stack span-1"
-				label="grid" >
-				<option value="">JSELECT</option>
-				<option value="card-group">Card group</option>
-				<option value="grid">Grid</option>
-			</field>
-
-			<field name="buf_intro_bs_sm" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-SM" 
-				showon="buf_intro_card_layout:grid"
+				<field
+					name="buf_leading_img_modal"
+					type="radio"
+					label="Modal on click"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
 				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</field>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 
-			<field name="buf_intro_bs_md" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-MD" showon="buf_intro_card_layout:grid"
-				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
 
-			<field name="buf_intro_bs_lg" 
-				type="list" 
-				default="2" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-LG" showon="buf_intro_card_layout:grid"
-				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
+				<field name="buf_leading_card_class" 
+					type="text" 
+					default="" 
+					hint="text-white bg-primary h-100"
+					parentclass="span-1"
+					label="Leading card class" 
+				/>
 
-			<field name="buf_intro_bs_xl" 
-				type="list" 
-				default="2" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-XL" showon="buf_intro_card_layout:grid"
-				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
-			
-			<field name="buf_intro_bs_gutter" 
-				type="list" 
-				default="4" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="Gutter" showon="buf_intro_card_layout:grid"
-				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
+				<field name="buf_leading_html_struct" 
+					type="text" 
+					default="h2" 
+					hint="h2"
+					parentclass="span-1-inline"
+					label="Title header" 
+				/>
 
+				<field name="buf_leading_card_layout" 
+					type="list" 
+					default="card-group" 
+					class="form-select-color-state"
+					parentclass="stack span-1"
+					label="Card Layout" >
+					<option value="card-group">Card group</option>
+					<option value="grid">Grid</option>
+				</field>
+
+				<field name="buf_leading_bs_sm" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-SM" 
+					showon="buf_leading_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</field>
+
+				<field name="buf_leading_bs_md" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-MD" showon="buf_leading_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+
+				<field name="buf_leading_bs_lg" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-LG" showon="buf_leading_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+
+				<field name="buf_leading_bs_xl" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-XL" showon="buf_leading_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+				
+				<field name="buf_leading_bs_gutter" 
+					type="list" 
+					default="4" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="Gutter" showon="buf_leading_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+
+			</fieldset>
+			<fieldset name="buf_bs_intro_articles" label="Intro">
+				
+				<!-- ************************INTRO************************* -->
+					
+
+				<field
+					name="bs_intro_show_publish_date"
+					type="radio"
+					label="Show date"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
+				>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+				<field
+					name="buf_before_display_content"
+					type="radio"
+					label="Before display content"
+					class="btn-group"
+					default="0"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
+				>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+
+				<field
+					name="buf_display_content"
+					type="radio"
+					label="Display content"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
+				>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+				
+				<field
+					name="buf_after_display_content"
+					type="radio"
+					label="After display content"
+					class="btn-group"
+					default="0"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-1-inline"
+				>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
+				</field>
+
+				<field
+					name="buf_intro_img_pos"
+					type="radio"
+					label="Image position"
+					class="btn-group"
+					default="top"
+					parentclass="stack span-1"
+				>
+					<option value="top">JGLOBAL_TOP</option>
+					<option value="left">JGLOBAL_LEFT</option>
+					<option value="right">JGLOBAL_RIGHT</option>
+				</field>
+				<field
+					name="buf_intro_img_modal"
+					type="radio"
+					label="Modal on click"
+					class="btn-group"
+					default="1"
+					layout="joomla.form.field.radio.switcher"
+					parentclass="stack span-5-inline"
+				>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+
+				<field name="buf_intro_card_class" 
+					type="text" 
+					default="" 
+					hint="text-white bg-primary h-100"
+					parentclass="span-1"
+					label="Intro card class" 
+				/>
+
+				<field name="buf_intro_html_struct" 
+					type="text" 
+					default="h2" 
+					hint="h2"
+					parentclass="span-1-inline"
+					label="Title header" 
+				/>
+
+				<field name="buf_intro_card_layout" 
+					type="list" 
+					default="grid" 
+					class="form-select-color-state"
+					parentclass="stack span-1"
+					label="grid" >
+					<option value="card-group">Card group</option>
+					<option value="grid">Grid</option>
+				</field>
+
+				<field name="buf_intro_bs_sm" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-SM" 
+					showon="buf_intro_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</field>
+
+				<field name="buf_intro_bs_md" 
+					type="list" 
+					default="1" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-MD" showon="buf_intro_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+
+				<field name="buf_intro_bs_lg" 
+					type="list" 
+					default="2" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-LG" showon="buf_intro_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+
+				<field name="buf_intro_bs_xl" 
+					type="list" 
+					default="2" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="COLS-XL" showon="buf_intro_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+				
+				<field name="buf_intro_bs_gutter" 
+					type="list" 
+					default="4" 
+					class="btn-group" 
+					parentclass="stack span-1-inline"
+					label="Gutter" showon="buf_intro_card_layout:grid"
+					>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</field>
+			</fieldset>
 
 		</fieldset>
 
@@ -701,7 +781,8 @@
 		>
 
 			<field
-				name="article_layout" type="componentlayout"
+				name="article_layout" 
+				type="componentlayout"
 				label="JGLOBAL_FIELD_LAYOUT_LABEL"
 				description="JGLOBAL_FIELD_LAYOUT_DESC"
 				class="form-select"

@@ -13,14 +13,14 @@ defined('_JEXEC') or die;
 
 <header class="header" role="banner">
 <div class="header-inner clearfix d-flex justify-content-center">
-    <a class="brand pull-left" href="index.php"> <img width="400" height="207" src="templates/buf/images/buf_logos/logo_buf_text_400.png" class="img-fluid" alt="buf template system"/></a>
+    <a class="brand pull-left" href="index.php"> <img width="400" height="207" src="media/templates/site/buf/images/buf_logos/logo_buf_text_400.png" class="img-fluid" alt="buf template system"/></a>
     <div class="header-search pull-right">
         <jdoc:include type="modules" name="bufsearch" />
     </div>
 </div>
 </header>
 
-
+<div class="w_motive"></div>
 
 <!-- MENU TOP -->
 <?php if ($this->countModules('menu_header')) : ?>
@@ -68,7 +68,7 @@ defined('_JEXEC') or die;
 
 
 <!--ALL-->
-<?php if ( $this->countModules($bs_right_pos) && $this->countModules($bs_left_pos) ) : ?>
+<?php if ($this->countModules($bs_right_pos) && $this->countModules($bs_left_pos)) : ?>
 
     <div class="row leftandright">
 
@@ -76,10 +76,10 @@ defined('_JEXEC') or die;
             <jdoc:include type="modules" name="<?php echo $bs_left_pos;?>"/>
         </div>
         <div class="content_pral <?php echo $content_pral_bs_sm.$content_pral_bs_md.$content_pral_bs_lg; ?>">
-
-            <jdoc:include type="message" />
-            <jdoc:include type="component" />
-
+            <main>
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
+            </main>
             <!-- SUBCOMPONENT -->
             <?php if ($this->countModules('subcomponent', true)) : ?>
             <div id="subcomponent">
@@ -94,8 +94,7 @@ defined('_JEXEC') or die;
 
     </div>
 <!--left-->
-<?php elseif($this->countModules($bs_left_pos)) : ?>
-
+<?php elseif ($this->countModules($bs_left_pos)) : ?>
     <div class="row onlyleft">
 
         <div class="buf_left <?php echo $buf_left_sm.$buf_left_md.$buf_left_lg; ?>">
@@ -103,11 +102,17 @@ defined('_JEXEC') or die;
         </div>
         <div class="content_pral <?php echo $content_pral_bs_sm.$content_pral_bs_md.$content_pral_bs_lg; ?>">
 
-            <jdoc:include type="modules" name="visualmenu" />
+            <?php if ($this->countModules('precontent', true)) : ?>
+                <!-- precontent -->
+                <div id="precontent">
+                    <jdoc:include type="modules" name="precontent" />
+                </div>
+            <?php endif;?>
 
-
-            <jdoc:include type="message" />
-            <jdoc:include type="component" />
+            <main>
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
+            </main>
 
             <!-- SUBCOMPONENT -->
             <?php if ($this->countModules('subcomponent', true)) : ?>
@@ -123,20 +128,28 @@ defined('_JEXEC') or die;
     <div class="clearfix"></div>
 
 <!--right-->
-<?php elseif($this->countModules($bs_right_pos)) : ?>
-
+<?php elseif ($this->countModules($bs_right_pos)) : ?>
     <div class="row onlyright">
 
         <div class="content_pral <?php echo $content_pral_bs_sm.$content_pral_bs_md.$content_pral_bs_lg; ?>">
 
-            <jdoc:include type="message" />
-            <jdoc:include type="component" />
+            <?php if ($this->countModules('precontent', true)) : ?>
+                <!-- precontent -->
+                <div id="precontent">
+                    <jdoc:include type="modules" name="precontent" />
+                </div>
+            <?php endif;?>
 
-            <!-- SUBCOMPONENT -->
+            <main>
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
+            </main>
+            
             <?php if ($this->countModules('subcomponent', true)) : ?>
-            <div id="subcomponent">
-                <jdoc:include type="modules" name="subcomponent"/>
-            </div>
+                <!-- SUBCOMPONENT -->
+                <div id="subcomponent">
+                    <jdoc:include type="modules" name="subcomponent"/>
+                </div>
             <?php endif; ?>
 
         </div>
@@ -150,24 +163,21 @@ defined('_JEXEC') or die;
     <div class="clearfix"></div>
 
     <!--FULL-->
-    <?php else : ?>
-
+<?php else : ?>
         <div class="content_pral content_full">
-            <jdoc:include type="message" />
-            <jdoc:include type="component" />
+            <main>
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
+            </main>
         </div>
+<?php endif; ?>
 
-
+<!-- SUBCONTENT -->
+<div id="subcontent">
+    <?php if ($this->countModules('subcontent')) : ?>
+        <jdoc:include type="modules" name="subcontent"/>
     <?php endif; ?>
-
-    <!-- SUBCONTENT -->
-    <div id="subcontent">
-        <?php if ($this->countModules('subcontent')) : ?>
-            <jdoc:include type="modules" name="subcontent"/>
-        <?php endif; ?>
-    </div>
-
-
+</div>
 
 
 </div><!-- fin container -->

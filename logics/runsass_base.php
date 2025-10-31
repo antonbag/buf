@@ -11,20 +11,12 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-use Jtotal\BUF\BufHelper;
-
-// begin function compress
-function compress($buffer)
-{
-    include_once 'minifier.php';
-    $buffer = fn_minify_css($buffer);
-
-    return $buffer;
-}
+use Jtotal\BUF\Site\Helper\BufHelper;
 
 ///////////////////
 //  CHECK FW //
 ///////////////////
+
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
     require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
 } else {

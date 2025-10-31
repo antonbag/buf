@@ -9,7 +9,7 @@ namespace BUF;
 
 defined('_JEXEC') or die;
 
-class PHP_ICO
+class DEP__PHP_ICO
 {
     /**
      * Images in the BMP format.

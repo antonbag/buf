@@ -38,5 +38,12 @@ function buf_custom_js_init(){
 
 document.addEventListener('DOMContentLoaded', function() {
     //console.log('The document is ready!');
+  
+  
+  // Simula un proceso de carga que tarda 4 segundos
+	setTimeout(() => {
+	console.log("El script se ha cargado");
+	}, 4000);
+  
 });
 

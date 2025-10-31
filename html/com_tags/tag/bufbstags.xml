@@ -17,6 +17,7 @@
 				name="id"
 				type="tag"
 				label="COM_TAGS_FIELD_TAG_LABEL"
+				description="COM_TAGS_FIELD_TAG_DESC"
 				mode="nested"
 				required="true"
 				multiple="true"
@@ -27,6 +28,7 @@
 				name="types"
 				type="contenttype"
 				label="COM_TAGS_FIELD_TYPE_LABEL"
+				description="COM_TAGS_FIELD_TYPE_DESC"
 				layout="joomla.form.field.list-fancy-select"
 				multiple="true"
 			/>
@@ -35,6 +37,7 @@
 				name="tag_list_language_filter"
 				type="contentlanguage"
 				label="COM_TAGS_FIELD_LANGUAGE_FILTER_LABEL"
+				description="COM_TAGS_FIELD_LANGUAGE_FILTER_DESC"
 				default=""
 				useglobal="true"
 				>
@@ -46,13 +49,14 @@
 	</fields>
 
 	<!-- Add fields to the parameters object for the layout. -->
-<fields name="params">
-	<fieldset name="basic" label="COM_TAGS_OPTIONS">
+	<fields name="params">
+		<fieldset name="basic" label="COM_TAGS_OPTIONS">
 
 			<field
 				name="show_tag_title"
 				type="list"
 				label="COM_TAGS_SHOW_TAG_TITLE_LABEL"
+				description="COM_TAGS_SHOW_TAG_TITLE_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -65,6 +69,7 @@
 				name="tag_list_show_tag_image"
 				type="list"
 				label="COM_TAGS_SHOW_TAG_IMAGE_LABEL"
+				description="COM_TAGS_SHOW_TAG_IMAGE_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -77,6 +82,7 @@
 				name="tag_list_show_tag_description"
 				type="list"
 				label="COM_TAGS_SHOW_TAG_DESCRIPTION_LABEL"
+				description="COM_TAGS_SHOW_TAG_DESCRIPTION_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -89,12 +95,14 @@
 				name="tag_list_image"
 				type="media"
 				label="COM_TAGS_TAG_LIST_MEDIA_LABEL"
+				description="COM_TAGS_TAG_LIST_MEDIA_DESC"
 			/>
 
 			<field
 				name="tag_list_image_alt"
 				type="text"
 				label="COM_TAGS_TAG_LIST_MEDIA_ALT_LABEL"
+				description="COM_TAGS_TAG_LIST_MEDIA_ALT_DESC"
 			/>
 
 			<field
@@ -102,6 +110,7 @@
 				type="checkbox"
 				label="COM_TAGS_TAG_LIST_MEDIA_ALT_EMPTY_LABEL"
 				description="COM_TAGS_TAG_LIST_MEDIA_ALT_EMPTY_DESC"
+				value="1"
 			/>
 
 			<field
@@ -118,6 +127,7 @@
 				name="tag_list_orderby"
 				type="list"
 				label="JGLOBAL_FIELD_FIELD_ORDERING_LABEL"
+				description="JGLOBAL_FIELD_FIELD_ORDERING_DESC"
 				default=""
 				useglobal="true"
 				validate="options"
@@ -133,6 +143,7 @@
 				name="tag_list_orderby_direction"
 				type="list"
 				label="JGLOBAL_ORDER_DIRECTION_LABEL"
+				description="JGLOBAL_ORDER_DIRECTION_DESC"
 				useglobal="true"
 				validate="options"
 				>
@@ -142,65 +153,50 @@
 
 		</fieldset>
 
-		<fieldset name="buf" label="BUF cards">
-                
-<!-- 			<field
-				name="buf_trim"
-				type="radio"
-				label="Trim text"
-				class="btn-group"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-			>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+		<fieldset name="buf" label="BUF_CARDS_FIELDSET_LABEL"> 
 
 			<field
-				name="buf_trim_chars"
-				type="text"
-				label="Num chars"
-				default="300"
-				showon="buf_trim:1"
-			/>
- -->
-			
-
-				<field
-					name="buf_titles_h"
-					type="list" 
-					default="0"
-					label="BUF_TITLES_H">
-					<option	value="0">None</option>
-					<option	value="1">H1</option>
-					<option	value="2">H2</option>
-					<option	value="3">H3</option>
-					<option	value="4">H4</option>
-					<option	value="5">H5</option>
-					<option	value="6">H6</option>
-				</field>
+				name="buf_titles_h"
+				type="list"
+				default="0"
+				label="BUF_TITLES_H_LABEL" 
+				description="BUF_TITLES_H_DESC" 
+				validate="options"
+			>
+				<option	value="0">JNONE</option> <!-- Use JNONE -->
+				<option	value="1">H1</option>
+				<option	value="2">H2</option>
+				<option	value="3">H3</option>
+				<option	value="4">H4</option>
+				<option	value="5">H5</option>
+				<option	value="6">H6</option>
+			</field>
 
 
 			<field
 				name="buf_before_display_content"
 				type="radio"
-				label="Before display content"
+				label="BUF_BEFORE_DISPLAY_CONTENT_LABEL" 
+				description="BUF_BEFORE_DISPLAY_CONTENT_DESC" 
 				class="btn-group"
 				default="0"
 				layout="joomla.form.field.radio.switcher"
+				validate="options"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
-		
+
 			<field
 				name="buf_after_display_content"
 				type="radio"
-				label="After display content"
+				label="BUF_AFTER_DISPLAY_CONTENT_LABEL" 
+				description="BUF_AFTER_DISPLAY_CONTENT_DESC"
 				class="btn-group"
 				default="0"
 				layout="joomla.form.field.radio.switcher"
+				validate="options"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -209,10 +205,12 @@
 			<field
 				name="buf_show_readmore"
 				type="radio"
-				label="Readmore"
+				label="BUF_SHOW_READMORE_LABEL" 
+				description="BUF_SHOW_READMORE_DESC" 
 				class="btn-group"
-				default="0"
+				default="1"
 				layout="joomla.form.field.radio.switcher"
+				validate="options"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -222,10 +220,12 @@
 				name="buf_show_readmore_title"
 				type="radio"
 				label="JGLOBAL_SHOW_READMORE_TITLE_LABEL"
+				description="JGLOBAL_SHOW_READMORE_TITLE_DESC"
 				class="btn-group"
 				default="0"
 				layout="joomla.form.field.radio.switcher"
 				showon="buf_show_readmore:1"
+				validate="options"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -234,42 +234,59 @@
 			<field
 				name="buf_show_readmore_in_footer"
 				type="radio"
-				label="Footer"
+				label="BUF_READMORE_IN_FOOTER_LABEL"
+				description="BUF_READMORE_IN_FOOTER_DESC" 
 				class="btn-group"
 				default="0"
 				layout="joomla.form.field.radio.switcher"
 				showon="buf_show_readmore:1"
+				validate="options"
 			>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+				<option value="0">JHIDE</option> <!-- Place in body -->
+				<option value="1">JSHOW</option> <!-- Place in footer -->
 			</field>
 
-			<field name="buf_intro_card_class" 
-				type="text" 
-				default="" 
-				hint="text-white bg-primary h-100"
-				parentclass="span-1"
-				label="Intro card class" 
+            <!-- ADDED FIELD -->
+            <field
+                name="buf_readmore_class"
+                type="text"
+                label="BUF_READMORE_CLASS_LABEL" 
+                description="BUF_READMORE_CLASS_DESC" 
+                default=""
+                filter="string"
+                showon="buf_show_readmore:1"
+            />
+            <!-- /ADDED FIELD -->
+
+			<field name="buf_intro_card_class"
+				type="text"
+				default=""
+				hint="e.g., text-white bg-primary h-100"
+				label="BUF_CARD_CLASS_LABEL" 
+				description="BUF_CARD_CLASS_DESC" 
+				filter="string"
 			/>
 
-			<field name="buf_intro_card_layout" 
-				type="list" 
-				default="grid" 
+			<field name="buf_intro_card_layout"
+				type="list"
+				default="grid"
 				class="form-select-color-state"
-				parentclass="stack span-1"
-				label="grid" >
-				<option value="">JSELECT</option>
-				<option value="card-group">Card group</option>
-				<option value="grid">Grid</option>
+				label="BUF_CARD_LAYOUT_LABEL" 
+				description="BUF_CARD_LAYOUT_DESC" 
+				validate="options"
+			>
+				<option value="card-group">BUF_CARD_LAYOUT_GROUP</option> 
+				<option value="grid">BUF_CARD_LAYOUT_GRID</option> 
 			</field>
 
-			<field name="buf_intro_bs_sm" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-SM" 
+			<field name="buf_intro_bs_sm"
+				type="list"
+				default="1"
+				class="btn-group"
+				label="BUF_COLS_SM_LABEL" 
+				description="BUF_COLS_SM_DESC" 
 				showon="buf_intro_card_layout:grid"
+				validate="options"
 				>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -277,12 +294,14 @@
 				<option value="4">4</option>
 			</field>
 
-			<field name="buf_intro_bs_md" 
-				type="list" 
-				default="1" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-MD" showon="buf_intro_card_layout:grid"
+			<field name="buf_intro_bs_md"
+				type="list"
+				default="1"
+				class="btn-group"
+				label="BUF_COLS_MD_LABEL" 
+				description="BUF_COLS_MD_DESC" 
+				showon="buf_intro_card_layout:grid"
+				validate="options"
 				>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -291,12 +310,14 @@
 				<option value="5">5</option>
 			</field>
 
-			<field name="buf_intro_bs_lg" 
-				type="list" 
-				default="2" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-LG" showon="buf_intro_card_layout:grid"
+			<field name="buf_intro_bs_lg"
+				type="list"
+				default="2"
+				class="btn-group"
+				label="BUF_COLS_LG_LABEL" 
+				description="BUF_COLS_LG_DESC" 
+				showon="buf_intro_card_layout:grid"
+				validate="options"
 				>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -305,26 +326,14 @@
 				<option value="5">5</option>
 			</field>
 
-			<field name="buf_intro_bs_xl" 
-				type="list" 
-				default="2" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="COLS-XL" showon="buf_intro_card_layout:grid"
-				>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</field>
-			
-			<field name="buf_intro_bs_gutter" 
-				type="list" 
-				default="4" 
-				class="btn-group" 
-				parentclass="stack span-2-inline"
-				label="Gutter" showon="buf_intro_card_layout:grid"
+			<field name="buf_intro_bs_xl"
+				type="list"
+				default="2"
+				class="btn-group"
+				label="BUF_COLS_XL_LABEL" 
+				description="BUF_COLS_XL_DESC" 
+				showon="buf_intro_card_layout:grid"
+				validate="options"
 				>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -333,6 +342,22 @@
 				<option value="5">5</option>
 			</field>
 
+			<field name="buf_intro_bs_gutter"
+				type="list"
+				default="4"
+				class="btn-group"
+				label="BUF_GUTTER_LABEL" 
+				description="BUF_GUTTER_DESC" 
+				showon="buf_intro_card_layout:grid"
+				validate="options"
+				>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</field>
 
 		</fieldset>
 
@@ -342,6 +367,7 @@
 				name="tag_list_show_item_image"
 				type="list"
 				label="COM_TAGS_TAG_LIST_SHOW_ITEM_IMAGE_LABEL"
+				description="COM_TAGS_TAG_LIST_SHOW_ITEM_IMAGE_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -354,6 +380,7 @@
 				name="tag_list_show_item_description"
 				type="list"
 				label="COM_TAGS_TAG_LIST_SHOW_ITEM_DESCRIPTION_LABEL"
+				description="COM_TAGS_TAG_LIST_SHOW_ITEM_DESCRIPTION_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -366,14 +393,17 @@
 				name="tag_list_item_maximum_characters"
 				type="number"
 				label="COM_TAGS_LIST_MAX_CHARACTERS_LABEL"
+				description="COM_TAGS_LIST_MAX_CHARACTERS_DESC"
 				filter="integer"
 				useglobal="true"
+				default="0"
 			/>
 
 			<field
 				name="filter_field"
 				type="list"
 				label="JGLOBAL_FILTER_FIELD_LABEL"
+				description="JGLOBAL_FILTER_FIELD_DESC"
 				default=""
 				useglobal="true"
 				class="form-select-color-state"
@@ -390,6 +420,7 @@
 				name="show_pagination_limit"
 				type="list"
 				label="JGLOBAL_DISPLAY_SELECT_LABEL"
+				description="JGLOBAL_DISPLAY_SELECT_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -402,6 +433,7 @@
 				name="show_pagination"
 				type="list"
 				label="JGLOBAL_PAGINATION_LABEL"
+				description="JGLOBAL_PAGINATION_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -415,6 +447,7 @@
 				name="show_pagination_results"
 				type="list"
 				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				description="JGLOBAL_PAGINATION_RESULTS_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"
@@ -431,6 +464,7 @@
 				name="return_any_or_all"
 				type="list"
 				label="COM_TAGS_SEARCH_TYPE_LABEL"
+				description="COM_TAGS_SEARCH_TYPE_DESC"
 				useglobal="true"
 				validate="options"
 				>
@@ -442,6 +476,7 @@
 				name="include_children"
 				type="list"
 				label="COM_TAGS_INCLUDE_CHILDREN_LABEL"
+				description="COM_TAGS_INCLUDE_CHILDREN_DESC"
 				default=""
 				useglobal="true"
 				validate="options"
@@ -458,6 +493,7 @@
 				name="show_feed_link"
 				type="list"
 				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
+				description="JGLOBAL_SHOW_FEED_LINK_DESC"
 				useglobal="true"
 				class="form-select-color-state"
 				validate="options"

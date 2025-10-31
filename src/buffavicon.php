@@ -1,4 +1,12 @@
 <?php
+/*******************
+ * *****************
+ * *****************
+ * ****DEP 
+ * *****************
+ * **********************************
+ * *****************
+ */
 /**
  * @package BUF Framework
  * @author dibuxo http://www.dibuxo.com
@@ -11,16 +19,15 @@ namespace Jtotal\BUF;
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-use BUF\PHP_ICO;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
-class BUFfavicon
+class DEP_BUFfavicon
 {
-
+/*
     public $iconsFolderUrl;
     public $templateparams;
 
@@ -271,15 +278,7 @@ class BUFfavicon
     //TODO create a general class
     private static function getCurrentParams($id)
     {
-        /*
-        $db = Factory::getDBO();
-        $sql = "SELECT template,params FROM `#__template_styles` WHERE `id` = $id";
-        $db->setQuery($sql);
-        $db->query();
-        $row = $db->loadObject();
-        $json = $row;
-        return $json;
-         */
+
         $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
@@ -370,4 +369,5 @@ class BUFfavicon
         imagepng($new, $dst);
         return true;
     }
+    */
 }

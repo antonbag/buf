@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'Crimson Text';
+    src: url('#{$layout_opath}fonts/crimson/crimsontext-regular-webfont.woff2') format('woff2'),
+    url('crimsontext-regular-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Crimson Text';
+    src: url('#{$layout_opath}fonts/crimson/crimsontext-italic-webfont.woff2') format('woff2'),
+    url('#{$layout_opath}fonts/crimson/crimsontext-italic-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}
+
+
+@font-face {
+    font-family: 'Crimson Text';
+    src: url('#{$layout_opath}fonts/crimson/crimsontext-bold-webfont.woff2') format('woff2'),
+    url('#{$layout_opath}fonts/crimson/crimsontext-bold-webfont.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+//MIXINS
+@mixin crimson(){
+    font-family: 'Crimson Text', sans-serif;
+}
+

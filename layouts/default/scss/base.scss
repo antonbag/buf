@@ -14,6 +14,9 @@
 }
 
 
+html{
+  opacity:0;
+}
 
 body {
     margin: 0;
@@ -21,6 +24,8 @@ body {
 p {
     margin: 0 0 10px;
 }
+
+@import 'http://localhost/online/4dev/cache/mod_totalmenu/totalmenu109_desktop_custom.scss';
 
 
 //BOOTSTRAP ////////////////////////////
@@ -32,8 +37,13 @@ p {
 
 
 
+:root{
+	--bs-body-color:#123456 !important;
+}
 
-
+body{
+    //background-color: indigo;
+}
 div.wrapper_contents p{
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
