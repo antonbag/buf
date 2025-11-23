@@ -19,63 +19,33 @@ use Joomla\Registry\Registry;
 use Jtotal\BUF\Site\Helper\BufCheckPhp;
 use Jtotal\BUF\Site\Helper\BufHelper;
 
-///////////////////////
+//DEBUG
 $startmicro = microtime(true);
 $buf_debug = [];
 $buf_debug += BufHelper::addDebug('START', 'flag-checkered', 'start', $startmicro, 'table-success', 'logic_base.php');
 
-///////////////////////
+//APP
 $app = $this->app ?? Factory::getApplication();
 $doc = $app->getDocument();
 $session = $app->getSession();
 $jinput = $app->input;
 
-
-
-
-/*
-
-/*
-if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
-    require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
-} else {
-    $app = Factory::getApplication();
-    $app->enqueueMessage(Text::_('JT_FW_NOT_FOUND'), 'error');
-}
-*/
-//include_once JPATH_SITE . '/templates/buf/src/bufhelper.php';
-//include_once JPATH_SITE . '/templates/buf/src/Helper/bufoffcanvas.php';
-//include_once JPATH_SITE . '/templates/buf/src/Helper/buftopbar.php';
-
-
-$jversion = BufHelper::getJVersion();
-
-$tmplComponent = ($jinput->get('tmpl', '') == 'component') ? true : false;
-$edit = ($jinput->getValue('layout') == 'edit') ? true : false;
-$edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
-
-
+//WEB ASSET
 $wa = $this->getWebAssetManager();
 $wr = $this->getWebAssetManager()->getRegistry();
 $wr->addRegistryFile(JPATH_THEMES . '/' . $this->template . '/joomla.asset.json');
 
-///////////////////////
-//CHECK PHP VERSION
-///////////////////////
+//JVERSION
+$jversion = BufHelper::getJVersion();
 BufCheckPhp::checkPhpVersion();
 
-
-
-//2.2.0
-///////////////////////
 //DEVEL
-///////////////////////
 $devel_mode = file_exists(JPATH_SITE . '/templates/buf/composer.json');
 if ($devel_mode) {
     include_once JPATH_THEMES . '/' . $this->template . '/buf_devel.php';
 }
 
-//* check JTFRAMEWORK
+// check JTFRAMEWORK
 $check_jtfw = BufHelper::getExtensionVersion('jtframework', '');
 if (!$check_jtfw || $check_jtfw == '1.0.0') {
     $app->enqueueMessage('<strong>JT Framework required.</strong>
@@ -84,7 +54,7 @@ if (!$check_jtfw || $check_jtfw == '1.0.0') {
         <a href="https://users.jtotal.org/SOFT/framework/JTframework/pkg_jtfw_current.zip" target="_blank" class="btn btn-default">Download</a> </span>', 'error');
 }
 
-//* check LIBS
+// check LIBS
 $check_jtlibs = BufHelper::getExtensionVersion('jtlibs', '');
 
 if (!$check_jtlibs || $check_jtlibs == '1.0.0') {
@@ -100,6 +70,10 @@ if (!$check_jtlibs || $check_jtlibs == '1.0.0') {
 //APP PARAMS
 ///////////////////////
 $params = $app->getParams();
+
+$tmplComponent = ($jinput->get('tmpl', '') == 'component') ? true : false;
+$edit = ($jinput->getValue('layout') == 'edit') ? true : false;
+$edit_base_input = ($jinput->getValue('edit_base') == 'true') ? true : false;
 
 $templateparams = $app->getTemplate(true)->params;
 $menu = $app->getMenu();
@@ -118,14 +92,10 @@ $pageclass = $params->get('pageclass_sfx', '');
 $bs_version = $templateparams->get("buf_bs_on", 5);
 
 //LAYOUTS
-///////////////////////
 $buf_layout = $templateparams->get('buf_layout', 'default');
 $buf_load_layout_js = $templateparams->get('buf_load_layout_js', 1);
 
-
-
 //PATHS
-///////////////////////
 $tpath = $this->baseurl . '/templates/' . $this->template; //
 $opath = uri::base() . 'templates/' . $this->template;
 $tpath_abs = JPATH_SITE . '/templates/buf';
@@ -143,14 +113,10 @@ $jconfig = Factory::getConfig();
 
 
 //GET BROWSER
-//JOOMLA WAY
-
 $browser = Browser::getInstance();
 $browserType = $browser->getBrowser();
 
-///////////////////////
 //  DETEC MOBILE
-///////////////////////
 $ismobile = false;
 $detection = $templateparams->get('buf_offcanvas_detection', 'media');
 
@@ -161,20 +127,15 @@ $body_mobile .= ' detecion_mode_' . $detection;
 $buf_debug_param = $templateparams->get('buf_debug', 0);
 $buf_anal_url = Uri::base() . 'templates/buf/js/analytics/buf_anal.js';
 
-
 $webapp_capable = $templateparams->get('webapp_capable', '0');
 
 //STYLE
-///////////////////////
-//CONTAINER
 $containerSetting = (string) $templateparams->get('buf_container', '0');
 $container = match ($containerSetting) {
     '-1' => '',
     '0' => 'container',
     default => 'container-fluid',
 };
-
-//CONTENT CONTAINER
 $content_container = match ((string) $templateparams->get('buf_content_container', '0')) {
     '-1' => '',
     '0' => 'container',
@@ -202,8 +163,6 @@ $check_breakpoint = in_array($requestedBreakpoint, $allowedBreakpoints, true)
     : 'lg';
 
 $buf_offcanvas_max_w = $grid_breakpoints[$check_breakpoint];
-
-
 $buf_offcanvas = false;
 
 //offcanvas max width match with breakpoint
@@ -231,13 +190,19 @@ if ($templateparams->get('buf_offcanvas', 0) == 1) {
 }
 
 //TOPBAR
-///////////////////////
 $buf_topbar = new Registry;
 $buf_topbar->loadString(json_encode($templateparams->get('buf_topbar')));
 $buf_topbar_height = $buf_topbar->get('buf_topbar_height', '54');
 
+//TOPBAR JS
+$buf_topbar_show_on_scroll = $buf_topbar->get('buf_show_on_scroll', '');
+if ($buf_topbar_show_on_scroll) {
+    $buf_show_on_scroll_onlymobile = ($buf_topbar->get('buf_show_on_scroll_onlymobile', false) == true)  ? true : false;
+    $wa->useScript('topbar.js');
+    $doc->addScriptOptions('buf.config', ['buf_topbar_show_on_scroll' => $buf_show_on_scroll_onlymobile]);
+}
+
 //TOPBAR IN OFFCANVAS
-///////////////////////
 $buf_topbar_oc = new Registry;
 $buf_topbar_oc->loadString(json_encode($templateparams->get('buf_topbar_oc')));
 $buf_topbar_oc_height = $buf_topbar_oc->get('buf_topbar_height', '90');
@@ -245,8 +210,6 @@ $buf_topbar_oc_height = $buf_topbar_oc->get('buf_topbar_height', '90');
 
 ///////////////////////
 //OFFCANVAS BUTTON
-///////////////////////
-
 $oc_button = new Registry;
 $oc_button->loadString(json_encode($templateparams->get('buf_oc_button')));
 
@@ -256,7 +219,7 @@ $buf_oc_reverse = ($buf_oc_button_reverse == 'r') ? '-r' : '';
 $buf_oc_button_vpos = $oc_button->get('buf_oc_button_vpos', 'left');
 $buf_oc_button_hpos = $oc_button->get('buf_oc_button_hpos', 'top');
 
-
+///////////////////////
 //JS VARIABLES
 $js_params = array();
 $js_params['buf_anal_url'] = $buf_anal_url;
@@ -275,14 +238,13 @@ $js_params['oc_width'] = $templateparams->get('buf_offcanvas_width', 90);
 $js_params['oc_width_desktop'] = $templateparams->get('buf_offcanvas_width_desktop', 90);
 $js_params['oc_style'] = $templateparams->get('buf_offcanvas_style', 'buf_off_cover');
 $js_params['oc_position'] = $templateparams->get('buf_offcanvas_position', 'buf_off_pos_left');
-
+$this->addScriptOptions('buf.config', ['params' => $js_params]);
 
 //IMAGE
 $buf_bg_img = $templateparams->get('buf_bg_img', false);
 
-/**********************/
+///////////////////////
 //BOOSTRAP
-/**********************/
 $buf_bs_on = $templateparams->get('buf_bs_on', 4);
 
 //BS LEFT + RIGHT CALCULATIONS
@@ -350,22 +312,21 @@ if ($buf_right && $this->countModules($bs_left_pos)) {
     $content_pral_bs_lg = ' col-lg-' . $bs_count_lg;
 }
 
-/**********************/
+///////////////////////
 //FONTAWESOME
-/**********************/
 $buf_fa = $templateparams->get('buf_fa', 1);
 $buf_fa_selector = $templateparams->get('buf_fa_selector', 5);
 $buf_fa5_tech = $templateparams->get('buf_fa5_tech', '1');
 
-/**********************/
+///////////////////////
 //DEV
-/**********************/
 $runless = $templateparams->get('runless', '2');
 $buf_edit_base = $templateparams->get('buf_edit_base', '0');
 $css_mix = $templateparams->get('buf_scss_mix', '0');
 
 $buf_load_css_async = $templateparams->get('buf_load_css_async', '0');
 
+///////////////////////
 //COUNTER FOR RUNLESS MODE
 $remaining_minutes = 0;
 if ($runless == '1') {
@@ -398,20 +359,13 @@ if ($runless == '1') {
 
 
 
-/***************************************/
+///////////////////////
 //RUN BASE SASS
-/***TODO: configure bs4 files in base
-/***************************************/
 $base_css_exists = file_exists($cachepath . '/base.css');
 
 if ($runless == '1' || $buf_edit_base == 1 || $base_css_exists == false || $edit_base_input) {
     include_once JPATH_THEMES . '/' . $this->template . '/logics/runsass_base.php';
 }
-
-/***************************************/
-//PARAMS TO JS
-/***************************************/
-$this->addScriptOptions('buf.config', ['params' => $js_params]);
 
 $hasClass = '';
 
@@ -642,18 +596,14 @@ $buf_load_resources = $templateparams->get('buf_load_resources', '');
 
 //CACHE CONTROL
 $buf_cache_control_enable = $templateparams->get('buf_cache_control_enable', 1);
-$buf_cache_control = $templateparams->get('buf_cache_control', 'public, max-age=31536000');
+$buf_cache_control = '';
 
 if ($buf_cache_control_enable) {
     $cacheValue = $templateparams->get('buf_cache_control', 'public, max-age=31536000');
-    
-    // Enviar header HTTP real
+    // Solo enviar header si no se han enviado ya
     if (!headers_sent()) {
         header('Cache-Control: ' . $cacheValue);
     }
-    
-    // Meta tag como fallback (opcional)
+    // Meta tag siempre es útil como fallback
     $buf_cache_control = '<meta http-equiv="Cache-Control" content="' . htmlspecialchars($cacheValue, ENT_QUOTES, 'UTF-8') . '">';
-} else {
-    $buf_cache_control = '';
 }

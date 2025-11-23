@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
   "name": "buf",
-  "version": "5.4.28",
+  "version": "5.4.30",
   "description": "This file contains details of the assets used by Buf. The template system by JTotal.",
   "license": "GPL-2.0-or-later",
   "assets": [
@@ -19,7 +19,7 @@
       "name": "bufoc.js",
       "type": "script",
       "uri": "media/templates/site/buf/js/oc/bufoc.js",
-      "version": "5.4.28",
+      "version": "5.4.30",
       "attributes": {
         "defer": true
       }
@@ -28,7 +28,7 @@
       "name": "bufocbs.js",
       "type": "script",
       "uri": "media/templates/site/buf/js/oc/bufocbs.js",
-      "version": "5.4.28",
+      "version": "5.4.30",
       "attributes": {
         "defer": true
       }
@@ -37,7 +37,7 @@
       "name": "buflogic.js",
       "type": "script",
       "uri": "media/templates/site/buf/js/logic.js",
-      "version": "5.4.28",
+      "version": "5.4.30",
       "attributes": {
         "async": true
       }
@@ -46,7 +46,7 @@
       "name": "topbar.js",
       "type": "script",
       "uri": "media/templates/site/buf/js/topbar.js",
-      "version": "5.4.28",
+      "version": "5.4.30",
       "attributes": {
         "async": true
       }

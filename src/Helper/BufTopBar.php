@@ -65,14 +65,11 @@ class BufTopBar
             return '';
         }
 
+        /*
         if ($buf_topbar_show_on_scroll) {
-            Factory::getDocument()->getWebAssetManager()->useScript('topbar.js');
-
-            Factory::getDocument()->getWebAssetManager()->addInlineScript('
-                document.addEventListener("DOMContentLoaded", function () {
-                    BufInitFixedBar("buf_topbar", ' . $buf_show_on_scroll_onlymobile . ');
-                });');
+             // Moved to logic_base.php to ensure options are loaded in head
         }
+        */
         ob_start();
         ?>
 

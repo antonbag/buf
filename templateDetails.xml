@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>31-oct-2025</creationDate>
+	<creationDate>23-nov-2025</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>5.4.28</version>
+	<version>5.4.30</version>
 	<description>
 		<![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../media/templates/site/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">5.4.28</small>
+				<small class="buf_version badge badge-success bg-success">5.4.30</small>
 			</div>
 		</div>
 	]]>

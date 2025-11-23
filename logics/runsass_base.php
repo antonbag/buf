@@ -14,9 +14,7 @@ use Joomla\CMS\Uri\Uri;
 use Jtotal\BUF\Site\Helper\BufHelper;
 
 ///////////////////
-//  CHECK FW //
-///////////////////
-
+//CHECK FW 
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
     require_once JPATH_PLUGINS . '/system/jtframework/autoload.php';
 } else {

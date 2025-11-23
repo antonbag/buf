@@ -24,9 +24,10 @@ include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 
 <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
 
+    <jdoc:include type="metas" />
+    
     <?php
     //PRELOAD
     echo $head_preload;
@@ -37,19 +38,7 @@ include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
         echo '<meta name="mobile-web-app-capable" content="yes">';
     }
     ?>
-
-    <jdoc:include type="metas" />
-    <jdoc:include type="styles" />
-
-    <?php
-        //PRELOAD
-        echo $head_preload;
-        echo $buf_load_resources;
-    ?>
-
-    <jdoc:include type="scripts" />
-
-
+    
     <?php
     //BASE CSS
     $baseCssPath = JPATH_SITE . '/cache/buf_' . $buf_layout . '/base.css';
@@ -72,6 +61,14 @@ include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
         $buf_debug +=  BUFHelper::addDebug('BASE CSS $wa', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
     }
     ?>
+
+    <?php
+        //PRELOAD
+        echo $buf_load_resources;
+    ?>
+
+    <jdoc:include type="styles" />
+    <jdoc:include type="scripts" />
 
 
     <?php //FAVICONS ?>

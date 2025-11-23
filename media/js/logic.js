@@ -1,95 +1,86 @@
-var buf_params;
-var buf_vars = Array();
-var buf_oc;
+/**
+ * BUF Template Logic
+ * Modernized structure
+ */
 
- 
-function buf_debug(msg){
-	if(buf_params.debug) console.log('BUF |-*-| '+msg);
-}
-function buf_debug_n(msg){
-	if(buf_params.debug) console.log('BUF |-*-| '+msg);
-}
+// Definimos valores por defecto seguros para evitar errores de "undefined"
+// Usamos window explícitamente si necesitamos que sean globales para otros scripts.
+window.buf_vars = {}; // CORREGIDO: Inicializado como Objeto, no Array.
+window.buf_params = window.buf_params || { debug: false }; // Fallback por defecto
 
-function buf_js_init(){
+// Función de Debug unificada
+const buf_debug = (msg) => {
+	// Usamos Optional Chaining (?.) para seguridad
+	if (window.buf_params?.debug) {
+		console.log(`BUF |-*-| ${msg}`);
+	}
+};
 
-	buf_params = Joomla.getOptions('buf.config').params;
+// Alias si es estrictamente necesario por compatibilidad con otros archivos antiguos
+const buf_debug_n = buf_debug;
 
-	//READY
-	document.addEventListener('DOMContentLoaded', function() {
-		
+const buf_js_init = () => {
 
-		//lazy css
-		[].slice.call(document.head.querySelectorAll('link[rel="lazy-stylesheet"]'))
-		.forEach(function($link){
-		  $link.rel = "stylesheet";
+	// 1. Carga de Configuración (Optimizada)
+	const loadJoomlaParams = () => {
+		if (typeof Joomla !== 'undefined' && Joomla.getOptions) {
+			const config = Joomla.getOptions('buf.config');
+			if (config && config.params) {
+				window.buf_params = config.params;
+				return true;
+			}
+		}
+		return false;
+	};
+
+	// Intentamos cargar inmediatamente
+	if (!loadJoomlaParams()) {
+		// Si falla, hacemos polling rápido (cada 100ms) durante máximo 2 segundos
+		// 3 segundos de espera inicial es demasiado bloqueo.
+		let attempts = 0;
+		const interval = setInterval(() => {
+			attempts++;
+			if (loadJoomlaParams() || attempts > 20) {
+				clearInterval(interval);
+				if (attempts > 20) console.warn('BUF: Joomla params could not be loaded.');
+			}
+		}, 100);
+	}
+
+	// 2. Inicialización del DOM
+	const onReady = () => {
+
+		// Lazy CSS - Sintaxis Moderna
+		document.querySelectorAll('link[rel="lazy-stylesheet"]').forEach(link => {
+			link.rel = "stylesheet";
 		});
 
+		// Asignación de variable
+		window.buf_vars.currentDevice = 'mobile';
 
-		//UNDEFINED
-		buf_vars.currentDevice = 'mobile';
+		buf_debug("buf_js_init initialized");
 
-
-		buf_debug_n("buf_js_init");
-
-
+		// Dev Mode - Listeners
 		const devModeDivs = document.querySelectorAll('div.buf_dev_mode');
-		if (devModeDivs.length >= 1) {
-		  const devModeCloseButtons = document.querySelectorAll('a.buf_dev_mode_close');
-		  devModeCloseButtons.forEach(button => {
-			button.addEventListener('click', function(e) {
-			  e.stopPropagation();
-			  devModeDivs.forEach(div => div.style.display = 'none');
+
+		if (devModeDivs.length > 0) {
+			document.querySelectorAll('a.buf_dev_mode_close').forEach(button => {
+				button.addEventListener('click', (e) => {
+					e.preventDefault(); // Prevenir comportamiento de enlace
+					e.stopPropagation();
+					devModeDivs.forEach(div => div.remove()); // .remove() es mejor que display:none para limpiar el DOM
+				});
 			});
-		  });
 		}
+	};
 
-	});
-}
-buf_js_init();
-
-
-/**************************/
-/**************************/
-/****** OFFCANVAS DEPRECATED????*********/
-/**************************/
-/**************************/
-/*
-function offcanvasClick(){
-	
-	const ocbutton = document.querySelector("#bufoc_button");
-	const buf_offcanvas = document.querySelector("#buf_offcanvas");
-
-
-	//CLICK
-	ocbutton.addEventListener("click", function(e) {
-
-		e.stopPropagation;
-
-		//console.log(ocbutton);
-		//console.log(document.documentElement);
-		//SHOW
-		if(!ocbutton.classList.contains('is-active')){
-			//vanilla
-			ocbutton.classList.add('is-active');
-			document.documentElement.classList.add('buff_canvas_on');
-			document.body.classList.add('offcanvas_show');
-			document.body.classList.remove('buf_offcanvas_hidden');
-
-		}else{
-			//HIDE
-			document.body.classList.remove('offcanvas_show');
-			ocbutton.classList.remove('is-active');
-			buf_offcanvas.ontransitionend = () => {
-		  		if(!document.body.classList.contains('offcanvas_show')){
-	    			document.body.classList.add("buf_offcanvas_hidden");
-	    			document.documentElement.classList.remove('buff_canvas_on');
-	    		}
-			};
-		}
-	});  
+	// Ejecutar cuando el DOM esté listo
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', onReady);
+	} else {
+		onReady();
+	}
 };
-*/
 
-
-
-
+// Ejecutar inicialización
+buf_js_init();
