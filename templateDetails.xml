@@ -7,7 +7,7 @@
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>6.1.12</version>
+	<version>6.1.13</version>
 	<php_minimum>8.2.0</php_minimum>
 	<description>
 		<![CDATA[ 
@@ -15,7 +15,7 @@
 			<h1><img class="img-fluid img-responsive" src="../media/templates/site/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">6.1.12</small>
+				<small class="buf_version badge badge-success bg-success">6.1.13</small>
 			</div>
 		</div>
 	]]>
