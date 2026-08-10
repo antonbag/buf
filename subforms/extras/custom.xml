@@ -6,7 +6,6 @@
         size="50"
         class="input-xxlarge"
         type="text"
-
         placeholder="http://example.com/path/to/script.js"
     />
     <field name="buf_js_defer" 

@@ -1,0 +1,55 @@
+/*******************************/
+/*********   BUF   *************/
+/*******  MAIN style   *********/
+/*******************************/
+
+//BREAKPOINTS (los inyecta BufSass desde los params; !default = no pisar)
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+) !default;
+
+//RUTAS (inyectadas por BufSass; !default como fallback)
+$img_path: '/media/templates/site/buf/images/' !default;
+$layout_img_path: '/templates/buf/layouts/minimalist/images/' !default;
+$layout_opath: '/templates/buf/layouts/minimalist/' !default;
+
+#buf-main-content {
+    display: block;
+}
+
+/* ═══════════════  TOKENS DE DISEÑO  ═══════════════ */
+//Los tokens que SÍ son configurables desde Bootstrap custom styles
+
+:root {
+    // Neutros — no configurables: son el lenguaje visual del layout
+    --ink-900: #0a0a0a;
+    --ink-600: #4b5060; // texto secundario
+    --ink-400: #8a90a0; // texto deshabilitado / placeholders
+    --bg-alt: #f5f6f8;
+    --border: #e6e8ec;
+
+    // Configurables: fondo y color de texto del subform
+    --surface: var(--bs-body-bg, #ffffff);
+    --bg: var(--bs-body-bg, #ffffff);
+    --ink-800: var(--bs-body-color, #111318); // texto principal
+
+    // Acento: lo dicta el "primary" del subform. --accent-700 usa el hover de
+    // enlace porque BufSass ya lo calcula como shade(primary, 20%).
+    --accent-700: var(--bs-link-hover-color, #1d4ed8);
+    --accent-600: var(--bs-primary, #2563eb); // primario
+    --accent-500: var(--bs-primary, #3b82f6);
+    --accent-100: var(--bs-primary-bg-subtle, #eaf1fe);
+
+    // Sistema — el subform sólo ofrece un on/off de redondeo, no un valor,
+    // así que el radio propio del layout se mantiene.
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow-sm: 0 1px 2px rgba(10, 10, 10, .05);
+    --shadow-md: 0 6px 20px rgba(10, 10, 10, .08);
+    --header-h: 64px;
+}

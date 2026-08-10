@@ -1,11 +1,57 @@
-/*******************************/
-/*********   BUF   *************/
-/*******************************/
-/*******  MOBILE style   *********/
-/*******************************/
-/*******************************/
-/******* UP TO 767PX *********/
+// BUF — layout: minimalist
+// MOBILE — hasta 767.98px
+// Se importa DENTRO de un @media: no anidar otro aquí.
 
+// El menú inline se oculta: en móvil se navega con el offcanvas de BUF
+.site-header__nav {
+    display: none;
+}
 
+.site-header {
+    --header-h: 60px;
+}
 
+.site-header__brand img {
+    max-height: 36px;
+}
 
+#contents {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+// Las sidebars caen debajo del contenido
+.buf_left,
+.buf_right {
+    margin-top: 1.5rem;
+}
+
+#footer {
+    padding: 2.5rem 0 1.5rem;
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+.banner_front,
+.banner_page {
+    border-radius: 0;
+    margin-bottom: 1.25rem;
+}
+
+// La imagen destacada deja de flotar: a este ancho el texto a su lado queda
+// en una columna inservible de pocos caracteres. !important porque
+// .float-start / .float-end son utilidades de Bootstrap y ya lo llevan.
+.item-page figure.float-start,
+.item-page figure.float-end {
+    float: none !important;
+    max-width: 100%;
+    margin: 0 0 1.25rem;
+}
+
+// Los metadatos se apilan con menos separación horizontal
+.article-info {
+    gap: .35rem 1rem;
+}

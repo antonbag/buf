@@ -21,6 +21,27 @@
 
 
 
+// Regla general del template (no del layout): cuando la topbar pasa a
+// position:fixed (show_on_scroll), #superwrapper compensa su altura para que
+// la barra no tape el contenido. Sin show_on_scroll la barra va en el flujo
+// normal y no hace falta margen.
+#buf_topbar.buf_topbar_on.buf_show_on_scroll~#superwrapper {
+    margin-top: $buf_topbar_height;
+}
+
+// "Sólo móvil": la topbar se muestra únicamente por debajo del breakpoint
+// móvil ($buf_offcanvas_max_w). Por encima se oculta y se retira su margen.
+@media (min-width: $buf_offcanvas_max_w) {
+
+    #buf_topbar.buf_topbar_on.buf_show_on_scroll_only_mobile {
+        display: none;
+    }
+
+    #buf_topbar.buf_topbar_on.buf_show_on_scroll_only_mobile~#superwrapper {
+        margin-top: 0;
+    }
+}
+
 #buf_topbar_oc {
     display: flex;
     align-items: center;

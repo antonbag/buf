@@ -5,3 +5,44 @@
 /*******************************/
 /*******************************/
 
+// BUF — layout: minimalist
+// PRINT
+// Se importa DENTRO de @media print: no anidar otro aquí.
+
+// Fuera todo lo que no es contenido
+.site-header,
+#footer,
+#subfooter,
+#subcontent,
+.buf_left,
+.buf_right,
+.banner_front,
+.banner_page,
+.buf_skip_link,
+.buf_credits,
+#bufoc_button,
+#buf_offcanvas,
+#buf_topbar,
+div.bg {
+    display: none !important;
+}
+
+body {
+    background: #fff;
+    color: #000;
+    font-size: 12pt;
+}
+
+main {
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    background: transparent;
+}
+
+// Muestra la URL de los enlaces al imprimir
+a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    word-break: break-all;
+}

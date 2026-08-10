@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -20,7 +22,7 @@ class BufclearcacheField extends FormField
 {
     protected $type = 'Bufclearcache';
 
-    protected function getInput()
+    protected function getInput(): string
     {
         $cacheb = '<div class="btn-wrapper" id="toolbar-buf_empy_cache"><button class="btn btn-primary btn-small buf_clearcache">
         <span class="buf_clearcache_icon"><i class="fas fa-trash-alt"></i></span>
@@ -32,8 +34,8 @@ class BufclearcacheField extends FormField
         return $cacheb;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
-        //return JText::_('TPL_BUF_CURRENT_FAVICON');
+        return '';
     }
 }

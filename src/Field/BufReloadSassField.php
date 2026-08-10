@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -19,9 +21,8 @@ class BufReloadSassField extends FormField
 {
     protected $type = 'BufReloadSass';
 
-    protected function getInput()
+    protected function getInput(): string
     {
-
         /** @var CMSApplication $app */
         $app = Factory::getApplication();
 
@@ -39,8 +40,8 @@ class BufReloadSassField extends FormField
         return $text;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
-        //return 'reloadSass';
+        return '';
     }
 }

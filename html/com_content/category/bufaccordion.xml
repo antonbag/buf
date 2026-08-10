@@ -6,7 +6,6 @@
 			<![CDATA[Category blog in accordeon mode]]>
 		</message>
 	</layout>
-
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="request">
 		<fieldset name="request"
@@ -23,7 +22,6 @@
 				edit="true"
 				clear="true"
 			/>
-
 			<field
 				name="filter_tag"
 				type="tag"
@@ -33,17 +31,15 @@
 			/>
 		</fieldset>
 	</fields>
-
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params">
 		<fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
-				<field
+			<field
 					name="layout_type"
 					type="hidden"
 					default="blog"
 				/>
-
-				<field
+			<field
 					name="show_category_title"
 					type="list"
 					label="JGLOBAL_SHOW_CATEGORY_TITLE"
@@ -51,11 +47,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_description"
 					type="list"
 					label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
@@ -63,11 +58,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_description_image"
 					type="list"
 					label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
@@ -75,11 +69,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="maxLevel"
 					type="list"
 					label="JGLOBAL_MAXLEVEL_LABEL"
@@ -87,16 +80,15 @@
 					useglobal="true"
 					validate="options"
 					>
-					<option value="-1">JALL</option>
-					<option value="0">JNONE</option>
-					<option value="1">J1</option>
-					<option value="2">J2</option>
-					<option value="3">J3</option>
-					<option value="4">J4</option>
-					<option value="5">J5</option>
-				</field>
-
-				<field
+				<option value="-1">JALL</option>
+				<option value="0">JNONE</option>
+				<option value="1">J1</option>
+				<option value="2">J2</option>
+				<option value="3">J3</option>
+				<option value="4">J4</option>
+				<option value="5">J5</option>
+			</field>
+			<field
 					name="show_empty_categories"
 					type="list"
 					label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
@@ -104,11 +96,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_no_articles"
 					type="list"
 					label="COM_CONTENT_NO_ARTICLES_LABEL"
@@ -116,11 +107,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_category_heading_title_text"
 					type="list"
 					label="JGLOBAL_SHOW_SUBCATEGORY_HEADING"
@@ -128,11 +118,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_subcat_desc"
 					type="list"
 					label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
@@ -140,11 +129,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_cat_num_articles"
 					type="list"
 					label="COM_CONTENT_NUMBER_CATEGORY_ITEMS_LABEL"
@@ -152,11 +140,10 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
 					name="show_cat_tags"
 					type="list"
 					label="COM_CONTENT_FIELD_SHOW_CAT_TAGS_LABEL"
@@ -164,70 +151,71 @@
 					class="form-select-color-state"
 					validate="options"
 					>
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-
-
-
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 		</fieldset>
-
 		<fieldset name="advanced" label="JGLOBAL_BLOG_LAYOUT_OPTIONS" description="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL">
-
-								<!-- BUF -->
-				<!-- BUF -->
-				<!-- BUF -->
-				<field name="bufaccordion_mode"
+			<!-- BUF -->
+			<!-- BUF -->
+			<!-- BUF -->
+			<field name="bufaccordion_mode"
 					type="radio"
 					default="collapse"
 					class="btn-group"
 					label="Mode">
-					<option value="collapse">Collapse</option>
-					<option value="accordeon">Accordeon</option>
-				</field>
-
-				<field name="bufaccordion_show_image"
+				<option value="collapse">Collapse</option>
+				<option value="accordeon">Accordeon</option>
+			</field>
+			<field name="bufaccordion_show_image"
 					type="list"
 					default="hidden"
 
 					label="Intro image">
-					<option value="hidden">Hidden</option>
-					<option value="tab">Tab</option>
-					<option value="body">Body</option>
-					<option value="both">Both</option>
-				</field>
-
-				<field name="bufaccordion_show_full_image"
+				<option value="hidden">Hidden</option>
+				<option value="tab">Tab</option>
+				<option value="body">Body</option>
+				<option value="both">Both</option>
+			</field>
+			<field name="bufaccordion_show_full_image"
 					type="radio"
 					default="0"
 										class="btn-group"
 					label="Show full image">
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field name="bufaccordion_beforeDisplayContent"
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="bufaccordion_beforeDisplayContent"
 					type="radio"
 					default="0"
 					class="btn-group"
 					label="Events before content">
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
-
-				<field name="bufaccordion_afterDisplayContent"
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="bufaccordion_afterDisplayContent"
 					type="radio"
 					default="0"
 					class="btn-group"
 					label="Events after content">
-					<option value="0">JHIDE</option>
-					<option value="1">JSHOW</option>
-				</field>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
 
+			<field name="bufaccordion_header_level"
+					type="list"
+					default="h3"
+					label="Header level">
+				<option value="h1">H1</option>
+				<option value="h2">H2</option>
+				<option value="h3">H3</option>
+				<option value="h4">H4</option>
+				<option value="h5">H5</option>
+				<option value="h6">H6</option>
+				<option value="div">DIV</option>
+			</field>
 
-				<!-- /BUF -->
-
+			<!-- /BUF -->
 			<field
 				name="num_leading_articles"
 				type="number"
@@ -236,7 +224,6 @@
 				useglobal="true"
 				parentclass="stack span-1"
 			/>
-
 			<field
 				name="blog_class_leading"
 				type="text"
@@ -245,7 +232,6 @@
 				useglobal="true"
 				validate="CssIdentifier"
 			/>
-
 			<field
 				name="num_intro_articles"
 				type="number"
@@ -254,7 +240,6 @@
 				useglobal="true"
 				parentclass="stack span-1"
 			/>
-
 			<field
 				name="blog_class"
 				type="text"
@@ -264,7 +249,6 @@
 				useglobal="true"
 				validate="CssIdentifier"
 			/>
-
 			<field
 				name="num_columns"
 				type="number"
@@ -273,7 +257,6 @@
 				parentclass="stack span-1-inline"
 				useglobal="true"
 			/>
-
 			<field
 				name="multi_column_order"
 				type="list"
@@ -285,7 +268,6 @@
 				<option value="0">JGLOBAL_BLOG_DOWN_OPTION</option>
 				<option value="1">JGLOBAL_BLOG_ACROSS_OPTION</option>
 			</field>
-
 			<field
 				name="num_links"
 				type="number"
@@ -294,7 +276,6 @@
 				parentclass="stack span-1"
 				useglobal="true"
 			/>
-
 			<field
 				name="show_featured"
 				type="list"
@@ -309,7 +290,6 @@
 				<option value="hide">JHIDE</option>
 				<option value="only">JONLY</option>
 			</field>
-
 			<field
 				name="link_intro_image"
 				type="list"
@@ -321,7 +301,6 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-
 			<field
 				name="show_subcategory_content"
 				type="list"
@@ -351,7 +330,6 @@
 				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
 				<option value="order">JGLOBAL_CATEGORY_MANAGER_ORDER</option>
 			</field>
-
 			<field
 				name="orderby_sec"
 				type="list"
@@ -377,7 +355,6 @@
 				<option value="rank" requires="vote">JGLOBAL_RATINGS_DESC</option>
 				<option value="rrank" requires="vote">JGLOBAL_RATINGS_ASC</option>
 			</field>
-
 			<field
 				name="order_date"
 				type="list"
@@ -391,7 +368,6 @@
 				<option value="published">JPUBLISHED</option>
 				<option value="unpublished">JUNPUBLISHED</option>
 			</field>
-
 			<field
 				name="show_pagination"
 				type="list"
@@ -405,7 +381,6 @@
 				<option value="1">JSHOW</option>
 				<option value="2">JGLOBAL_AUTO</option>
 			</field>
-
 			<field
 				name="show_pagination_results"
 				type="list"
@@ -418,14 +393,11 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 		</fieldset>
-
 		<fieldset name="article"
 			label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL"
 			addfieldprefix="Joomla\Component\Content\Administrator\Field"
 		>
-
 			<field
 				name="article_layout"
 				type="componentlayout"
@@ -436,7 +408,6 @@
 				extension="com_content"
 				view="article"
 			/>
-
 			<field
 				name="show_title"
 				type="list"
@@ -449,7 +420,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="link_titles"
 				type="list"
@@ -462,7 +432,6 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-
 			<field
 				name="show_intro"
 				type="list"
@@ -475,7 +444,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="info_block_position"
 				type="list"
@@ -490,7 +458,6 @@
 				<option value="1">COM_CONTENT_FIELD_OPTION_BELOW</option>
 				<option value="2">COM_CONTENT_FIELD_OPTION_SPLIT</option>
 			</field>
-
 			<field
 				name="info_block_show_title"
 				type="list"
@@ -503,7 +470,6 @@
 				<option	value="0">JHIDE</option>
 				<option	value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_category"
 				type="list"
@@ -516,7 +482,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="link_category"
 				type="list"
@@ -529,7 +494,6 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-
 			<field
 				name="show_parent_category"
 				type="list"
@@ -542,7 +506,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="link_parent_category"
 				type="list"
@@ -555,7 +518,6 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-
 			<field
 				name="show_associations"
 				type="assoc"
@@ -567,7 +529,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_author"
 				type="list"
@@ -580,7 +541,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="link_author"
 				type="list"
@@ -593,7 +553,6 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-
 			<field
 				name="show_create_date"
 				type="list"
@@ -606,7 +565,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_modify_date"
 				type="list"
@@ -619,7 +577,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_publish_date"
 				type="list"
@@ -632,7 +589,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_item_navigation"
 				type="list"
@@ -645,7 +601,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_vote"
 				type="votelist"
@@ -658,7 +613,6 @@
 				<option value="0">JHIDE</option>
 				<option	value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_readmore"
 				type="list"
@@ -671,7 +625,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_readmore_title"
 				type="list"
@@ -683,7 +636,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_hits"
 				type="list"
@@ -696,7 +648,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_tags"
 				type="list"
@@ -709,7 +660,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="show_noauth"
 				type="list"
@@ -724,7 +674,6 @@
 				<option value="1">JYES</option>
 			</field>
 		</fieldset>
-
 		<fieldset name="integration" label="COM_MENUS_INTEGRATION_FIELDSET_LABEL">
 			<field
 				name="show_feed_link"
@@ -737,7 +686,6 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
 			<field
 				name="feed_summary"
 				type="list"

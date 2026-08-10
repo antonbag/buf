@@ -82,6 +82,7 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
     $this->show_image = $this->params->get('bufaccordion_show_image', 'hidden');
     $this->bufaccordion_beforeDisplayContent = $this->params->get('bufaccordion_beforeDisplayContent', 0);
     $this->bufaccordion_afterDisplayContent = $this->params->get('bufaccordion_afterDisplayContent', 0);
+    $this->bufaccordion_header_level = $this->params->get('bufaccordion_header_level', 'h3');
     ?>
 
 
@@ -107,7 +108,8 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
                                                                                             ?>" id="bufaccordion_leading"> -->
 
         <?php $this->current_accordion = 'bufaccordion_leading';
-        echo HTMLHelper::_('bootstrap.startAccordion', $this->current_accordion, array('active' => 'bufaccordion')); ?>
+        $this->bufaccordion_active_id = 'bufaccordion';
+        echo HTMLHelper::_('bootstrap.startAccordion', $this->current_accordion, array('active' => $this->bufaccordion_active_id)); ?>
         <?php foreach ($this->lead_items as &$item) : ?>
             <?php
             // Adding slides
@@ -147,7 +149,8 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
                                                                                                     ?>" id="bufaccordion_regular"> -->
         <?php
         $this->current_accordion = 'bufaccordion_regular';
-        echo HTMLHelper::_('bootstrap.startAccordion', $this->current_accordion, array('active' => 'bufaccordion')); ?>
+        $this->bufaccordion_active_id = 'bufaccordion';
+        echo HTMLHelper::_('bootstrap.startAccordion', $this->current_accordion, array('active' => $this->bufaccordion_active_id)); ?>
         <?php foreach ($this->intro_items as $key => &$item) : ?>
 
             <?php

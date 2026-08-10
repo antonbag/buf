@@ -1,9 +1,20 @@
-/*******************************/
-/*********   BUF   *************/
-/*******************************/
-/*******  LAPTOP style   *********/
-/*******************************/
-/*******************************/
-/******* 992px  and upper *********/
+// BUF — layout: minimalist
+// LAPTOP — desde 992px
+// Se importa DENTRO de un @media: no anidar otro aquí.
 
+// A partir de aquí cabe el menú horizontal en la navbar.
+.site-header__nav {
+    display: flex;
+}
 
+// NOTA: el botón hamburguesa (#bufoc_button) NO se oculta aquí a propósito.
+// Su visibilidad la controlan los parámetros de BUF: pon
+// "Offcanvas = sólo móvil" (buf_offcanvas = 2) para que desaparezca en desktop.
+
+// Las sidebars acompañan al scroll en contenidos largos
+.buf_left,
+.buf_right {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    align-self: flex-start;
+}

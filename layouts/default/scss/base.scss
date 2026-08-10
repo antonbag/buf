@@ -1,88 +1,84 @@
-/*******************************/
-/*********   BUF   *************/
-/*******************************/
-/*******  base style   *********/
-/*******************************/
-/*******************************/
-/* This styles are loaded at first stage. */
-/* Put here only the necessary elements */
+// BUF — layout: minimalist
+// Estilos BASE (CSS crítico, embebido inline en el <head>, límite 14 KB).
+// Sólo lo imprescindible para el primer render y para evitar CLS.
+// OJO: aquí NO están disponibles $layout_opath ni $img_path
+// (sólo se inyectan al compilar template.scss).
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-html{
-  opacity:0;
+#buf-main-content {
+    display: none;
 }
 
 body {
     margin: 0;
+    background: #ffffff;
+    color: #111318;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
+
 p {
-    margin: 0 0 10px;
+    margin: 0 0 1rem;
 }
 
-@import 'http://localhost/online/4dev/cache/mod_totalmenu/totalmenu109_desktop_custom.scss';
-
-
-//BOOTSTRAP ////////////////////////////
-//////////////////////////////////////
+img,
 .img-fluid {
     max-width: 100%;
     height: auto;
 }
 
-
-
-:root{
-	--bs-body-color:#123456 !important;
+// Reserva la altura de la cabecera antes de que cargue el CSS completo (evita CLS)
+.site-header {
+    min-height: 64px;
+    background: #fff;
 }
 
-body{
-    //background-color: indigo;
-}
-div.wrapper_contents p{
-	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
+// Enlace "saltar al contenido": oculto hasta recibir foco por teclado.
+.buf_skip_link {
+    position: absolute;
+    top: -3rem;
+    left: 0.5rem;
+    z-index: 2000;
+    padding: 0.5rem 1rem;
+    background: #111318;
+    color: #fff;
+    border-radius: 0 0 0.25rem 0.25rem;
+    text-decoration: none;
+    transition: top 0.15s ease-in-out;
+
+    &:focus {
+        top: 0;
+    }
 }
 
-div#dxmenu_pral #tm_navbar > ul.totalmenu{
-	opacity: 0;
-}
-div#dxmenu_pral{
-	background-color: #57616d;
+// Respeta la preferencia de movimiento reducido (WCAG 2.3.3)
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
-div.bg{
-	position: fixed;
-    top: 0px;
+// Imagen de fondo opcional (parámetro buf_bg_img)
+div.bg {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     z-index: -1;
-	img{
-		height: 100%;
-    	width: 100%;
-	}
-}
 
-
-
-@media (min-width: 768px){
-	.container {
-	    width: 750px;
-	}
-}
-
-@media (min-width: 992px){
-	.container {
-	    width: 970px;
-	}
-}
-
-@media (min-width: 1200px){
-	.container {
-	    width: 1170px;
-	}
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
 }

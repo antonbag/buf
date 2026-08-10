@@ -128,7 +128,9 @@ if ($imageUrl == '') {
                 </div>
             
                 <?php else : ?>
-                    <?php echo LayoutHelper::render('joomla.content.intro_image', $this->item, null, ['class' => 'img-fluid']); ?>
+                    <a href="<?php echo Route::_(RouteHelper::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
+                        <?php echo LayoutHelper::render('joomla.content.intro_image', $this->item); ?>
+                    </a>
                 <?php endif; ?>
             </div>
         <?php endif; ?>

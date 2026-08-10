@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -14,7 +16,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 
 //no direct access
@@ -23,11 +24,11 @@ defined('_JEXEC') or die;
 class BufFaviconsField extends FormField
 {
     protected $type = 'BufFavicons';
-    protected function getInput()
+    protected function getInput(): string
     {
         $jinput = Factory::getApplication()->input;
 
-        $templateid = $jinput->get('id');
+        $templateid = $jinput->getInt('id', 0);
         $params = new Registry($this->form->getData("data")->get('params'));
 
         $svg_image = HTMLHelper::cleanImageURL($params->get('buf_favicon_svg', ''));
@@ -42,7 +43,7 @@ class BufFaviconsField extends FormField
             data.append( 'upload_file_svg', jQuery('#jform_params_buf_favicon_svg')[0].files[0]);
           }
 
-          data.append( 'token', '" . Session::getFormToken() . "');
+          data.append( 'token', '" . Factory::getApplication()->getFormToken() . "');
           data.append( 'templateid', '" . $templateid . "');
           data.append( 'buf_layout', '" . $params->get('buf_layout', 'default') . "');
 
@@ -80,7 +81,7 @@ class BufFaviconsField extends FormField
         /** @var CMSApplication $app */
         $app = Factory::getApplication();
         $doc = $app->getDocument();
-        $doc->addCustomTag('<script type="text/javascript">' . $upload_svg . '</script>');
+        $doc->getWebAssetManager()->addInlineScript($upload_svg);
 
         //check plugins
         $favicons = '';
@@ -127,8 +128,8 @@ class BufFaviconsField extends FormField
         return $favicons;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
-        //return Text::_('TPL_BUF_CURRENT_FAVICON');
+        return '';
     }
 }

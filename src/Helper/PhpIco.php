@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -78,7 +80,7 @@ class PhpIco
      * @param array $sizes Optional. An array of sizes (each size is an array with a width and height) that the source image should be rendered at in the generated ICO file. If sizes are not supplied, the size of the source image will be used.
      * @return boolean true on success and false on failure.
      */
-    public function addImage($file, $sizes = array())
+    public function addImage($file, $sizes = array()): bool
     {
         if (!$this->_has_requirements) {
             return false;
@@ -98,7 +100,7 @@ class PhpIco
         }
 
         foreach ((array) $sizes as $size) {
-            list($width, $height) = $size;
+            [$width, $height] = $size;
 
             $new_im = imagecreatetruecolor($width, $height);
 
@@ -125,7 +127,7 @@ class PhpIco
      * @param string $file Path to save the ICO file data into.
      * @return boolean true on success and false on failure.
      */
-    public function save_ico($file)
+    public function save_ico($file): bool
     {
         if (!$this->_has_requirements) {
             return false;

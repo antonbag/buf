@@ -1,6 +1,24 @@
 //v4.0.34
 var buf_editor;
 
+function get_buf_editor_wrapper() {
+    return document.querySelector('joomla-editor-codemirror, joomla-editor-none');
+}
+
+function create_textarea_editor_adapter(textarea) {
+    return {
+        getValue: function () {
+            return textarea.value;
+        },
+        setValue: function (value) {
+            textarea.value = value;
+        },
+        focus: function () {
+            textarea.focus();
+        }
+    };
+}
+
 
 
 //update to vanilla
@@ -9,18 +27,37 @@ document.addEventListener('DOMContentLoaded', function () {
  
 
     function when_external_loaded (callback) {
-        if (typeof Joomla.editors.instances.jform_params_scss_editor === 'undefined' || document.querySelectorAll('joomla-editor-codemirror').length == 0) {
+                var textarea = document.getElementById('jform_params_scss_editor');
+                var editorInstance = Joomla.editors && Joomla.editors.instances ? Joomla.editors.instances.jform_params_scss_editor : undefined;
+                var editorWrapper = get_buf_editor_wrapper();
+
+                if (!textarea) {
+                    setTimeout (function () {
+                        when_external_loaded (callback);
+                    }, 500); // wait 100 ms
+                    return;
+                }
+
+                if (typeof editorInstance === 'undefined' && editorWrapper !== null) {
           setTimeout (function () {
             when_external_loaded (callback);
           }, 500); // wait 100 ms
-        } else { callback ();}
+                } else { callback ();}
       }
 
     when_external_loaded (function () {
 
-        document.getElementById('jform_params_scss_editor').setAttribute('name', 'cleaned_editor');
+        var textarea = document.getElementById('jform_params_scss_editor');
+
+        if (!textarea) {
+            return;
+        }
+
+        textarea.setAttribute('name', 'cleaned_editor');
         
-        buf_editor = Joomla.editors.instances.jform_params_scss_editor;
+        buf_editor = Joomla.editors && Joomla.editors.instances && Joomla.editors.instances.jform_params_scss_editor
+            ? Joomla.editors.instances.jform_params_scss_editor
+            : create_textarea_editor_adapter(textarea);
 
         buf_load_sccs_file();
         buf_handle_create_button();
@@ -55,7 +92,13 @@ function buf_load_sccs_file(){
 
     //Insert save
     var buttons = $('.buf_scss_toolbar');
-    buttons.insertBefore( $("joomla-editor-codemirror") );
+    var editorWrapper = $('joomla-editor-codemirror, joomla-editor-none').first();
+
+    if (editorWrapper.length) {
+        buttons.insertBefore(editorWrapper);
+    } else {
+        buttons.insertBefore($('#jform_params_scss_editor'));
+    }
     $('.buf_tb_icon').hide("fast");
 
     // Manejo de cambios en los radio buttons de layout files

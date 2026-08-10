@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package BUF Framework
  * @author jtotal https://jtotal.org
- * @copyright Copyright (c) 2005 - 2021 jtotal
+ * @copyright Copyright (c) 2005 - 2026 jtotal
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
  */
 
@@ -11,6 +13,7 @@ namespace Jtotal\BUF\Site\Helper;
 
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 // no direct access
@@ -65,7 +68,7 @@ class BufOffcanvas
         /****************************************************/
         /******** CUSTOM MODULES IN CANVAS  *****************/
         $buf_offcanvas_modules = '';
-        if (!empty($buf_offcanvas_positions || !empty($buf_offcanvas_loadmodules))) {
+        if (!empty($buf_offcanvas_positions) || !empty($buf_offcanvas_loadmodules)) {
             $buf_offcanvas_modules .= '<div class="offcanvas_module_in">';
 
             if (!empty($buf_offcanvas_positions)) {
@@ -91,30 +94,12 @@ class BufOffcanvas
 
 
         //TOPBAR IN OFFCANVAS
+        // (getDefaultOffCanvas()/getBootstrapOffCanvas() derivan sus propias variables
+        // a partir de este Registry vía self::buildTopbarOcContext(); no se necesita
+        // más que construirlo aquí.)
         ///////////////////////
         $buf_topbar_oc = new Registry;
         $buf_topbar_oc->loadString(json_encode($templateparams->get('buf_topbar_oc')));
-
-        $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-        $buf_topbar_oc_logo_img = $buf_topbar_oc->get('buf_topbar_logo', '');
-        $buf_topbar_oc_logo_fallback = $buf_topbar_oc->get('buf_topbar_logo_fallback', '');
-        $buf_topbar_oc_logo_alt = $buf_topbar_oc->get('buf_topbar_logo_alt', 'logo');
-        $buf_topbar_oc_logo_pos = $buf_topbar_oc->get('buf_topbar_logo_pos', "l");
-        $buf_topbar_oc_height = $buf_topbar_oc->get('buf_topbar_height', '90');
-        $buf_topbar_oc_color = $buf_topbar_oc->get('buf_topbar_color', '#fff');
-        $buf_topbar_oc_module = $buf_topbar_oc->get('buf_topbar_module', '');
-
-        $buf_topbar_oc_classes = '';
-        $buf_topbar_oc_logo = '';
-
-        if ($buf_topbar_oc_on) {
-            $buf_topbar_oc_classes .= 'buf_topbar_oc_on';
-        }
-
-        //logo show
-        if ($buf_topbar_oc->get('buf_topbar_image_show', '0')) {
-            $buf_topbar_oc_logo = self::getTopBarImages($buf_topbar_oc);
-        }
 
         ///////////////////////
         //OFFCANVAS BUTTON
@@ -122,11 +107,6 @@ class BufOffcanvas
         $oc_button = new Registry;
         $oc_button->loadString(json_encode($templateparams->get('buf_oc_button')));
         $oc_button->set('buf_offcanvas_selector', $buf_offcanvas_selector);
-
-        $buf_topbar_oc_on = $templateparams->get('buf_topbar_oc_on', 0);
-        $buf_topbar_oc_classes = $templateparams->get('buf_topbar_oc_classes', 'default-topbar-oc-class'); // Proporciona una clase por defecto si es necesario
-        $buf_topbar_oc_module = $templateparams->get('buf_topbar_oc_module', ''); // Posición del módulo
-
 
         // --- Iniciar buffer de salida para capturar el HTML ---
         ob_start();
@@ -154,27 +134,43 @@ class BufOffcanvas
         return $html;
     }
 
+    /**
+     * Deriva del Registry de topbar-en-offcanvas los valores que necesita el marcado
+     * (activo, clases CSS, logo ya renderizado y módulo asociado). Único punto de esta
+     * derivación: antes estaba duplicada literalmente en getDefaultOffCanvas() y
+     * getBootstrapOffCanvas().
+     *
+     * @return array{on: bool, classes: string, logo: string, module: string}
+     */
+    private static function buildTopbarOcContext(Registry $buf_topbar_oc): array
+    {
+        $on = (bool) $buf_topbar_oc->get('buf_topbar_on', 0);
+        $module = $buf_topbar_oc->get('buf_topbar_module', '');
+        $logo = $buf_topbar_oc->get('buf_topbar_image_show', '0')
+            ? self::getTopBarImages($buf_topbar_oc)
+            : '';
+
+        return [
+            'on' => $on,
+            'classes' => $on ? 'buf_topbar_oc_on' : '',
+            'logo' => $logo,
+            'module' => $module,
+        ];
+    }
+
     private static function getDefaultOffCanvas($templateparams, $buf_topbar_oc, $buf_offcanvas_modules)
     {
 
         $buf_offcanvas_style = $templateparams->get('buf_offcanvas_style', 'slide');
         $buf_offcanvas_position = $templateparams->get('buf_offcanvas_position', 'left');
 
-        $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-        $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-        $buf_topbar_oc_module = $buf_topbar_oc->get('buf_topbar_module', '');
+        [
+            'on' => $buf_topbar_oc_on,
+            'classes' => $buf_topbar_oc_classes,
+            'logo' => $buf_topbar_oc_logo,
+            'module' => $buf_topbar_oc_module,
+        ] = self::buildTopbarOcContext($buf_topbar_oc);
 
-        $buf_topbar_oc_classes = '';
-        $buf_topbar_oc_logo = '';
-
-        if ($buf_topbar_oc_on) {
-            $buf_topbar_oc_classes .= 'buf_topbar_oc_on';
-        }
-
-        //logo show
-        if ($buf_topbar_oc->get('buf_topbar_image_show', '0')) {
-            $buf_topbar_oc_logo = self::getTopBarImages($buf_topbar_oc);
-        }
         ob_start();
         ?>
         <div id="buf_offcanvas" aria-modal="true" role="dialog" aria-label="offcanvas" tabindex="-1"
@@ -243,23 +239,10 @@ class BufOffcanvas
         //offcanvas max width match with breakpoint
         $buf_offcanvas_max_w = $grid_breakpoints[$check_breakpoint];
 
-
-        $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-        $buf_topbar_oc_on = $buf_topbar_oc->get('buf_topbar_on', 0);
-        $buf_topbar_oc_module = $buf_topbar_oc->get('buf_topbar_module', '');
-
-        $buf_topbar_oc_classes = '';
-        $buf_topbar_oc_logo = '';
-
-        if ($buf_topbar_oc_on) {
-            $buf_topbar_oc_classes .= 'buf_topbar_oc_on';
-        }
-
-        //logo show
-        if ($buf_topbar_oc->get('buf_topbar_image_show', '0')) {
-            $buf_topbar_oc_logo = self::getTopBarImages($buf_topbar_oc);
-        }
-
+        // Nota: la cabecera del offcanvas se delega en BufTopBar::getTopBar() más abajo,
+        // que deriva sus propias variables desde $buf_topbar. No se necesita duplicar
+        // aquí esa derivación (ver getDefaultOffCanvas() / buildTopbarOcContext() para
+        // el caso en que sí hace falta, en la variante sin Bootstrap).
 
         $buf_offcanvas_bs_scroll = ($templateparams->get('buf_offcanvas_bs_scroll', 0)) ? 'data-bs-scroll="true"' : '';
         $buf_offcanvas_bs_backdrop = ($templateparams->get('buf_offcanvas_bs_backdrop', 0)) ? 'data-bs-backdrop="true"' : 'data-bs-backdrop="false"';
@@ -287,14 +270,14 @@ class BufOffcanvas
         <div class="offcanvas <?php echo $buf_offcanvas_bs_position; ?>"
             tabindex="-1"
             id="bsOffcanvas"
-            aria-labelledby="bufOffcanvasBsLabel"
+            inert
+            aria-label="<?php echo Text::_('TPL_BUF_OFFCANVAS_LABEL'); ?>"
             <?php echo $buf_offcanvas_bs_scroll; ?>
             <?php echo $buf_offcanvas_bs_backdrop; ?>
             <?php echo $buf_offcanvas_bs_static_backdrop; ?>>
 
-
             <?php
-            echo BufTopBar::getTopBar('buf_topbar_oc', $buf_topbar, $buf_offcanvas_max_w);
+                echo BufTopBar::getTopBar('buf_topbar_oc', $buf_topbar, $buf_offcanvas_max_w, Text::_('TPL_BUF_OFFCANVAS_TOPBAR_MOBILE_LABEL'));
             ?>
 
             <?php
@@ -348,9 +331,9 @@ class BufOffcanvas
         ob_start();
         ?>
 
-        <button type="button" tabindex="0" id="bufoc_button"
+        <button type="button" id="bufoc_button"
             class="hamburger hamburger--<?php echo htmlspecialchars($buf_oc_button_style, ENT_QUOTES, 'UTF-8') . htmlspecialchars($buf_oc_reverse, ENT_QUOTES, 'UTF-8'); ?> oc_button_vpos_<?php echo htmlspecialchars($buf_oc_button_vpos, ENT_QUOTES, 'UTF-8'); ?> oc_button_hpos_<?php echo htmlspecialchars($buf_oc_button_hpos, ENT_QUOTES, 'UTF-8'); ?>"
-            aria-label="Menu" aria-controls="buf_offcanvas" aria-expanded="false" <?php echo $buf_oc_button_bs_tags; ?>>
+            aria-label="<?php echo htmlspecialchars(Text::_('TPL_BUF_OFFCANVAS_TOGGLE'), ENT_QUOTES, 'UTF-8'); ?>" aria-controls="buf_offcanvas" aria-expanded="false" <?php echo $buf_oc_button_bs_tags; ?>>
             <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
             </span>
@@ -374,9 +357,9 @@ class BufOffcanvas
         ob_start();
         ?>
 
-        <button type="button" tabindex="0" id="bufoc_button"
+        <button type="button" id="bufoc_button"
             class="hamburger hamburger--<?php echo htmlspecialchars($buf_oc_button_style, ENT_QUOTES, 'UTF-8') . htmlspecialchars($buf_oc_reverse, ENT_QUOTES, 'UTF-8'); ?> oc_button_vpos_<?php echo htmlspecialchars($buf_oc_button_vpos, ENT_QUOTES, 'UTF-8'); ?> oc_button_hpos_<?php echo htmlspecialchars($buf_oc_button_hpos, ENT_QUOTES, 'UTF-8'); ?>"
-            aria-label="Menu" aria-controls="buf_offcanvas" aria-expanded="false" <?php echo $buf_oc_button_bs_tags; ?>>
+            aria-label="<?php echo htmlspecialchars(Text::_('TPL_BUF_OFFCANVAS_TOGGLE'), ENT_QUOTES, 'UTF-8'); ?>" aria-controls="bsOffcanvas" aria-expanded="false" <?php echo $buf_oc_button_bs_tags; ?>>
             <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
             </span>
@@ -388,69 +371,74 @@ class BufOffcanvas
     }
 
 
-    public static function getTopBarImages($buf_topbar)
+    public static function getTopBarImages($buf_topbar): ?string
     {
-
-        $buf_topbar_classes = '';
         $buf_topbar_logo = '';
 
-        //logo
+        // Logo: al menos uno de los dos debe existir
         if ($buf_topbar->get('buf_topbar_logo', '') == '' && $buf_topbar->get('buf_topbar_logo_fallback', '') == '') {
-            return;
+            return null;
         }
 
-        $buf_topbar_logo_img = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo', ''));
+        $buf_topbar_logo_img      = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo', ''));
         $buf_topbar_logo_fallback = HTMLHelper::cleanImageURL($buf_topbar->get('buf_topbar_logo_fallback', ''));
 
-        //check path
-        if ($buf_topbar->get('buf_topbar_logo', '') != '') {
-            if (!is_file($buf_topbar_logo_img->url)) {
-                return;
-            }
+        // Verificar existencia de archivos
+        if ($buf_topbar->get('buf_topbar_logo', '') != '' && !is_file($buf_topbar_logo_img->url)) {
+            return null;
+        }
+        if ($buf_topbar->get('buf_topbar_logo_fallback', '') != '' && !is_file($buf_topbar_logo_fallback->url)) {
+            return null;
         }
 
-        if ($buf_topbar->get('buf_topbar_logo_fallback', '') != '') {
-            if (!is_file($buf_topbar_logo_fallback->url)) {
-                return;
-            }
+        // Cachear mime types (evitar múltiples llamadas al sistema de archivos)
+        $mime_main     = $buf_topbar_logo_img->url     != '' ? mime_content_type($buf_topbar_logo_img->url)     : '';
+        $mime_fallback = $buf_topbar_logo_fallback->url != '' ? mime_content_type($buf_topbar_logo_fallback->url) : '';
+
+        $alt        = htmlspecialchars($buf_topbar->get('buf_topbar_logo_alt', 'logo'));
+        $logo_pos   = $buf_topbar->get('buf_topbar_logo_pos', 'l');
+        $w100_class = $buf_topbar->get('buf_topbar_module', '') == '' ? 'w100' : '';
+        $has_source = $buf_topbar_logo_img->url != '' && $buf_topbar_logo_fallback->url != '';
+
+        $buf_topbar_logo .= '<div class="buf_topbar_logo pos_' . $logo_pos . ' ' . $w100_class . '">';
+        $buf_topbar_logo .= '<a href="/index.php" aria-label="' . htmlspecialchars(Text::_('TPL_BUF_TOPBAR_HOME'), ENT_QUOTES, 'UTF-8') . '">';
+
+        // Usar <picture> solo cuando hay source + fallback
+        if ($has_source) {
+            $buf_topbar_logo .= '<picture>';
+            $buf_topbar_logo .= '<source type="' . $mime_main . '" srcset="' . $buf_topbar_logo_img->url . '">';
         }
 
-        $buf_topbar_logo .= '<div class="buf_topbar_logo pos_' . $buf_topbar->get('buf_topbar_logo_pos', "l") . ' ' . (($buf_topbar->get('buf_topbar_module', '') == "" ? "w100" : "")) . '">';
-        $buf_topbar_logo .= '<a href="index.php">';
-
-        $buf_topbar_logo .= '<picture>';
-
-        //svg
-        if ($buf_topbar_logo_img->url != '' && $buf_topbar_logo_fallback->url != '') {
-            $buf_topbar_logo .= '<source type="' . mime_content_type($buf_topbar_logo_img->url) . '" srcset="' . $buf_topbar_logo_img->url . '">';
+        // <img>: fallback si existe, de lo contrario imagen principal
+        if ($buf_topbar_logo_fallback->url != '') {
+            $buf_topbar_logo .= '<img'
+                . ' class="img-fluid"'
+                . ' src="' . $buf_topbar_logo_fallback->url . '"'
+                . ' alt="' . $alt . '"'
+                . ' width="' . $buf_topbar_logo_fallback->attributes['width'] . '"'
+                . ' height="' . $buf_topbar_logo_fallback->attributes['height'] . '"'
+                . '>';
+        } else {
+            // Solo imagen principal, sin fallback
+            $width_height = ($mime_main != 'image/svg+xml')
+                ? ' width="' . $buf_topbar_logo_img->attributes['width'] . '"'
+                . ' height="' . $buf_topbar_logo_img->attributes['height'] . '"'
+                : '';
+            $buf_topbar_logo .= '<img'
+                . ' class="img-fluid"'
+                . ' src="' . $buf_topbar_logo_img->url . '"'
+                . ' alt="' . $alt . '"'
+                . $width_height
+                . '>';
         }
 
-        //fallback
-        if ($buf_topbar_logo_fallback->url == '' && $buf_topbar_logo_img->url != '') {
-            $buf_topbar_logo .= '<img class="img-fluid" type="' . mime_content_type($buf_topbar_logo_img->url) . '" src=' . $buf_topbar_logo_img->url . ' alt="' . $buf_topbar->get('buf_topbar_logo_alt', 'logo') . '"';
-            if (mime_content_type($buf_topbar_logo_img->url) != 'image/svg+xml') {
-                $buf_topbar_logo .= 'width="' . $buf_topbar_logo_img->attributes['width'] . '"
-                        height="' . $buf_topbar_logo_img->attributes['height'] . '"';
-            }
-            $buf_topbar_logo .= '/>';
-        } else if ($buf_topbar_logo_fallback->url != '') {
-            $buf_topbar_logo .= '<img
-                        class="img-fluid"
-                        type="' . mime_content_type($buf_topbar_logo_fallback->url) . '"
-                        src=' . $buf_topbar_logo_fallback->url . '
-                        alt="' . $buf_topbar->get('buf_topbar_logo_alt', 'logo') . '"
-                        width="' . $buf_topbar_logo_fallback->attributes['width'] . '"
-                        height="' . $buf_topbar_logo_fallback->attributes['height'] . '"
-                    />';
+        if ($has_source) {
+            $buf_topbar_logo .= '</picture>';
         }
-
-        $buf_topbar_logo .= '</picture>';
 
         $buf_topbar_logo .= '</a>';
         $buf_topbar_logo .= '</div>';
 
         return $buf_topbar_logo;
     }
-
-
 }

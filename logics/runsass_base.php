@@ -40,7 +40,7 @@ if ($base_css_exists == false || $runless == '1' || $buf_edit_base == '1') {
 
     require_once JPATH_BASE . '/templates/' . $this->template . '/src/loadphpscss_base.php';
 } else {
-    var_dump($base_css_exists);
-    var_dump($runless);
-    var_dump($buf_edit_base);
+    //var_dump("base_css_exists: " . $base_css_exists);
+    //var_dump("runless: " . $runless);
+    //var_dump("buf_edit_base: " . $buf_edit_base);
 }

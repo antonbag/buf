@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package BUF Framework
  * @author jtotal https://jtotal.org
@@ -32,7 +34,7 @@ class BufCheckPhp
      * @return  void
      * @since   1.0
      */
-    public static function checkPhpVersion()
+    public static function checkPhpVersion(): void
     {
      
         $jversion = BufHelper::getJVersion();

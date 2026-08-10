@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package BUF Framework
  * @author jtotal https://jtotal.org
@@ -12,7 +14,6 @@ namespace Jtotal\BUF\Site\Helper;
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 
@@ -24,7 +25,7 @@ use Joomla\Registry\Registry;
 class BufTopBar
 {
 
-    public static function getTopBar(string $id, Registry $buf_topbar, $buf_offcanvas_max_w = '992'): string
+    public static function getTopBar(string $id, Registry $buf_topbar, $buf_offcanvas_max_w = '992', $aria_label = "Topbar"): string
     {
 
         $buf_topbar_on = $buf_topbar->get('buf_topbar_on', 0);
@@ -55,9 +56,13 @@ class BufTopBar
         $buf_show_on_scroll_class = '';
         if ($buf_topbar_show_on_scroll) {
             $buf_show_on_scroll_class = ' buf_show_on_scroll';
-            if ($buf_show_on_scroll_onlymobile) {
-                $buf_show_on_scroll_class .= ' buf_show_on_scroll_only_mobile';
-            }
+        }
+
+        // "Sólo móvil" controla la VISIBILIDAD de la barra (se oculta por CSS
+        // por encima del breakpoint móvil), no el efecto de scroll: por eso es
+        // independiente de $buf_topbar_show_on_scroll.
+        if ($buf_show_on_scroll_onlymobile) {
+            $buf_show_on_scroll_class .= ' buf_show_on_scroll_only_mobile';
         }
 
 
@@ -73,8 +78,8 @@ class BufTopBar
         ob_start();
         ?>
 
-        <nav id="<?php echo $id; ?>" role="navigation" aria-label="Topbar"
-            role="banner" aria-disabled="true"
+        <nav id="<?php echo $id; ?>" aria-label="<?php echo $aria_label; ?>"
+            <?php //echo 'aria-disabled="true"'; ?>
             class="<?php echo $buf_topbar_classes . ' ' . $buf_show_on_scroll_class; ?>"
             data-mobile="<?php echo $buf_offcanvas_max_w; ?>">
             <?php
@@ -86,7 +91,6 @@ class BufTopBar
             ';
             }
             ?>
-
         </nav>
         <?php
         $html = ob_get_contents();

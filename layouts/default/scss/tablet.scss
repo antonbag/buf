@@ -1,8 +1,13 @@
-/*******************************/
-/*********   BUF   *************/
-/*******************************/
-/*******  TABLET style   *********/
-/*******************************/
-/*******************************/
-/******* 767PX  and upper *********/
+// BUF — layout: minimalist
+// TABLET — desde 768px
+// Se importa DENTRO de un @media: no anidar otro aquí.
 
+// Todavía no cabe cómodamente el menú horizontal: se sigue usando el
+// offcanvas. Se reactiva en laptop.scss (>= 992px).
+.site-header__nav {
+    display: none;
+}
+
+#contents {
+    padding-top: 2rem;
+}

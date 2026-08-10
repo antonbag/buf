@@ -3,7 +3,7 @@
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
- * @copyright       Copyright © 2025 JTOTAL All Rights Reserved
+ * @copyright       Copyright © 2005 - 2026 JTOTAL All Rights Reserved
  * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Jtotal\BUF\Site\Helper\BufFavicon;
 use Jtotal\BUF\Site\Helper\BufHelper;
@@ -24,65 +25,23 @@ include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-
-    <jdoc:include type="metas" />
-    
     <?php
-    //PRELOAD
-    echo $head_preload;
+    $headDebugService = 'index.php';
+    include JPATH_THEMES . '/' . $this->template . '/logics/head_common.php';
     ?>
-
-    <?php
-    if ($webapp_capable) {
-        echo '<meta name="mobile-web-app-capable" content="yes">';
-    }
-    ?>
-    
-    <?php
-    //BASE CSS
-    $baseCssPath = JPATH_SITE . '/cache/buf_' . $buf_layout . '/base.css';
-
-    if (is_file($baseCssPath) && filesize($baseCssPath) < 14336) {
-        echo '<style id="buf_style_base">';
-        echo file_get_contents($baseCssPath);
-        if ($runless == '1' && $remaining_minutes > 0) {
-            echo "#superwrapper{padding-bottom:48px}";
-        }
-        echo '</style>';
-        $buf_debug +=  BufHelper::addDebug('BASE CSS style', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
-    } else {
-        $wa->registerAndUseStyle(
-            'buf.base',
-            'cache/buf_' . $buf_layout . '/base.css',
-            ['version' => filemtime($baseCssPath)],
-            ['defer' => false]
-        );
-        $buf_debug +=  BUFHelper::addDebug('BASE CSS $wa', 'thumbs-up', 'LOADED', $startmicro, 'table-success', 'index.php');
-    }
-    ?>
-
-    <?php
-        //PRELOAD
-        echo $buf_load_resources;
-    ?>
-
-    <jdoc:include type="styles" />
-    <jdoc:include type="scripts" />
-
 
     <?php //FAVICONS ?>
-    <?php echo BufFavicon::addFaviconLinks(); ?>
+    <?php BufFavicon::addFaviconLinks(); ?>
 
     <?php //cache control ?>
     <?php echo $buf_cache_control; ?>
 
 </head>
 
-<body class="<?php echo implode(" ", $bodyclass); ?> buf_offcanvas_hidden" role="document">
+<body class="<?php echo implode(" ", $bodyclass); ?> buf_offcanvas_hidden">
 
     <?php
-        echo BufTopBar::getTopBar('buf_topbar', $buf_topbar, $buf_offcanvas_max_w);
+        echo BufTopBar::getTopBar('buf_topbar', $buf_topbar, $buf_offcanvas_max_w, Text::_('TPL_BUF_OFFCANVAS_TOPBAR_LABEL'));
     ?>
    
     <?php
@@ -152,7 +111,7 @@ include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
     <?php //BG ?>
     <?php if ($buf_bg_img) : ?>
         <div class="bg">
-            <img src="<?php echo $buf_bg_img ?>" alt="background-image" />
+            <img src="<?php echo htmlspecialchars((string) $buf_bg_img, ENT_QUOTES, 'UTF-8'); ?>" alt="" loading="lazy" decoding="async" aria-hidden="true" />
         </div>
     <?php endif; ?>
 

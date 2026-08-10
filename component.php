@@ -2,21 +2,21 @@
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
- * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @copyright       Copyright © 2005 - 2026 JTOTAL All Rights Reserved
  * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 include_once JPATH_THEMES . '/' . $this->template . '/logics/logic_base.php';
 
 // variables
-$doc = Factory::getDocument();
+$app   = Factory::getApplication();
+$doc   = $app->getDocument();
 $tpath = $this->baseurl . '/templates/' . $this->template;
-$app  = Factory::getApplication();
 
 // generator tag
 $this->setGenerator(null);
@@ -29,7 +29,7 @@ if (file_exists($tpath_abs . '/layouts/' . $buf_layout . '/component.php')) {
 
 //load sheets and scripts
 if (File::exists($cachepath . 'print.css')) {
-    $doc->addStyleSheet($cache_tpath . '/css/print.css?v=1');
+    $doc->getWebAssetManager()->registerAndUseStyle('buf.print', $cache_tpath . '/css/print.css', ['version' => '1']);
 }
 
 ?><!doctype html>
@@ -37,20 +37,18 @@ if (File::exists($cachepath . 'print.css')) {
 <html lang="<?php echo $this->language; ?>">
 
 <head>
-  <jdoc:include type="head" />
-      <style id="buf_style_base">
-        <?php 
-            //avoid error on load
-            echo file_get_contents('cache/buf/base.css');
-            //TEMPLATE BASE CSS
-        ?>
-    </style>
+    <?php
+    $headDebugService = 'component.php';
+    include JPATH_THEMES . '/' . $this->template . '/logics/head_common.php';
+    ?>
+
+    <?php //cache control ?>
+    <?php echo $buf_cache_control; ?>
 </head>
 
-<body class="<?php echo $browserType . '  tmpl_document ' .
-    (($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')) . ' 
-    ' . $active->alias . ' ' . $pageclass . ' ' . $docalias; ?>" 
-    role="document"
+<body class="<?php echo 'tmpl_document ' .
+    (($menu->getActive() == $menu->getDefault()) ? ('front') : ('site')) . '
+    ' . $active->alias . ' ' . $pageclass . ' ' . $docalias; ?>"
 >
 
     <div class="contenidos wrapper row">

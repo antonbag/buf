@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @package BUF Framework
  * @author jtotal https://jtotal.org
@@ -32,6 +34,7 @@ try {
     }
 
 
+    $base_common_imports .= '$buf_offcanvas_max_w:' . $buf_offcanvas_max_w . 'px;';
     $base_common_imports .= '$buf_topbar_height:' . $buf_topbar_height . 'px;';
     $base_common_imports .= '$buf_topbar_oc_height:' . $buf_topbar_oc_height . 'px;';
     $base_common_imports .= '@import "base_common.scss";';
@@ -62,7 +65,5 @@ try {
 
     $buf_debug += BufHelper::addDebug('BASE css', 'css3-alt fab', 'css base compiled', $startmicro, 'table-default', 'logic_base.php');
 } catch (\Exception $e) {
-    echo 'Error compilando SCSS: ' . $e->getMessage();
-    syslog(LOG_ERR, 'scssphp: Unable to compile content - ' . $e->getMessage());
-    var_dump('scssphp: Unable to compile content');
+    \Joomla\CMS\Log\Log::add('BUF SCSS compile error: ' . $e->getMessage(), \Joomla\CMS\Log\Log::ERROR, 'buf');
 }

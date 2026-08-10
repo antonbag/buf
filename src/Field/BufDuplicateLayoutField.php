@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -11,7 +13,7 @@ namespace Jtotal\BUF\Site\Field;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Version;
+use Jtotal\BUF\Site\Helper\BufHelper;
 
 //no direct access
 defined('_JEXEC') or die;
@@ -20,7 +22,7 @@ class BufDuplicateLayoutField extends FormField
 {
     protected $type = 'BufDuplicateLayout';
 
-    protected function getInput()
+    protected function getInput(): string
     {
 
         //$app = JFactory::getApplication();
@@ -28,11 +30,10 @@ class BufDuplicateLayoutField extends FormField
 
         $tpath = JPATH_SITE . '/templates/';
 
-        $input = $app->input;
+        $input = $app->getInput();
         $template_id = $input->get('id', 0, 'INT');
 
-        $jversion_api = new Version();
-        $jversion = substr($jversion_api->getShortVersion(), 0, 1);
+        $jversion = BufHelper::getJVersion();
 
         //toolbar
         $toolbar = '';
@@ -73,7 +74,7 @@ class BufDuplicateLayoutField extends FormField
         return $toolbar;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return Text::_('TPL_BUF_LAYOUT_TOOLS');
     }

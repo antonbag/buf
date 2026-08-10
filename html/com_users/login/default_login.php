@@ -86,7 +86,7 @@ $usersConfig = ComponentHelper::getParams('com_users');
                                             title="<?php echo Text::_($button['label']) ?>"
                                             id="<?php echo $button['id'] ?>">
                                         <?php if (!empty($button['icon'])) : ?>
-                                            <span class="<?php echo $button['icon'] ?>">asdf</span>
+                                            <span class="<?php echo $button['icon'] ?>" aria-hidden="true"></span>
                                         <?php elseif (!empty($button['image'])) : ?>
                                             <?php echo HTMLHelper::_('image', $button['image'], Text::_($button['tooltip'] ?? ''), ['class' => 'icon'], true); ?>
                                         <?php elseif (!empty($button['svg'])) : ?>

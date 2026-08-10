@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -66,7 +68,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         switch ($name) {
             case 'layoutField':
@@ -89,7 +91,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    public function __get($name)
+    public function __get($name): mixed
     {
         switch ($name) {
             case 'layoutField':
@@ -112,7 +114,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    public function setup(\SimpleXMLElement $element, $value, $group = null): bool
     {
         $return = parent::setup($element, $value, $group);
 
@@ -142,7 +144,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         $options = [];
 
@@ -203,7 +205,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    protected function getBufLayoutValue()
+    protected function getBufLayoutValue(): string
     {
         $layoutValue = '';
 
@@ -245,7 +247,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    protected function buildBufLayoutElementsPath($layoutValue)
+    protected function buildBufLayoutElementsPath($layoutValue): string
     {
         if (!$layoutValue) {
             return null;
@@ -269,7 +271,7 @@ class BufElementListField extends FilelistField
      *
      * @since   1.0.0
      */
-    protected function getDefaultOptions()
+    protected function getDefaultOptions(): array
     {
         $options = [];
 

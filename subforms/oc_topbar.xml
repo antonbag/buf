@@ -30,7 +30,8 @@
         class="btn-group"
         layout="joomla.form.field.radio.switcher"
         label="TPL_BUF_TOPBAR_SHOW_ON_SCROLL_ONLYMOBILE"
-        showon="buf_topbar_on:1[AND]buf_show_on_scroll:1"
+        description="TPL_BUF_TOPBAR_SHOW_ON_SCROLL_ONLYMOBILE_DESC"
+        showon="buf_topbar_on:1"
         >
         <option value="0">JNO</option>
         <option value="1">JYES</option>

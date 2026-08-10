@@ -2,7 +2,7 @@
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
- * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @copyright       Copyright © 2005 - 2026 JTOTAL All Rights Reserved
  * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
@@ -10,10 +10,8 @@ declare(strict_types=1);
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Jtotal\BUF\Site\Helper\BufCheckPhp;
@@ -28,7 +26,7 @@ $buf_debug += BufHelper::addDebug('START', 'flag-checkered', 'start', $startmicr
 $app = $this->app ?? Factory::getApplication();
 $doc = $app->getDocument();
 $session = $app->getSession();
-$jinput = $app->input;
+$jinput = $app->getInput();
 
 //WEB ASSET
 $wa = $this->getWebAssetManager();
@@ -60,7 +58,7 @@ $check_jtlibs = BufHelper::getExtensionVersion('jtlibs', '');
 if (!$check_jtlibs || $check_jtlibs == '1.0.0') {
     $app->enqueueMessage('
     <strong>JT libs required.</strong>
-    Please, <a href="'.JPATH_ADMINISTRATOR.'/index.php?option=com_installer&view=update" class="btn btn-default">update</a>
+    Please, <a href="index.php?option=com_installer&view=update" class="btn btn-default">update</a>
     or
     <a href="https://users.jtotal.org/SOFT/framework/JTlibs/jtlibs_current.zip" target="_blank" class="btn btn-default">Download</a> </span>
     ', 'error');
@@ -97,10 +95,10 @@ $buf_load_layout_js = $templateparams->get('buf_load_layout_js', 1);
 
 //PATHS
 $tpath = $this->baseurl . '/templates/' . $this->template; //
-$opath = uri::base() . 'templates/' . $this->template;
+$opath = Uri::base() . 'templates/' . $this->template;
 $tpath_abs = JPATH_SITE . '/templates/buf';
 $tpath_media_abs = JPATH_SITE . '/media/templates/site/buf';
-$opath_media = uri::base() . 'media/templates/site/' . $this->template;
+$opath_media = Uri::base() . 'media/templates/site/' . $this->template;
 $layoutpath = JPATH_SITE . '/templates/buf/layouts/' . $buf_layout;
 $cachepath = JPATH_SITE . '/cache/buf_' . $buf_layout . '/';
 $cache_opath = 'cache/buf_' . $buf_layout . '/';
@@ -108,21 +106,13 @@ $cache_tpath = $this->baseurl . '/cache/buf_' . $buf_layout . '/';
 $libspath = JPATH_SITE . '/media/templates/site/buf/libs';
 $jtfw_libspath = JPATH_LIBRARIES . '/jtlibs';
 $libs_media_tpath = $this->baseurl . '/media/jtlibs';
-$libs_media_opath = uri::base() . 'media/jtlibs';
-$jconfig = Factory::getConfig();
+$libs_media_opath = Uri::base() . 'media/jtlibs';
 
-
-//GET BROWSER
-$browser = Browser::getInstance();
-$browserType = $browser->getBrowser();
-
-//  DETEC MOBILE
+// Detección de dispositivo por servidor retirada (mobiledetect eliminado, ver plan §4.7).
+// $ismobile queda fijo a false: el modo 'device' del offcanvas no activa nada; usar 'media'.
+// La conmutación real móvil/desktop la hace bufoc.js en el cliente vía media query.
 $ismobile = false;
 $detection = $templateparams->get('buf_offcanvas_detection', 'media');
-
-//DEVICE
-$body_mobile = ($ismobile ? 'device_mobile' : 'device_not_mobile');
-$body_mobile .= ' detecion_mode_' . $detection;
 
 $buf_debug_param = $templateparams->get('buf_debug', 0);
 $buf_anal_url = Uri::base() . 'templates/buf/js/analytics/buf_anal.js';
@@ -197,9 +187,8 @@ $buf_topbar_height = $buf_topbar->get('buf_topbar_height', '54');
 //TOPBAR JS
 $buf_topbar_show_on_scroll = $buf_topbar->get('buf_show_on_scroll', '');
 if ($buf_topbar_show_on_scroll) {
-    $buf_show_on_scroll_onlymobile = ($buf_topbar->get('buf_show_on_scroll_onlymobile', false) == true)  ? true : false;
+    // "Sólo móvil" no viaja a JS: es visibilidad por CSS (base_common.scss).
     $wa->useScript('topbar.js');
-    $doc->addScriptOptions('buf.config', ['buf_topbar_show_on_scroll' => $buf_show_on_scroll_onlymobile]);
 }
 
 //TOPBAR IN OFFCANVAS
@@ -328,7 +317,7 @@ $buf_load_css_async = $templateparams->get('buf_load_css_async', '0');
 
 ///////////////////////
 //COUNTER FOR RUNLESS MODE
-$remaining_minutes = 0;
+
 if ($runless == '1') {
     $session_key = 'buf_runless_timestamp';
     $runless_timestamp = $session->get($session_key);
@@ -336,26 +325,17 @@ if ($runless == '1') {
 
     $remaining_time = 1800 - ($current_time - $runless_timestamp);
     $remaining_minutes = ceil($remaining_time / 60);
+    $runless = 0;
     
     if (!$runless_timestamp) {
         $session->set($session_key, $current_time);
+
     } elseif (($current_time - $runless_timestamp) >= 1800) {
-        // Update runless to 2 in database
-        $db = Factory::getContainer()->get('DatabaseDriver');
-        $paramsArray = $templateparams->toArray();
-        $paramsArray['runless'] = '2';
-        $query = $db->getQuery(true)
-            ->update($db->quoteName('#__template_styles'))
-            ->set($db->quoteName('params') . ' = ' . $db->quote(
-                json_encode($paramsArray)
-            ))
-            ->where($db->quoteName('template') . ' = ' . $db->quote('buf'));
-        $db->setQuery($query)->execute();
-        
-        $session->set($session_key, null);
-        $runless = '2';
+        $runless = 2;
     }
+       
 }
+
 
 
 
@@ -378,13 +358,11 @@ if ($this->countModules('sidebar-right', true)) {
 }
 
 $bodyclass = [];
-$bodyclass[] = $browserType;
 $bodyclass[] = ($menu->getActive() == $menu->getDefault()) ? 'front' : 'site';
 $bodyclass[] = $active->alias;
 $bodyclass[] = $pageclass;
 $bodyclass[] = 'alias_' . $docalias;
 $bodyclass[] = $docalias;
-$bodyclass[] = $body_mobile;
 $bodyclass[] = 'menutype_' . $menutype;
 if ($superParentMenu != '') {
     $bodyclass[] = 'superParentMenu_' . $superParentMenu;
@@ -464,27 +442,31 @@ $preload_jquery_js = $templateparams->get('buf_optimize_preload_jquery', '0');
 
 
 
-
-
-
-
 /***************************/
 /***************************/
 /*******  JS jQUERY **********/
 /***************************/
 /***************************/
-$buf_jquery = $templateparams->get('buf_jquery', 2);
+// jQuery es opt-in (Joomla 6 lo minimiza); si no está seteado, no se carga.
+$buf_jquery = $templateparams->get('buf_jquery', 0);
 $jquery_path = '';
 
 //$buf_jquery == 1 = depcrated custom jquery
 if ($buf_jquery == 2 || $edit || $buf_jquery == 1) {
+
+
     $wa->getAsset('script', 'jquery');
 
     //defer
     $defer = BufHelper::check_defer_v4($templateparams->get('buf_jquery_defer', '0'));
-    foreach ($defer as $key => $v) {
-        //rel="defer" or rel="async"
-        $wa->getAsset('script', 'jquery')->setAttribute('rel', $v);
+
+    foreach ($defer as $attr => $value) {
+        $attribute = is_int($attr) ? $value : $attr;
+        $enabled = is_int($attr) ? true : (bool) $value;
+
+        if (in_array($attribute, ['defer', 'async'], true) && $enabled) {
+            $wa->getAsset('script', 'jquery')->setAttribute($attribute, true);
+        }
     }
 
     $jquery_path = $wa->getAsset('script', 'jquery')->getUri() . '?' . $wa->getAsset('script', 'jquery')->getVersion();
@@ -553,31 +535,37 @@ foreach ($buf_extra_custom_css as $key => $value) {
 $buf_extra_custom_js = new Registry($templateparams->get('buf_extra_custom_js'));
 $defer_custom_js = array();
 foreach ($buf_extra_custom_js as $key => $cus_js) {
-    if ($cus_js->buf_load_custom_js_script == '') {
+
+    $cus_js = new Registry($cus_js);
+
+    if ($cus_js->get('buf_load_custom_js_script') == '') {
         continue;
     }
 
-    $wa->registerScript('buf_extra_custom' . $key, $cus_js->buf_load_custom_js_script, [], []);
-
+    $wa->registerScript('buf_extra_custom' . $key, $cus_js->get('buf_load_custom_js_script', ''), [], []);
     //DEFER ASYNC
-    if ($cus_js->buf_js_defer == 1) {
+    if ($cus_js->get('buf_js_defer') == 1) {
         $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('defer', true);
-    } elseif ($cus_js->buf_js_defer == 2) {
+    } elseif ($cus_js->get('buf_js_defer') == 2) {
         $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute('async', true);
     }
 
     //PRECONNECT (only for external domains)
-    if ($cus_js->buf_js_preconnect) {
-        $parsed_url = parse_url($cus_js->buf_load_custom_js_script);
+    if ($cus_js->get('buf_js_preconnect')) {
+        $parsed_url = parse_url($cus_js->get('buf_load_custom_js_script'));
         if (isset($parsed_url['host']) && $parsed_url['host'] !== Uri::getInstance()->getHost()) {
             $origin = ($parsed_url['scheme'] ?? 'https') . '://' . $parsed_url['host'];
-            $this->getPreloadManager()->preconnect($origin, ['crossorigin' => 'anonymous']);
+            //$this->getPreloadManager()->preconnect($origin, ['crossorigin' => 'anonymous']);
+            $preloadManager = $this->getPreloadManager();
+            if ($preloadManager && method_exists($preloadManager, 'preconnect')) {
+                $preloadManager->preconnect($origin, ['crossorigin' => 'anonymous']);
+            }
         }
     }
 
     //CUSTOM ATTRIBS
-    if ($cus_js->buf_js_attribs != '') {
-        foreach ($cus_js->buf_js_attribs as $akey => $att) {
+    if ($cus_js->get('buf_js_attribs') != '') {
+        foreach ($cus_js->get('buf_js_attribs') as $akey => $att) {
             $wa->getAsset('script', 'buf_extra_custom' . $key)->setAttribute($att->buf_js_attrib_label, $att->buf_js_attrib_value);
             //to show in debug
             $defer_custom_js[$att->buf_js_attrib_label] = $att->buf_js_attrib_value;
@@ -586,10 +574,9 @@ foreach ($buf_extra_custom_js as $key => $cus_js) {
 
     $wa->useScript('buf_extra_custom' . $key);
 
-    $buf_debug += BufHelper::addDebug($key, 'code', '<strong>' . $cus_js->buf_load_custom_js_script . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
+    $buf_debug += BufHelper::addDebug($key, 'code', '<strong>' . $cus_js->get('buf_load_custom_js_script') . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
 }
 
-/*PRELOAD resources from custom js files */
 
 $buf_load_resources = $templateparams->get('buf_load_resources', '');
 
@@ -600,10 +587,24 @@ $buf_cache_control = '';
 
 if ($buf_cache_control_enable) {
     $cacheValue = $templateparams->get('buf_cache_control', 'public, max-age=31536000');
+
+    // No cachear públicamente respuestas privadas: usuarios autenticados o envíos POST.
+    // Evita que un proxy/CDN sirva la página de un usuario a otro distinto.
+    $current_user = $app->getIdentity();
+    $is_private   = ($current_user && !$current_user->guest)
+        || strtoupper((string) $jinput->getMethod()) === 'POST';
+
+    if ($is_private) {
+        $cacheValue = 'private, no-cache, no-store, must-revalidate';
+    }
+
     // Solo enviar header si no se han enviado ya
     if (!headers_sent()) {
         header('Cache-Control: ' . $cacheValue);
     }
-    // Meta tag siempre es útil como fallback
-    $buf_cache_control = '<meta http-equiv="Cache-Control" content="' . htmlspecialchars($cacheValue, ENT_QUOTES, 'UTF-8') . '">';
+
+    // Meta tag como fallback, sólo para el valor público cacheable
+    if (!$is_private) {
+        $buf_cache_control = '<meta http-equiv="Cache-Control" content="' . htmlspecialchars($cacheValue, ENT_QUOTES, 'UTF-8') . '">';
+    }
 }

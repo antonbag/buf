@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -21,14 +23,13 @@ class BufEditorButtonsField extends FormField
 {
     protected $type = 'BufEditorButtons';
 
-    protected function getInput()
+    protected function getInput(): string
     {
-
         $app = Factory::getApplication();
 
         $tpath = JPATH_SITE . '/templates/';
 
-        $input = $app->input;
+        $input = $app->getInput();
         $template_id = $input->get('id', 0, 'INT');
 
         //toolbar

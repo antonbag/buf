@@ -1,148 +1,762 @@
 /*******************************/
 /*********   BUF   *************/
-/*******************************/
 /*******  MAIN style   *********/
 /*******************************/
-/*******************************/
-/* This is the main scss file */
+@import "variables.scss";
 
-/*
-@media screen and (prefers-reduced-motion:no-preference) {
-    @view-transition {
-        navigation: auto
+
+
+/* ═══════════════  BASE  ═══════════════ */
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink-800);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink-900);
+    letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(1.9rem, 1.3rem + 2.2vw, 2.9rem); margin-bottom: 1rem; }
+h2 { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem); margin-bottom: .875rem; }
+h3 { font-size: clamp(1.25rem, 1rem + .8vw, 1.55rem); margin-bottom: .75rem; }
+
+a {
+    color: var(--bs-link-color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: .18em;
+
+    &:hover {
+        color: var(--bs-link-hover-color);
     }
 }
-*/
 
-.w_motive {
-    display: block;
-    width: 100%;
-    min-height: 100px;
-    height: 30%;
-    background-image: url(https://congress.womenslegacyproject.eu/templates/buf/layouts/womenLegacy23/images/motiv.png);
-    background-size: contain;
-    margin-top: 30px;
+// Foco visible y consistente en todo el sitio (WCAG 2.4.7)
+:focus-visible {
+    outline: 3px solid var(--accent-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.text-muted {
+    color: var(--ink-600) !important;
 }
 
 
-//DEV Visual menu
-.card.menu_elements_wrapper.active{
-    background: #7b0080;
+/* ═══════════════  BOTONES (Bootstrap 5.3 usa --bs-btn-*)  ═══════════════ */
+
+.btn {
+    --bs-btn-font-weight: 600;
+    --bs-btn-padding-x: 1.35rem;
+    --bs-btn-padding-y: .6rem;
+    --bs-btn-border-radius: var(--radius-sm);
+    transition: transform .15s ease, box-shadow .15s ease;
 }
-#menu_principal{
-    li.nav-item.current.active{
-        a{
-            color:#691c28;
+
+// Los colores de .btn-primary y .btn-outline-primary NO se fijan aquí: los
+// genera BufSass a partir del "primary" del subform, calculando hover, active,
+// focus y el color de texto por contraste (WCAG). Fijarlos aquí los pisaría,
+// porque default_template.css se carga después de buf.css.
+// Aquí sólo queda el realce al pasar el ratón, que es puramente visual.
+.btn-primary {
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+}
+
+// Botón de acento: variante clara sobre fondo blanco
+.btn-accent {
+    background: var(--accent-100);
+    border: 1px solid var(--accent-500);
+    color: var(--accent-700);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: .6rem 1.35rem;
+
+    &:hover {
+        background: var(--accent-500);
+        color: #fff;
+    }
+}
+
+
+/* ═══════════════  CABECERA / NAVBAR STICKY  ═══════════════ */
+
+.site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    min-height: var(--header-h);
+}
+
+.site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: var(--header-h);
+}
+
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    color: var(--ink-900);
+    text-decoration: none;
+
+    &:hover {
+        color: var(--ink-900);
+    }
+
+    img {
+        max-height: 40px;
+        width: auto;
+    }
+}
+
+.site-header__nav {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.site-header__search {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+// El menú (mod_menu) sale como <ul class="mod-menu mod-list nav">
+.site-header__nav ul.mod-menu {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    a,
+    .nav-link {
+        display: block;
+        padding: .55rem .9rem;
+        border-radius: var(--radius-sm);
+        color: var(--ink-800);
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color .15s ease, color .15s ease;
+
+        &:hover {
+            background: var(--bg-alt);
+            color: var(--ink-900);
+        }
+    }
+
+    // Botón que despliega el submenú (chevron): sin esto queda sin estilo
+    // y, al ser un <button> nativo tras un <a> display:block, salta a una
+    // segunda línea dentro del <li>, descentrando ese ítem del resto.
+    .mod-menu__toggle-sub {
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+        padding: .55rem .6rem;
+        margin: 0;
+        background: transparent;
+        border: 0;
+        border-radius: var(--radius-sm);
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+
+        &:hover {
+            background: var(--bg-alt);
+        }
+    }
+
+    .mod-menu__heading {
+        font-weight: 500;
+        color: var(--ink-800);
+        padding: .55rem 0 .55rem .9rem;
+    }
+
+    // Ítem activo: subrayado de acento, no relleno (más elegante y accesible)
+    > li.current > a,
+    > li.active > a {
+        color: var(--ink-900);
+        font-weight: 600;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: .9rem;
+            right: .9rem;
+            bottom: .25rem;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--accent-600);
+        }
+    }
+
+    // ─── Submenús ───
+    ul.mod-menu__sub {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 220px;
+        padding: .4rem;
+        margin: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-md);
+        list-style: none;
+        z-index: 30;
+
+        // Dentro del desplegable los ítems se apilan (el flex es solo del 1er nivel)
+        li {
+            position: relative;
+            display: block;
+        }
+
+        a {
+            white-space: nowrap;
+        }
+
+        // 3er nivel: sale de lado, no tapando a sus hermanos
+        ul.mod-menu__sub {
+            top: -.4rem;
+            left: 100%;
+            margin-left: .2rem;
+        }
+    }
+
+    // Estado abierto que gestiona menu.js (botón chevron y teclado). El core lo
+    // declara con :where(), que tiene especificidad 0, así que la regla
+    // display:none de arriba lo pisaba y el botón no hacía nada: por eso se
+    // repite aquí con la especificidad correcta. Es la vía accesible (anuncia
+    // aria-expanded) y la única disponible sin ratón.
+    ul.mod-menu__sub[aria-hidden="false"],
+    ul.mod-menu__sub.show-menu {
+        display: block;
+    }
+
+    // Hover: solo donde hay puntero real. En táctil no aplica, así manda el
+    // botón y se evita el clásico "primer toque abre, segundo navega".
+    @media (hover: hover) and (pointer: fine) {
+        li:hover > ul.mod-menu__sub {
+            display: block;
+        }
+
+        // El chevron acompaña al estado también al abrir por hover
+        li:hover > .mod-menu__toggle-sub .icon-chevron-down {
+            transform: rotate(180deg);
         }
     }
 }
 
 
+/* ═══════════════  BANNERS  ═══════════════ */
 
-html{
-  opacity:1;
-}
+.banner_front,
+.banner_page {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-radius: var(--radius);
+    overflow: hidden;
 
-//TODO this in config file
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1400px
-) !default;
-
-
-
-
-//IMAGES
-//background-image:url(#{$img_path}yourimage.png);
-//LAYOUT IMAGES
-//background-image:url(#{$layout_img_path}yourimage.png);
-$layout_img_path:'/templates/buf/layouts/default/images' !default;
-$layout_opath:'/templates/buf/layouts/default' !default;
-//LAYOUT
-//background-image:url(#{$layout_opath}yourfile.css);
-
-
-//@import "../fonts/nunito/nunito.scss";
-//@import "../fonts/crimson/crimson.scss";
-
-
-
-
-html{opacity: 1;}
-#contents{
-	opacity:1;
-}
-//VARIABLES
-$color: #57616d;
-
-:root{
-    --bs-link-color: #C53A4F;
-    --bs-link-hover-color: #691c28;
-  }
-
-//MIXINS
-@mixin vag(){
-    font-family: 'Varela Round', sans-serif;
-}
-
-//utils
-.item-image{
-	img{
-		max-width: 100%;
-		height: auto;
-	}
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
 }
 
 
+/* ═══════════════  CONTENIDO  ═══════════════ */
 
-//right
-div.buf_right{
-	background:#d9ebeb;
+#contents {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
 }
 
-//left
-div.buf_left{
-	background:#d9ebeb;
+.content_pral {
+    min-width: 0; // evita desbordes de tablas/código dentro de flex/grid
+}
+
+main {
+    background: var(--surface);
+    padding: 0;
+}
+
+// Sidebars: minimalistas, sin cajas — sólo separación por borde
+.buf_left,
+.buf_right {
+    > div,
+    > .moduletable,
+    > .card {
+        padding: 0 0 1.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    h3, h4, .card-header {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: .75rem;
+        color: var(--ink-900);
+    }
+}
+
+#subcontent,
+#subcomponent {
+    margin-top: 2rem;
 }
 
 
+/* ═══════════════  TARJETAS DE ARTÍCULO (override bufbscard de BUF)  ═══════════════ */
 
+div.buf_bs_card {
+    .card-wrapper {
+        margin-top: 0;
+        margin-bottom: 1.75rem;
+    }
 
+    .card {
+        height: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: border-color .18s ease, transform .18s ease;
 
-/* YOUR CSS HERE */
-// ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ ☎ //
-//////////////MOBILE////////////////
+        &:hover {
+            border-color: var(--ink-400);
+            transform: translateY(-2px);
+        }
+    }
 
-@media (max-width: map-get($grid-breakpoints, md)) {
-	@import 'mobile.scss';
+    div.item-image {
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            transition: transform .3s ease;
+        }
+    }
+
+    .card:hover div.item-image img {
+        transform: scale(1.03);
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: .5rem;
+
+        a {
+            color: var(--ink-900);
+            text-decoration: none;
+            background-image: linear-gradient(var(--accent-600), var(--accent-600));
+            background-size: 0% 2px;
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            transition: background-size .25s ease;
+
+            &:hover {
+                background-size: 100% 2px;
+            }
+        }
+    }
+
+    .card-text {
+        color: var(--ink-600);
+        font-size: .95rem;
+    }
+}
+
+// Acordeón (override bufaccordion de BUF)
+div.bufaccordion_wrapper {
+    div.card-header {
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: .9rem 1.1rem;
+        transition: background-color .15s ease;
+
+        &:hover {
+            background: var(--bg-alt);
+        }
+    }
 }
 
 
-//므 므 므 므 므 므 므 므 므 므 므 므 므 므//
-//////////////TABLET////////////////
+/* ═══════════════  PÁGINA DE ARTÍCULO  ═══════════════ */
 
+// flow-root contiene el float de la imagen destacada. Sin esto, todo lo que
+// va detrás (navegación anterior/siguiente incluida) se coloca AL LADO de la
+// imagen en vez de debajo, que es el desajuste más visible de la plantilla.
+.com-content-article,
+.item-page {
+    display: flow-root;
+}
+
+/* ── Cabeceras (título de menú + título del artículo) ── */
+.item-page > .page-header {
+    margin-bottom: 1.5rem;
+
+    h1, h2, h3 {
+        margin-bottom: 0;
+    }
+}
+
+// Cuando van dos seguidas se agrupan, para que se lean como un bloque
+// y no como dos títulos sueltos compitiendo entre sí.
+.item-page > .page-header + .page-header {
+    margin-top: -.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Metadatos: autor, categoría, fecha, hits ── */
+.article-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem 1.4rem;
+    margin: 0 0 1.5rem;
+    padding: .7rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: .85rem;
+
+    // "Details" no aporta nada en pantalla, pero se conserva para lectores
+    // de pantalla en lugar de eliminarlo del marcado.
+    .article-info-term {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    // El color va en el dd y no en el dl porque .text-muted de Bootstrap
+    // usa !important y ganaría en el contenedor.
+    dd {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        margin: 0;
+        color: var(--ink-600);
+    }
+
+    [class^="icon-"],
+    [class*=" icon-"] {
+        margin-inline-start: 0; // el core mete .5rem por defecto
+        color: var(--ink-400);
+    }
+
+    a {
+        color: var(--ink-800);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+
+        &:hover,
+        &:focus-visible {
+            color: var(--accent-600);
+            border-bottom-color: currentColor;
+        }
+    }
+
+    time {
+        white-space: nowrap;
+    }
+}
+
+/* ── Tags: píldoras discretas en lugar de botones .btn-info cian ── */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding: 0;
+    margin: 0 0 1.75rem;
+    list-style: none;
+
+    // .list-inline-item:not(:last-child) de Bootstrap mete margin-right y
+    // se sumaría al gap: se neutraliza con especificidad suficiente.
+    > li,
+    > li.list-inline-item {
+        margin: 0;
+    }
+
+    .btn {
+        --bs-btn-bg: var(--bg-alt);
+        --bs-btn-border-color: var(--border);
+        --bs-btn-color: var(--ink-600);
+        --bs-btn-hover-bg: var(--accent-100);
+        --bs-btn-hover-border-color: var(--accent-500);
+        --bs-btn-hover-color: var(--accent-700);
+        --bs-btn-active-bg: var(--accent-100);
+        --bs-btn-active-border-color: var(--accent-500);
+        --bs-btn-active-color: var(--accent-700);
+        --bs-btn-padding-x: .85rem;
+        --bs-btn-padding-y: .3rem;
+        --bs-btn-font-size: .8rem;
+        --bs-btn-font-weight: 500;
+        --bs-btn-border-radius: 999px;
+    }
+}
+
+/* ── Imagen destacada ── */
+.item-page {
+    .item-image {
+        margin: 0 0 1.5rem;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+        }
+    }
+
+    figure.float-start {
+        max-width: min(42%, 420px);
+        margin: .25rem 1.75rem 1.25rem 0;
+    }
+
+    figure.float-end {
+        max-width: min(42%, 420px);
+        margin: .25rem 0 1.25rem 1.75rem;
+    }
+
+    figcaption,
+    .caption {
+        margin-top: .55rem;
+        font-size: .8rem;
+        line-height: 1.45;
+        color: var(--ink-400);
+    }
+}
+
+/* ── Cuerpo del artículo ── */
+.com-content-article__body {
+    line-height: 1.75;
+
+    p {
+        margin-bottom: 1.15rem;
+    }
+
+    ul, ol {
+        margin-bottom: 1.15rem;
+        padding-left: 1.35rem;
+    }
+
+    h2, h3, h4 {
+        margin-top: 2.25rem;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+    }
+
+    blockquote {
+        margin: 1.75rem 0;
+        padding: .35rem 0 .35rem 1.25rem;
+        border-left: 3px solid var(--accent-600);
+        color: var(--ink-600);
+        font-style: italic;
+    }
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* ── Navegación anterior / siguiente ── */
+.pagenavigation {
+    clear: both; // no se sube junto a la imagen flotante
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+
+    .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin: 0;
+    }
+
+    // Funciona aunque solo exista uno de los dos enlaces
+    .previous { margin-right: auto; }
+    .next     { margin-left: auto; }
+
+    .btn {
+        --bs-btn-bg: transparent;
+        --bs-btn-border-color: var(--border);
+        --bs-btn-color: var(--ink-800);
+        --bs-btn-hover-bg: var(--bg-alt);
+        --bs-btn-hover-border-color: var(--ink-400);
+        --bs-btn-hover-color: var(--ink-900);
+        --bs-btn-font-weight: 500;
+    }
+}
+
+
+/* ═══════════════  PAGINACIÓN Y MIGAS  ═══════════════ */
+
+div.pagination {
+    margin-top: 2rem;
+}
+
+.mod-breadcrumbs__wrapper {
+    .breadcrumb {
+        background: transparent;
+        padding: .75rem 0;
+        font-size: .9rem;
+        margin-bottom: 0;
+    }
+
+    .breadcrumb-item.active {
+        color: var(--ink-600);
+    }
+}
+
+
+/* ═══════════════  FOOTER A COLUMNAS  ═══════════════ */
+
+#footer {
+    background: var(--bg-alt);
+    color: var(--ink-600);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding: 3.5rem 0 2.5rem;
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--ink-900);
+        font-size: .875rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        margin-bottom: 1.1rem;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: .55rem;
+        }
+    }
+
+    a {
+        color: var(--ink-600);
+        text-decoration: none;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--ink-900);
+            text-decoration: underline;
+            text-decoration-color: var(--accent-600);
+        }
+    }
+}
+
+#subfooter {
+    background: var(--bg-alt);
+    color: var(--ink-400);
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 0;
+    font-size: .875rem;
+
+    a {
+        color: var(--ink-600);
+
+        &:hover {
+            color: var(--ink-900);
+        }
+    }
+}
+
+
+/* ═══════════════  UTILIDADES  ═══════════════ */
+
+.item-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.section-alt {
+    background: var(--bg-alt);
+}
+
+
+/* ─────────────  TUS ESTILOS AQUÍ  ───────────── */
+
+
+
+
+//////////////  MOBILE  //////////////
+// -0.02px evita que mobile y tablet se solapen justo en el breakpoint md.
+@media (max-width: (map-get($grid-breakpoints, md) - 0.02px)) {
+    @import 'mobile.scss';
+}
+
+//////////////  TABLET  //////////////
 @media (min-width: map-get($grid-breakpoints, md)) {
     @import "tablet.scss";
 }
 
+//////////////  LAPTOP  //////////////
 @media (min-width: map-get($grid-breakpoints, lg)) {
     @import "laptop.scss";
 }
 
+//////////////  DESKTOP  //////////////
 @media (min-width: map-get($grid-breakpoints, xl)) {
     @import "desktop.scss";
 }
 
+//////////////  TV / WIDE  //////////////
 @media (min-width: map-get($grid-breakpoints, xxl)) {
     @import "tv.scss";
 }
 
+//////////////  PRINT  //////////////
 @media print {
     @import "print.scss";
 }
-
-

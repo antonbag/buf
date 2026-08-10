@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -12,15 +14,11 @@ namespace Jtotal\BUF\Site\Field;
 //no direct access
 defined('_JEXEC') or die;
 
-use JLoader;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Uri\Uri;
 use Jtotal\BUF\Site\Helper\BufHelper;
-
-//JLoader::registerNamespace('Jtotal\\BUF', JPATH_SITE . '/templates/buf/src');
 
 //LOAD JTFW
 if (is_file(JPATH_PLUGINS . '/system/jtframework/autoload.php')) {
@@ -36,24 +34,21 @@ class BufInitField extends FormField
 {
     protected $type = 'BufInit';
 
-    protected function getInput()
+    protected function getInput(): string
     {
 
         $app = property_exists($this, 'app') ? $this->app : Factory::getApplication();
 
         $doc = $app->getDocument();
         $app = Factory::getApplication();
-        $buf_path = URI::root(true) . '/templates/buf/backend';
 
         $scriptDeclaration = "var bufpluginbufajax = '{$this->getVersion()}';";
-        //$doc->addScriptDeclaration("var bufpluginbufajax = '{$this->getVersion()}';");
 
         $tpath_real = realpath(JPATH_SITE . '/templates/');
         $tpath = str_replace('\\', '\\\\', $tpath_real);
         $tpath .= '/';
 
         $scriptDeclaration .= "var tpath = '{$tpath}';";
-        //$doc->addScriptDeclaration("var tpath = '{$tpath}';");
 
         $jversion = BufHelper::getJVersion();
 
@@ -65,35 +60,19 @@ class BufInitField extends FormField
 
         $scriptDeclaration .= "var buf_layout = '{$layout}';";
 
-        //JOOMLA 3
-        /*
-        if ($jversion == "3") {
-
-            $doc->addStyleSheet($buf_path . '/css/bufadmin.css');
-            //Fa5::getFaCDN();
-            Fa::getFa5CDN();
-            $scriptDeclaration .= "var jversion = '3';";
-        }*/
-
-        //JOOMLA 4
-        //$scriptDeclaration .= "var jversion = '4';";
-
         $wa = $doc->getWebAssetManager();
         $wa->registerAndUseStyle('bufadmin4.css', 'media/templates/site/buf/css/backend/bufadmin4.css');
 
         
         if ($jversion == 5 || $jversion == 6) {
-            $wa->registerAndUseScript('bufadmin5.js', 'media/templates/site/buf/js/backend/bufadminv5.js', [], ['defer' => true], ['webcomponent.editor-codemirror']);
+                    $wa->registerAndUseScript('bufadmin5.js', 'media/templates/site/buf/js/backend/bufadminv5.js', [], ['defer' => true], []);
         } else {
             $wa->registerAndUseScript('bufadmin4.js', 'media/templates/site/buf/js/backend/bufadmin.js', [], ['defer' => true], []);
         }
 
 
-        $input = $app->input;
+        $input = $app->getInput();
         $template_id = $input->get('id', 0, 'INT');
-
-        //init variables
-        //$doc->addScriptDeclaration("var templateid = '{$template_id}';");
 
         $scriptDeclaration .= "var templateid = '{$template_id}';";
         $wa->addInlineScript($scriptDeclaration);
@@ -190,7 +169,7 @@ class BufInitField extends FormField
 
             foreach ($scan as $file) {
                 if (is_dir(JPATH_LIBRARIES . '/jtlibs/' . $file) && $file != '.' && $file != '..') {
-                    $template_init .= '/ <li><span class="label badge bg-light text-dark" >' . $file . '</span><span class="divider">  </span></li>';
+                    $template_init .= '/ <li><span class="label badge bg-light text-dark" >' . htmlspecialchars($file, ENT_QUOTES, 'UTF-8') . '</span><span class="divider">  </span></li>';
                     //$template_init .= '<span class="label"> '.$file.' </span><span class="divider">/</span>';
                 }
             }
@@ -212,7 +191,7 @@ class BufInitField extends FormField
         return $template_init;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
 
         $content = '
@@ -223,7 +202,7 @@ class BufInitField extends FormField
 
     private function getVersion()
     {
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
 
         $element = 'bufajax';
@@ -236,6 +215,10 @@ class BufInitField extends FormField
             ->where($db->quoteName('folder') . ' = ' . $db->quote($folder));
         $db->setQuery($query);
         $result = $db->loadObject();
+
+        if (!$result) {
+            return;
+        }
 
         $manifest_cache = json_decode($result->manifest_cache);
 
@@ -254,7 +237,7 @@ class BufInitField extends FormField
             return;
         }
 
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
 
         $query

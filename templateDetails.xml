@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>23-nov-2025</creationDate>
+	<creationDate>10-ago-2026</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>5.4.30</version>
+	<version>6.1.2</version>
+	<php_minimum>8.2.0</php_minimum>
 	<description>
 		<![CDATA[ 
 		<div class="buf_template_data d-flex justify-content-between align-items-center">
 			<h1><img class="img-fluid img-responsive" src="../media/templates/site/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">5.4.30</small>
+				<small class="buf_version badge badge-success bg-success">6.1.2</small>
 			</div>
 		</div>
 	]]>
@@ -46,6 +47,7 @@
 	</media>
 	<languages folder="language">
 		<language tag="en-GB">en-GB.tpl_buf.ini</language>
+		<language tag="es-ES">es-ES.tpl_buf.ini</language>
 	</languages>
 	<positions>
 		<position>navbar</position>
@@ -290,12 +292,6 @@
 					label="TPL_BUF_LAYOUT"
 				/>
 
-
-
-
-
-
-
 				<field
 					name="buf_layout_files"
 					type="radio"
@@ -304,6 +300,7 @@
 					label="TPL_BUF_LAYOUT_FILES"
 					>
 					<option value="base">TPL_BUF_LAYOUT_BASE</option>
+					<option value="variables">TPL_BUF_LAYOUT_VARIABLES</option>
 					<option value="template">TPL_BUF_LAYOUT_MAIN</option>
 					<option value="mobile">TPL_BUF_LAYOUT_MOBILE</option>
 					<option value="tablet">TPL_BUF_LAYOUT_TABLET</option>
@@ -352,7 +349,7 @@
 
 				<field type="BufEditorButtons" hiddenLabel="true"/>
 				<field name="scss_editor"
-		            type="editor"
+		            type="BufOptionalEditor"
 		            label="TPL_BUF_LAYOUT_EDITOR"
 		            description="TPL_BUF_LAYOUT_EDITOR_DESC"
 		            default=""
@@ -678,7 +675,7 @@
 							<![CDATA[
 							<div class="d-flex align-items-center">
 								<i class="fab fa-bootstrap me-1"></i>
-								<span> Boostrap 5</span>
+								<span> Boostrap </span>
 								</div>
 							]]>
 						</option>
@@ -1029,11 +1026,11 @@
 				</fieldset>
 				<!--JQUERY-->
 				<fieldset name="Optimize_jquery_w" label="TPL_BUF_OPTIMIZE_JQUERY">
-					<field name="buf_jquery" 
-						type="radio" 
-						default="2" 
-						class="btn-group" 
-						label="TPL_BUF_LOAD_JQUERY" 
+					<field name="buf_jquery"
+						type="radio"
+						default="0"
+						class="btn-group"
+						label="TPL_BUF_LOAD_JQUERY"
 	
 						parentclass="stack span-1-inline"
 						description="TPL_BUF_LOAD_JQUERY_DESC">

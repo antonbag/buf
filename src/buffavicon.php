@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*******************
  * *****************
  * *****************
@@ -20,7 +22,7 @@ namespace Jtotal\BUF;
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -279,7 +281,7 @@ class DEP_BUFfavicon
     private static function getCurrentParams($id)
     {
 
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
 
         $query

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
@@ -18,7 +20,7 @@ class BufBSexistsField extends FormField
 {
     protected $type = 'BufBSexists';
 
-    protected function getInput()
+    protected function getInput(): string
     {
 
         $params = $this->form->getValue('params');
@@ -29,7 +31,7 @@ class BufBSexistsField extends FormField
 
         $cachepath = JPATH_SITE . '/cache/buf_' . $layout;
 
-        $file = strtolower($this->element['file']);
+        $file = strtolower((string) $this->element['file']);
 
         if ($file == 'bs') {
             $cssfile = $cachepath . '/buf_bs.css';
@@ -42,7 +44,7 @@ class BufBSexistsField extends FormField
             $id = 'compile_fa_sass';
             $name = Text::_('TPL_BUF_COMPILE_FA');
         } else {
-            return;
+            return '';
         }
 
         $text = '<div class="buf_toolbar_wrapper d-flex flex-wrap ' . $cleanclass . '">';
@@ -76,9 +78,9 @@ class BufBSexistsField extends FormField
         return $text;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
-        $file = strtolower($this->element['file']);
+        $file = strtolower((string) $this->element['file']);
 
         if ($file == 'bs') {
             //$text = "Bootstrap css";
@@ -86,14 +88,14 @@ class BufBSexistsField extends FormField
             //$text =  "Fontawesome css";
         }
 
-        //return $text;
+        return '';
     }
 
     private static function humanFilesize($file, $decimals = 2)
     {
         $bytes = (int) filesize($file);
         $sz = 'BKMGTP';
-        $factor = floor((strlen($bytes) - 1) / 3);
+        $factor = $bytes > 0 ? (int) floor((strlen((string) $bytes) - 1) / 3) : 0;
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 }

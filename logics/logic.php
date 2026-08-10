@@ -3,7 +3,7 @@
 /**
  * @author          jtotal <support@jtotal.org>
  * @link            https://jtotal.org
- * @copyright       Copyright © 2023 JTOTAL All Rights Reserved
+ * @copyright       Copyright © 2005 - 2026 JTOTAL All Rights Reserved
  * @license         GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
 
@@ -22,7 +22,7 @@ if ($buf_bs_on) {
     /***************************/
     //BS5
     if ($buf_bs_on == "5") {
-        $doc->addScriptDeclaration("var bs_version = 5;");
+        $wa->addInlineScript('window.bs_version = 5;');
 
         $bs_5 = new Registry;
         $bs_5->loadString(json_encode($templateparams->get('buf_bs_v5')));
@@ -35,8 +35,8 @@ if ($buf_bs_on) {
             HTMLHelper::_('bootstrap.framework');
             $buf_debug += BufHelper::addDebug('BOOSTRAP 5', 'code', '<small>load joomla bootstrap</small>', $startmicro, 'table-info', 'logic.php');
         } elseif ($bs5_js == 'cdn') {
-            $bsCdnUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js';
-            $intgrity = 'sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg==';
+            $bsCdnUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js';
+            $intgrity = 'sha512-nKXmKvJyiGQy343jatQlzDprflyB5c+tKCzGP3Uq67v+lmzfnZUi/ZT+fc6ITZfSC5HhaBKUIvr/nTLCV+7F+Q==';
 
             $this->getPreloadManager()->preconnect('https://cdnjs.cloudflare.com/', []);
             $this->getPreloadManager()->preload($bsCdnUrl, ['as' => 'script']);
@@ -53,7 +53,6 @@ if ($buf_bs_on) {
             $buf_debug += BufHelper::addDebug('BOOSTRAP 5 custom', 'code', '<strong>cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js</strong> <small>' . var_export($defer, true) . '</small>', $startmicro, 'table-info', 'logic.php');
         } elseif ($bs5_js == 'custom') {
             //modern
-            //JTfunc::getPromiseScript([$libs_media_opath.'/bootstrap/js/bootstrap.bundle.min.js']);
 
             $defer = BufHelper::check_defer_v4($bs_5->get('buf_bs_defer', 0));
 
@@ -101,8 +100,8 @@ if ($buf_bs_on) {
 
         //CDN
         if ($bs_5->get("buf_bootstrap_css", 'joomla') == 'cdn') {
-            $bsCdnUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css';
-            $intgrity = 'sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==';
+            $bsCdnUrl = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css';
+            $intgrity = 'sha512-2bBQCjcnw658Lho4nlXJcc6WkV/UxpE/sAokbXPxQNGqmNdQrWqtw26Ns9kFF/yG792pKR1Sx8/Y1Lf1XN4GKA==';
 
             $this->getPreloadManager()->preconnect('https://cdnjs.cloudflare.com/', []);
             $this->getPreloadManager()->preload($bsCdnUrl, ['as' => 'style']);
@@ -145,7 +144,6 @@ if ($buf_load_layout_js) {
     $assetOptions = ['version' => $force_recache_string];
     $wa->registerAndUseScript('buf_layout.js', $opath . '/layouts/' . $buf_layout . '/js/buf_layout.js', $assetOptions, ['defer' => true]);
 
-    //$doc->addScript($tpath . '/layouts/' . $buf_layout . '/js/buf_layout.js' . $force_recache_string, array(), $defer);
     $buf_debug += BufHelper::addDebug('LOAD layout js', 'code', '<strong>buf_layout.js RECACHED: ' . $force_recache_string . '</strong> <small>' . var_export($defer, true) . '</small>', $startmicro, 'table-info', 'logic.php');
 }
 
@@ -182,7 +180,6 @@ foreach ($buf_load_custom_js as $key => $cus_js) {
 
     $wa->useScript($assetName);
 
-    //$doc->addScript($tpath.'/layouts/'.$buf_layout.'/js/'.$cus_js->buf_load_custom_js_script,array($cus_js->buf_js_attribs), $defer_custom_js);
     $buf_debug += BufHelper::addDebug('LOAD custom script |' . $key, 'code', $buf_layout . '/js/' . '<strong>' . $cus_js->buf_load_custom_js_script . '</strong> <small>' . var_export($defer_custom_js, true) . '</small>', $startmicro, 'table-info', 'logic.php');
 }
 
@@ -199,10 +196,8 @@ if ((bool) $templateparams->get('buf_custom_unset', '')) {
             }
 
             $defer_cus_js = trim($defer_cus_js->buf_custom_unset_script);
-            //unset($doc->_scripts[$this->baseurl . '/' . $defer_cus_js]);
             $wa->disableScript($defer_cus_js);
 
-            //$doc->addScript($defer_cus_js,array(), $defer);
             $buf_debug += BufHelper::addDebug('CUSTOM UNSET| ' . $key, 'trash', '<strong>' . $defer_cus_js . '</strong>', $startmicro, 'table-danger', 'logic.php');
         }
     }
@@ -214,32 +209,7 @@ if ((bool) $templateparams->get('buf_custom_unset', '')) {
 /***************************/
 /***************************/
 
-//CHECK FA FONTs IN CACHE
-/*css+fonts*/
-
 $buf_fa_run_webfont = false;
-
-/*
-if ($buf_fa_selector && $buf_fa5_tech == 2 && $buf_fa_selector != 'jdefault') {
-    $fa5pro_exists = file_exists($libspath . '/font-awesome/fontawesome5pro/webfonts/fa-brands-400.ttf') ? true : false;
-
-    if ($buf_fa_selector == 5) {
-        if ($buf_fa_pro && $fa5pro_exists) {
-            $fa_path = 'fontawesome5pro';
-            $dir = $cachepath . '/fontawesome5pro/webfonts';
-            $buf_fa_webfont_exists = (count(glob("$dir/*")) === 0) ? false : true;
-        } else {
-            $fa_path = 'fontawesome5';
-            $dir = $cachepath . '/fontawesome5/webfonts';
-            $buf_fa_webfont_exists = (count(glob("$dir/*")) === 0) ? false : true;
-        }
-
-        if (!$buf_fa_webfont_exists) {
-            $buf_fa_run_webfont = true;
-        }
-    }
-}
-*/
 
 //TRUE or FALSE
 $buf_bs_css_exist = file_exists($cachepath . '/buf_bs.css');
@@ -317,6 +287,12 @@ if ($buf_fa_selector == 'jdefault') {
     $wa->getAsset('style', 'fontawesome')->setAttribute('media', 'print');
     $wa->getAsset('style', 'fontawesome')->setAttribute('onload', 'this.media=\'all\'');
     $wa->useStyle('fontawesome');
+
+    // El asset 'fontawesome' solo trae las clases nativas fa-*. Los iconos
+    // semánticos icon-* que usa el core (p. ej. icon-chevron-down en mod_menu)
+    // necesitan además este alias, que no está registrado como WebAsset.
+    HTMLHelper::_('stylesheet', 'system/joomla-fontawesome.css', ['version' => 'auto', 'relative' => true]);
+
     $buf_debug += BufHelper::addDebug('FA css JDEFAULT', 'thumbs-up', 'LOADED', $startmicro, 'table-success');
 }
 
@@ -374,7 +350,6 @@ if ((int) $buf_fa_selector == 6) {
             $buf_debug += BufHelper::addDebug('FA6 | ' . $value, 'font-awesome fab', $value, $startmicro, 'table-info', 'logic.php');
         }
 
-        //$doc->addScript($tpath.'/libs/font-awesome/fontawesome6/js/fontawesome.min.js', array(), $deferfa);
 
         $wa->registerScript('fontawesome.min.js', $opath_media . '/libs/font-awesome/fontawesome6/js/fontawesome.min.js', [], []);
         if ($deferfa) {
@@ -422,7 +397,8 @@ if ($buf_debug_param) {
 
     //COUNT SCRIPTS
     $conta_script = 0;
-    foreach ($doc->_scripts as $loadedjs => $jskey) {
+    foreach ($wa->getAssets('script', true) as $scriptAsset) {
+        $loadedjs = $scriptAsset->getUri() ?: $scriptAsset->getName();
         $buf_debug += BufHelper::addDebug('JS | ' . $conta_script, 'joomla far fab', '<strong>loaded: </strong><small>' . $loadedjs . '</small>', $startmicro, 'table-default', 'logic.php');
 
         $conta_script += 1;

@@ -25,11 +25,15 @@ class offcanvas {
         this.hide_started = false;
         this.hide_complete = false;
 
+        this.previouslyFocusedElement = null;
+
         this.super_started = false;
         this.offcanvas_media = this.offcanvas_media.bind(this);
 
         this.offcanvasClick = this.offcanvasClick.bind(this);
         this.showOffcanvas  = this.showOffcanvas.bind(this);
+        this.hideOffcanvas  = this.hideOffcanvas.bind(this);
+        this.onKeydown      = this.onKeydown.bind(this);
 
         this.onSuperwrapperTouchStart = this.onSuperwrapperTouchStart.bind(this);
         this.onSuperwrapperTouchMove = this.onSuperwrapperTouchMove.bind(this);
@@ -380,14 +384,31 @@ class offcanvas {
         this.buf_debug('showOffcanvas');
         this.show_started = true;
 
+        this.previouslyFocusedElement = document.activeElement;
+
         this.ocbutton.classList.add('is-active');
+        this.ocbutton.setAttribute('aria-expanded', 'true');
         document.documentElement.classList.add('buff_canvas_on');
         document.body.classList.add('offcanvas_show');
         document.body.classList.remove('buf_offcanvas_hidden');
+
+        // Bloquea la interacción/foco con el resto de la página mientras el offcanvas está abierto.
+        if (this.superwrapper) {
+            this.superwrapper.setAttribute('inert', '');
+        }
+
+        document.addEventListener('keydown', this.onKeydown, true);
+
         buf_offcanvas.ontransitionend = () => {
             this.buf_debug("Show transition complete");
             this.show_complete = true;
             this.show_started = false;
+
+            // Mueve el foco dentro del offcanvas (WCAG 2.4.3 / diálogo modal).
+            const target = this.getFirstFocusable(this.bufcanvas) || this.bufcanvas;
+            if (target) {
+                target.focus();
+            }
         };
     }
 
@@ -395,6 +416,10 @@ class offcanvas {
         this.buf_debug('hideOffcanvas');
         document.body.classList.remove('offcanvas_show');
         this.ocbutton.classList.remove('is-active');
+        this.ocbutton.setAttribute('aria-expanded', 'false');
+
+        document.removeEventListener('keydown', this.onKeydown, true);
+
         buf_offcanvas.ontransitionend = () => {
             if(!document.body.classList.contains('offcanvas_show')){
                 document.body.classList.add("buf_offcanvas_hidden");
@@ -403,6 +428,60 @@ class offcanvas {
                 this.show_started = false;
             }
         };
+
+        if (this.superwrapper) {
+            this.superwrapper.removeAttribute('inert');
+        }
+
+        // Devuelve el foco a quien abrió el offcanvas (evita perder el punto de foco del teclado).
+        if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
+            this.previouslyFocusedElement.focus();
+        }
+        this.previouslyFocusedElement = null;
+    }
+
+    getFocusableElements(container) {
+        if (!container) {
+            return [];
+        }
+        const selector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        return Array.prototype.filter.call(
+            container.querySelectorAll(selector),
+            (el) => el.offsetParent !== null
+        );
+    }
+
+    getFirstFocusable(container) {
+        return this.getFocusableElements(container)[0] || null;
+    }
+
+    onKeydown(evt) {
+        if (evt.key === 'Escape' || evt.key === 'Esc') {
+            evt.preventDefault();
+            this.hideOffcanvas();
+            return;
+        }
+
+        if (evt.key !== 'Tab') {
+            return;
+        }
+
+        // Focus trap: mantiene el Tab dentro del offcanvas mientras está abierto.
+        const focusable = this.getFocusableElements(this.bufcanvas);
+        if (focusable.length === 0) {
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (evt.shiftKey && document.activeElement === first) {
+            evt.preventDefault();
+            last.focus();
+        } else if (!evt.shiftKey && document.activeElement === last) {
+            evt.preventDefault();
+            first.focus();
+        }
     }
 
 

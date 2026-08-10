@@ -5,7 +5,7 @@
                 <square70x70logo src="templates/buf/layouts/default/icons/ms-icon-70x70.png"/>
                 <square150x150logo src="templates/buf/layouts/default/icons/ms-icon-150x150.png"/>
                 <square310x310logo src="templates/buf/layouts/default/icons/ms-icon-310x310.png"/>
-                <TileColor>#57616d</TileColor>
+                <TileColor>#2b2b2b</TileColor>
               </tile>
             </msapplication>
           </browserconfig>
