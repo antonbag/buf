@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="template" client="site" method="upgrade">
 	<name>BUF</name>
-	<creationDate>10-ago-2026</creationDate>
+	<creationDate>11-ago-2026</creationDate>
 	<author>jtotal</author>
 	<copyright>Copyright © jtotal.org</copyright>
 	<authorEmail>support@jtotal.org</authorEmail>
 	<authorUrl>https://jtotal.org</authorUrl>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>6.1.14</version>
+	<version>6.1.20</version>
 	<php_minimum>8.2.0</php_minimum>
 	<description>
 		<![CDATA[ 
@@ -15,7 +15,7 @@
 			<h1><img class="img-fluid img-responsive" src="../media/templates/site/buf/images/buf_logos/logo_buf_text_400.png" width="256"/></h1><br>
 			<div class="d-flex flex-column ml-5">
 				<small>Created by <a href="https://jtotal.org" target="_blank"> jtotal.org </a></small>
-				<small class="buf_version badge badge-success bg-success">6.1.14</small>
+				<small class="buf_version badge badge-success bg-success">6.1.20</small>
 			</div>
 		</div>
 	]]>
